@@ -22,7 +22,7 @@ static func _HardcodedWorldDataOne() -> Dictionary[Vector2i, MapTileType]:
 	# fill dictionary with pairs of coordinates and tile types
 	for x in range(-4, 5):
 		for y in range(-4, 5):
-			if x % 4 == 0 and y % 4 == 0:
+			if (x % 4 == 0 or y % 4 == 0) and (x != 0 and y != 0):
 				data.set(Vector2i(x, y), WaterTileType)
 			elif x >= -1 and x <= 1 and y >= -1 and y <= 1:
 				data.set(Vector2i(x, y), DesertTileType)

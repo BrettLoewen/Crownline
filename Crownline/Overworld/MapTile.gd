@@ -1,8 +1,11 @@
 class_name MapTile
 extends Node3D
 
-@export var coordinates: Vector2i
-@export var tileModel: Node = null
+var tileModel: Node = null
+var tileData: MapTileType = null
 
-func Setup() -> void:
-	pass
+func Setup(newTileData: MapTileType) -> void:
+	tileData = newTileData
+	
+	tileModel = tileData.tileModel.instantiate()
+	add_child(tileModel)

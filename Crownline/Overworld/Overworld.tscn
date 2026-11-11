@@ -3,6 +3,34 @@
 [ext_resource type="Script" uid="uid://brc2jdtc3w8kh" path="res://Overworld/OverworldManager.gd" id="1_m0wi0"]
 [ext_resource type="PackedScene" uid="uid://cylt4tiyxmqhu" path="res://Overworld/MapTile.tscn" id="2_c5u67"]
 
-[node name="Overworld" type="Node3D" unique_id=1564437424]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
+
+[sub_resource type="Sky" id="Sky_c5u67"]
+sky_material = SubResource("ProceduralSkyMaterial_68let")
+
+[sub_resource type="Environment" id="Environment_c5u67"]
+background_mode = 2
+sky = SubResource("Sky_c5u67")
+ambient_light_source = 3
+ambient_light_energy = 0.8
+tonemap_mode = 2
+
+[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent")]
 script = ExtResource("1_m0wi0")
 mapTileScene = ExtResource("2_c5u67")
+tileMapParent = NodePath("TileMap")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=499054794]
+transform = Transform3D(0.8660254, 0.38302222, -0.32139382, 0, 0.64278764, 0.76604444, 0.5, -0.66341394, 0.5566704, 0, 0, 0)
+light_color = Color(1, 0.95686275, 0.8784314, 1)
+light_energy = 0.1
+shadow_enabled = true
+directional_shadow_max_distance = 40.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=77277214]
+environment = SubResource("Environment_c5u67")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=66520656]
+transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64278764, 0, 3, 4)
+
+[node name="TileMap" type="Node3D" parent="." unique_id=897811456]
