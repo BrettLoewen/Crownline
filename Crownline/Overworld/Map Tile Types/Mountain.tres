@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MapTileType" format=3 uid="uid://k876lw5fb0ae"]
+
+[ext_resource type="Script" uid="uid://dxm3f6xnfyt10" path="res://Overworld/MapTileType.gd" id="1_uh8ub"]
+[ext_resource type="PackedScene" uid="uid://vgr3yyd2iyti" path="res://Packages/Kenney Hexagon Kit/Models/FBX format/stone-mountain.fbx" id="2_uh8ub"]
+
+[resource]
+script = ExtResource("1_uh8ub")
+tileType = 3
+tileModel = ExtResource("2_uh8ub")
+metadata/_custom_type_script = "uid://dxm3f6xnfyt10"

@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bcstddq2hxna3"
+path="res://.godot/imported/building-smelter.obj-e74b03b1740aa9e07bdc68de1d5c7eee.mesh"
+
+[deps]
+
+files=["res://.godot/imported/building-smelter.obj-e74b03b1740aa9e07bdc68de1d5c7eee.mesh"]
+
+source_file="res://Packages/Kenney Hexagon Kit/Models/OBJ format/building-smelter.obj"
+dest_files=["res://.godot/imported/building-smelter.obj-e74b03b1740aa9e07bdc68de1d5c7eee.mesh", "res://.godot/imported/building-smelter.obj-e74b03b1740aa9e07bdc68de1d5c7eee.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

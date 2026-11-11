@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MapTileType" format=3 uid="uid://bo5t4obvsxguf"]
+
+[ext_resource type="Script" uid="uid://dxm3f6xnfyt10" path="res://Overworld/MapTileType.gd" id="1_uf537"]
+[ext_resource type="PackedScene" uid="uid://dghmwjjdnmk22" path="res://Packages/Kenney Hexagon Kit/Models/FBX format/grass-hill.fbx" id="2_m56qf"]
+
+[resource]
+script = ExtResource("1_uf537")
+tileType = 1
+tileModel = ExtResource("2_m56qf")
+metadata/_custom_type_script = "uid://dxm3f6xnfyt10"
