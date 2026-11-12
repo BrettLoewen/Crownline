@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MapTileType" format=3 uid="uid://dfkjptein2skc"]
 
-[ext_resource type="Script" uid="uid://dxm3f6xnfyt10" path="res://Overworld/MapTileType.gd" id="1_wjh1f"]
+[ext_resource type="Script" uid="uid://dxm3f6xnfyt10" path="res://Overworld/Tiles/MapTileType.gd" id="1_wjh1f"]
 [ext_resource type="PackedScene" uid="uid://b6v7t2ovm71a7" path="res://Packages/Kenney Hexagon Kit/Models/FBX format/grass.fbx" id="2_wvw2k"]
 
 [resource]
