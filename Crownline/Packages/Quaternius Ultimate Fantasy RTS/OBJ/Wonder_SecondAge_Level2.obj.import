@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://rhhsaeu0r0vs"
+path="res://.godot/imported/Wonder_SecondAge_Level2.obj-b6d255907bd1313fcf322b5e3378e25f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Wonder_SecondAge_Level2.obj-b6d255907bd1313fcf322b5e3378e25f.mesh"]
+
+source_file="res://Packages/Quaternius Ultimate Fantasy RTS/OBJ/Wonder_SecondAge_Level2.obj"
+dest_files=["res://.godot/imported/Wonder_SecondAge_Level2.obj-b6d255907bd1313fcf322b5e3378e25f.mesh", "res://.godot/imported/Wonder_SecondAge_Level2.obj-b6d255907bd1313fcf322b5e3378e25f.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

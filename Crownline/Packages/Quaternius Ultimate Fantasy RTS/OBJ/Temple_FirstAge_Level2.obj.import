@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://yhhbmbj5824p"
+path="res://.godot/imported/Temple_FirstAge_Level2.obj-6f523eed8b2f9b815cd9ec7128026f4f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Temple_FirstAge_Level2.obj-6f523eed8b2f9b815cd9ec7128026f4f.mesh"]
+
+source_file="res://Packages/Quaternius Ultimate Fantasy RTS/OBJ/Temple_FirstAge_Level2.obj"
+dest_files=["res://.godot/imported/Temple_FirstAge_Level2.obj-6f523eed8b2f9b815cd9ec7128026f4f.mesh", "res://.godot/imported/Temple_FirstAge_Level2.obj-6f523eed8b2f9b815cd9ec7128026f4f.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

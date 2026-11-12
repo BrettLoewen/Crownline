@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bht5sdci2dire"
+path="res://.godot/imported/Rock.obj-1c9cbfe05982c9d64a631001791d9bd1.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Rock.obj-1c9cbfe05982c9d64a631001791d9bd1.mesh"]
+
+source_file="res://Packages/Quaternius Ultimate Fantasy RTS/OBJ/Rock.obj"
+dest_files=["res://.godot/imported/Rock.obj-1c9cbfe05982c9d64a631001791d9bd1.mesh", "res://.godot/imported/Rock.obj-1c9cbfe05982c9d64a631001791d9bd1.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
