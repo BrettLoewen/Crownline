@@ -19,6 +19,7 @@ tonemap_mode = 2
 script = ExtResource("1_m0wi0")
 mapTileScene = ExtResource("2_c5u67")
 tileMapParent = NodePath("TileMap")
+tileSize = Vector2(1, 0.87)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=499054794]
 transform = Transform3D(0.8660254, 0.38302222, -0.32139382, 0, 0.64278764, 0.76604444, 0.5, -0.66341394, 0.5566704, 0, 0, 0)
