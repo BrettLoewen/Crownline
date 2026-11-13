@@ -1,13 +1,15 @@
-class_name OverworldDataManager
+@abstract class_name OverworldDataManager
+extends RefCounted
 
-static func GetWorldData() -> Dictionary[Vector2i, MapTileType]:
-	var data: Dictionary[Vector2i, MapTileType] = _HardcodedWorldDataOne()
+static func GetWorldData() -> MapData:
+	var data: MapData = _HardcodedWorldDataOne()
 	
 	return data
 
 # Temporary function for testing map generation
-static func _HardcodedWorldDataOne() -> Dictionary[Vector2i, MapTileType]:
-	var data: Dictionary[Vector2i, MapTileType] = {}
+static func _HardcodedWorldDataOne() -> MapData:
+	var tilemap: Dictionary[Vector2i, MapTileType] = {}
+	var cities: Dictionary[Vector2i, CityData] = {}
 	
 	# load map tile type resource files
 	const GrassTileType = preload("res://Overworld/Tiles/Map Tile Types/Grass.tres")
@@ -23,18 +25,25 @@ static func _HardcodedWorldDataOne() -> Dictionary[Vector2i, MapTileType]:
 	for x in range(-4, 5):
 		for y in range(-4, 5):
 			if x == -4 or x == 4 or y == -4 or y == 4:
-				data.set(Vector2i(x, y), WaterTileType)
+				tilemap.set(Vector2i(x, y), WaterTileType)
 			elif x >= -1 and x <= 1 and y >= -1 and y <= 1:
-				data.set(Vector2i(x, y), DesertTileType)
+				tilemap.set(Vector2i(x, y), DesertTileType)
 			elif x == y:
-				data.set(Vector2i(x, y), MountainTileType)
+				tilemap.set(Vector2i(x, y), MountainTileType)
 			elif abs(x - y) <= 1:
-				data.set(Vector2i(x, y), HillTileType)
+				tilemap.set(Vector2i(x, y), HillTileType)
 			else:
 				var rand = randi_range(0, 4)
 				if rand == 0:
-					data.set(Vector2i(x, y), ForestTileType)
+					tilemap.set(Vector2i(x, y), ForestTileType)
 				else:
-					data.set(Vector2i(x, y), GrassTileType)
+					tilemap.set(Vector2i(x, y), GrassTileType)
 	
-	return data
+	var cityOne: CityData = CityData.new()
+	cityOne.castle = true
+	cityOne.walls = true
+	cities.set(Vector2i(2, -1), cityOne)
+	var cityTwo: CityData = CityData.new()
+	cities.set(Vector2i(-1, 2), cityTwo)
+	
+	return MapData.new(tilemap, cities)

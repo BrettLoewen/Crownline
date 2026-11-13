@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dsu1ht30ah3pa"]
+
+[ext_resource type="Script" uid="uid://cmxja84pcevcc" path="res://Overworld/Cities/MapCity.gd" id="1_dmqma"]
+[ext_resource type="PackedScene" uid="uid://dvp34wrqdg2ta" path="res://Packages/Quaternius Ultimate Fantasy RTS/FBX/WonderWalls_SecondAge.fbx" id="2_u6qx1"]
+[ext_resource type="PackedScene" uid="uid://lmbojx0wq7qs" path="res://Packages/Quaternius Ultimate Fantasy RTS/FBX/Houses_SecondAge_1_Level1.fbx" id="3_gj7jr"]
+[ext_resource type="PackedScene" uid="uid://bqbu3kiiwxjem" path="res://Packages/Quaternius Ultimate Fantasy RTS/FBX/WatchTower_SecondAge_Level2.fbx" id="4_o6leg"]
+
+[node name="MapCity" type="Node3D" unique_id=1890368208 node_paths=PackedStringArray("villageObjects", "castleObjects", "walledCastleObjects", "walledVillageObjects")]
+script = ExtResource("1_dmqma")
+villageObjects = [NodePath("Houses_SecondAge_1_Level2"), NodePath("Houses_SecondAge_1_Level3"), NodePath("Houses_SecondAge_1_Level4")]
+castleObjects = [NodePath("WatchTower_SecondAge_Level2"), NodePath("Houses_SecondAge_1_Level1")]
+walledCastleObjects = [NodePath("WonderWalls_SecondAge"), NodePath("WatchTower_SecondAge_Level2"), NodePath("Houses_SecondAge_1_Level1")]
+walledVillageObjects = [NodePath("WonderWalls_SecondAge"), NodePath("Houses_SecondAge_1_Level1")]
+
+[node name="WonderWalls_SecondAge" parent="." unique_id=2090099876 instance=ExtResource("2_u6qx1")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.2, 0)
+
+[node name="Houses_SecondAge_1_Level1" parent="." unique_id=1104983999 instance=ExtResource("3_gj7jr")]
+transform = Transform3D(-1.5298985e-08, 0, -0.35, 0, 0.35, 0, 0.35, 0, -1.5298985e-08, 0.08387947, 0.2, 0.09427863)
+
+[node name="WatchTower_SecondAge_Level2" parent="." unique_id=817616138 instance=ExtResource("4_o6leg")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, -0.14703715, 0.2, -0.14948408)
+
+[node name="Houses_SecondAge_1_Level2" parent="." unique_id=99278287 instance=ExtResource("3_gj7jr")]
+transform = Transform3D(0.12767676, 0, 0.32588136, 0, 0.35, 0, -0.32588136, 0, 0.12767676, -0.21344143, 0.2, -0.1231699)
+
+[node name="Houses_SecondAge_1_Level3" parent="." unique_id=1479181559 instance=ExtResource("3_gj7jr")]
+transform = Transform3D(0.25495523, 0, -0.23978704, 0, 0.35, 0, 0.23978704, 0, 0.25495523, 0.19065695, 0.19999994, -0.15474583)
+
+[node name="Houses_SecondAge_1_Level4" parent="." unique_id=2014041062 instance=ExtResource("3_gj7jr")]
+transform = Transform3D(-0.34270197, 0, -0.07110092, 0, 0.35, 0, 0.07110092, 0, -0.34270197, 0.017234124, 0.19999994, 0.22507286)
