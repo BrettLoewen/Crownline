@@ -1,6 +1,10 @@
 @abstract class_name RoadGenerator
 extends RefCounted
 
+static var roadCurve: float = 6.0
+static var roadDetail: float = 20.0
+static var roadWidth: float = 0.2
+
 static func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], parent: Node3D) -> void:
 	var road: Array[Vector3] = GetRoad(data)
 	var curve: Curve3D = GetCurve(road)
@@ -37,12 +41,12 @@ static func GetCurve(road: Array[Vector3]) -> Curve3D:
 	for tileCoords in road:
 		if index == 0:
 			var fakeZeroCoords = 2 * tileCoords - road[index + 1]
-			outHandle = (road[index + 1] - fakeZeroCoords) / 6.0
+			outHandle = (road[index + 1] - fakeZeroCoords) / roadCurve
 		elif index == road.size() - 1:
 			var fakePlusOneCoords = 2 * tileCoords - road[index - 1]
-			outHandle = (fakePlusOneCoords - road[index - 1]) / 6.0
+			outHandle = (fakePlusOneCoords - road[index - 1]) / roadCurve
 		else:
-			outHandle = (road[index + 1] - road[index - 1]) / 6.0
+			outHandle = (road[index + 1] - road[index - 1]) / roadCurve
 		
 		inHandle = -outHandle
 		curve.add_point(tileCoords, inHandle, outHandle)
@@ -52,14 +56,66 @@ static func GetCurve(road: Array[Vector3]) -> Curve3D:
 	return curve
 
 static func GetMesh(curve: Curve3D, parent: Node3D) -> void:
-	for count in curve.get_baked_length() * 10:
-		var dist: float = count / 10.0
-		var sampledPoint = curve.sample_baked(dist)
-		var mesh: MeshInstance3D = MeshInstance3D.new()
-		mesh.mesh = SphereMesh.new()
-		mesh.translate(sampledPoint)
-		mesh.scale = Vector3.ONE * 0.1
-		parent.add_child(mesh)
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	# Loop along the curve sampling a number of points, the number determined by roadDetail.
+	# Plus one makes sure the end point is also included (inclusive vs exclusive).
+	var numSegments = int(curve.get_baked_length() * roadDetail)
+	for step: int in numSegments + 1:
+		var dist: float = step / roadDetail
+		var sampledPoint: Transform3D = curve.sample_baked_with_rotation(dist)
+		
+		# Start at the sampled point, add offset by half the width using the point's rotation (basis)
+		var rightPoint: Vector3 = sampledPoint.origin + (sampledPoint.basis.x * roadWidth / 2.0)
+		var leftPoint: Vector3 = sampledPoint.origin + (-sampledPoint.basis.x * roadWidth / 2.0)
+		
+		st.set_uv(Vector2(dist, 0))
+		st.add_vertex(rightPoint)
+		st.set_uv(Vector2(dist, 1))
+		st.add_vertex(leftPoint)
+		
+		# Vertices get added linearly (right, left, right, left, etc.) and need to get combined into
+		# clockwise-winding triangles for the mesh
+		# L0 ---- L1
+		# |       |
+		# R0 ---- R1     (road heading → this way)
+		# 
+		# L(i == 1) ---- L(i == 3)
+		# |              |
+		# R(i == 0) ---- R(i == 2)
+		# 
+		# L((2*step)+1) ---- L((2*(step+1))+1)
+		# |                  |
+		# R(2*step) -------- R(2*(step+1))
+		# 
+		# Triangle 1: R(2*step), L((2*step)+1), L((2*(step+1))+1)
+		# Triangle 2: L((2*(step+1))+1), R(2*(step+1)), R(2*step)
+		if step < numSegments:
+			st.add_index(2 * step)					# R0
+			st.add_index((2 * step) + 1)			# L0
+			st.add_index((2 * (step + 1)) + 1)		# L1
+			st.add_index((2 * (step + 1)) + 1)		# L1
+			st.add_index(2 * (step + 1))			# R1
+			st.add_index(2 * step)					# R0
+	
+	#st.index()
+	var mesh: ArrayMesh = st.commit()
+	var obj: MeshInstance3D = MeshInstance3D.new()
+	obj.mesh = mesh
+	#var mat: StandardMaterial3D = StandardMaterial3D.new()
+	#mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	#obj.material_override = mat
+	parent.add_child(obj)
+	
+	#for count in curve.get_baked_length() * 10:
+		#var dist: float = count / 10.0
+		#var sampledPoint = curve.sample_baked(dist)
+		#var mesh: MeshInstance3D = MeshInstance3D.new()
+		#mesh.mesh = SphereMesh.new()
+		#mesh.translate(sampledPoint)
+		#mesh.scale = Vector3.ONE * 0.1
+		#parent.add_child(mesh)
 
 static func HexToWorldPoint(point: Vector2i) -> Vector3:
 	var vec = ConvertGridToHexCoords(point)
