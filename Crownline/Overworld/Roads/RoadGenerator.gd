@@ -1,16 +1,17 @@
-@abstract class_name RoadGenerator
-extends RefCounted
+class_name RoadGenerator
+extends Node3D
 
-static var roadCurve: float = 6.0
-static var roadDetail: float = 20.0
-static var roadWidth: float = 0.2
+@export var roadCurve: float = 6.0
+@export var roadDetail: float = 20.0
+@export var roadWidth: float = 0.2
+@export var roadMaterial: ShaderMaterial
 
-static func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], parent: Node3D) -> void:
+func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
 	var road: Array[Vector3] = GetRoad(data)
 	var curve: Curve3D = GetCurve(road)
-	GetMesh(curve, parent)
+	GetMesh(curve)
 
-static func GetRoad(data: Dictionary[Vector2i, RoadData]) -> Array[Vector3]:
+func GetRoad(data: Dictionary[Vector2i, RoadData]) -> Array[Vector3]:
 	# Turn the road connection data into a linear array of world coordinates
 	var road: Array[Vector3] = []
 	var point: Vector2i = Vector2i(2, -1)
@@ -31,7 +32,7 @@ static func GetRoad(data: Dictionary[Vector2i, RoadData]) -> Array[Vector3]:
 	
 	return road
 
-static func GetCurve(road: Array[Vector3]) -> Curve3D:
+func GetCurve(road: Array[Vector3]) -> Curve3D:
 	# Generate a smooth curve for the road
 	var curve: Curve3D = Curve3D.new()
 	
@@ -55,7 +56,7 @@ static func GetCurve(road: Array[Vector3]) -> Curve3D:
 	
 	return curve
 
-static func GetMesh(curve: Curve3D, parent: Node3D) -> void:
+func GetMesh(curve: Curve3D) -> void:
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -99,29 +100,17 @@ static func GetMesh(curve: Curve3D, parent: Node3D) -> void:
 			st.add_index(2 * (step + 1))			# R1
 			st.add_index(2 * step)					# R0
 	
-	#st.index()
 	var mesh: ArrayMesh = st.commit()
 	var obj: MeshInstance3D = MeshInstance3D.new()
 	obj.mesh = mesh
-	#var mat: StandardMaterial3D = StandardMaterial3D.new()
-	#mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	#obj.material_override = mat
-	parent.add_child(obj)
-	
-	#for count in curve.get_baked_length() * 10:
-		#var dist: float = count / 10.0
-		#var sampledPoint = curve.sample_baked(dist)
-		#var mesh: MeshInstance3D = MeshInstance3D.new()
-		#mesh.mesh = SphereMesh.new()
-		#mesh.translate(sampledPoint)
-		#mesh.scale = Vector3.ONE * 0.1
-		#parent.add_child(mesh)
+	obj.material_override = roadMaterial
+	self.add_child(obj)
 
-static func HexToWorldPoint(point: Vector2i) -> Vector3:
+func HexToWorldPoint(point: Vector2i) -> Vector3:
 	var vec = ConvertGridToHexCoords(point)
 	return Vector3(vec.x, 0.21, vec.y)
 
-static func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
+func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
 	var tileSize = Vector2(1, 0.87)
 	var xOffset = 0
 	if inputCoords.y % 2 != 0:

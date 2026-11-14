@@ -6,7 +6,7 @@ extends Node3D
 @export var tileSize: Vector2
 @export var cityScene: PackedScene
 @export var cityParent: Node3D
-@export var roadParent: Node3D
+@export var roadGenerator: RoadGenerator
 
 func _ready() -> void:
 	_LoadMap()
@@ -16,7 +16,7 @@ func _LoadMap() -> void:
 	var tilemapData: Dictionary[Vector2i, MapTileType] = mapData.tilemap
 	var citiesData: Dictionary[Vector2i, CityData] = mapData.cities
 	
-	RoadGenerator.GenerateRoadMeshes(mapData.roads, roadParent)
+	roadGenerator.GenerateRoadMeshes(mapData.roads)
 	
 	for coords in tilemapData:
 		var tileData: MapTileType = tilemapData[coords]

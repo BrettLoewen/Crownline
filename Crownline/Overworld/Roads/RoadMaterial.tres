@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://drv8p78gb2nfj"]
+
+[ext_resource type="Shader" uid="uid://djm5j7r47g3ih" path="res://Overworld/Roads/Road.gdshader" id="1_urooi"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_urooi")
+shader_parameter/fillColour = Color(0.9411765, 0.8862745, 0.77254903, 1)
+shader_parameter/outlineColour = Color(0.17, 0.10508834, 0.035699997, 1)
+shader_parameter/outlineCutoffInside = 0.6
+shader_parameter/outlineCutoffOutside = 0.7
