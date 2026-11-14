@@ -34,6 +34,6 @@ func UpdateCityVisuals() -> void:
 		ControlObjects(walledVillageObjects, false)
 		ControlObjects(villageObjects, true)
 
-func ControlObjects(objects: Array[Node3D], visible: bool) -> void:
+func ControlObjects(objects: Array[Node3D], objVisible: bool) -> void:
 	for obj in objects:
-		obj.visible = visible
+		obj.visible = objVisible

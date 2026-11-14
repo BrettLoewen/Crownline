@@ -16,13 +16,14 @@ ambient_light_source = 3
 ambient_light_energy = 0.8
 tonemap_mode = 2
 
-[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent", "cityParent")]
+[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent", "cityParent", "roadParent")]
 script = ExtResource("1_m0wi0")
 mapTileScene = ExtResource("2_c5u67")
 tileMapParent = NodePath("TileMap")
 tileSize = Vector2(1, 0.87)
 cityScene = ExtResource("3_68let")
 cityParent = NodePath("Cities")
+roadParent = NodePath("Roads")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=499054794]
 transform = Transform3D(0.8660254, 0.38302222, -0.32139382, 0, 0.64278764, 0.76604444, 0.5, -0.66341394, 0.5566704, 0, 0, 0)
@@ -40,3 +41,5 @@ transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64
 [node name="TileMap" type="Node3D" parent="." unique_id=897811456]
 
 [node name="Cities" type="Node3D" parent="." unique_id=193605335]
+
+[node name="Roads" type="Node3D" parent="." unique_id=1977423859]
