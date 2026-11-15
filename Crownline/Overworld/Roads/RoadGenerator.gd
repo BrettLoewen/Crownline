@@ -1,36 +1,80 @@
 class_name RoadGenerator
 extends Node3D
 
+class RoadSection:
+	var roadVectors: Array[Vector3]
+
 @export var roadCurve: float = 6.0
 @export var roadDetail: float = 20.0
 @export var roadWidth: float = 0.2
 @export var roadMaterial: ShaderMaterial
 
 func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
-	var road: Array[Vector3] = GetRoad(data)
-	var curve: Curve3D = GetCurve(road)
-	GetMesh(curve)
-
-func GetRoad(data: Dictionary[Vector2i, RoadData]) -> Array[Vector3]:
-	# Turn the road connection data into a linear array of world coordinates
-	var road: Array[Vector3] = []
-	var point: Vector2i = Vector2i(2, -1)
-	var nextPoint: Vector2i = Vector2i(0, 0)
-	var coords: Vector3 = Vector3(0, 0, 0)
-	var index: int
-	while point != null:
-		coords = HexToWorldPoint(point)
-		road.append(coords)
-		if point == Vector2i(-1, 2):
-			break
-		
-		index = 1
-		if point == Vector2i(2, -1):
-			index = 0
-		nextPoint = data[point].connections[index]
-		point = nextPoint
+	var connectionMap: Dictionary[Vector3i, bool] = GetConnections(data)
+	var roads: Array[RoadSection] = GetRoadSections(connectionMap, data)
 	
-	return road
+	for road in roads:
+		var curve: Curve3D = GetCurve(road.roadVectors)
+		GetMesh(curve)
+
+# Grab every road connection (for dead-ends and intersections, not linear paths)
+# and key it to a flag to record when a RoadSection is made for it
+func GetConnections(data: Dictionary[Vector2i, RoadData]) -> Dictionary[Vector3i, bool]:
+	var connectionMap: Dictionary[Vector3i, bool] = {}
+	
+	for roadCoords in data:
+		var numConnections = data[roadCoords].connections.size()
+		# Skip road nodes that are just along the path (2 connections)
+		if numConnections == 2:
+			continue
+		for connectionIndex in numConnections:
+			var combinedKey = Vector3i(roadCoords.x, roadCoords.y, connectionIndex)
+			connectionMap.set(combinedKey, false)
+	
+	return connectionMap
+
+func GetRoadSections(connectionMap: Dictionary[Vector3i, bool], data: Dictionary[Vector2i, RoadData]) -> Array[RoadSection]:
+	var roads: Array[RoadSection] = []
+	
+	for key in connectionMap:
+		# If this connection has already been processed, skip it
+		if connectionMap[key]:
+			continue
+		var section: RoadSection = RoadSection.new()
+		var startingCoords: Vector2i = Vector2i(key.x, key.y)
+		var currentCoords: Vector2i = startingCoords
+		var previousCoords: Vector2i
+		while true:
+			var coords3d: Vector3 = HexToWorldPoint(currentCoords)
+			section.roadVectors.append(coords3d)
+			
+			# If the current node has non-2 connections (is an intersection) and
+			# if more than one node have been added to the road section (isn't the start),
+			# then the current coords are the ending node for this road section.
+			if data[currentCoords].connections.size() != 2 and section.roadVectors.size() > 1:
+				break
+			
+			var nextIndex = 0
+			if currentCoords == startingCoords:
+				nextIndex = key.z
+			elif data[currentCoords].connections[0] == previousCoords:
+				nextIndex = 1
+			
+			previousCoords = currentCoords
+			currentCoords = data[currentCoords].connections[nextIndex]
+		
+		var backConnectionIndex = 0
+		for backConnection in data[currentCoords].connections.size():
+			if previousCoords == data[currentCoords].connections[backConnection]:
+				backConnectionIndex = backConnection
+				break
+		
+		connectionMap[key] = true
+		connectionMap[Vector3i(currentCoords.x, currentCoords.y, backConnectionIndex)] = true
+		
+		roads.append(section)
+	
+	return roads
 
 func GetCurve(road: Array[Vector3]) -> Curve3D:
 	# Generate a smooth curve for the road

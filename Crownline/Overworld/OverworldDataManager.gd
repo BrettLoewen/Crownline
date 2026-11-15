@@ -49,13 +49,25 @@ static func _HardcodedWorldDataOne() -> MapData:
 	var cityTwo: CityData = CityData.new()
 	cities.set(Vector2i(-1, 2), cityTwo)
 	
-	# Create a road connecting the 2 cities
+	# Test roads for multiple sections and intersections:
+	# Road 1: (2, -1) -> (1, -1) -> (1, 0) -> (0, 1) -> (-1, 1)
+	# Road 2: (-1, 1) -> (-1, 2)
+	# Road 3: (-3, 0) -> (-2, 0) -> (-1, 0) -> (-1, 1)
+	# Road 4: (-1, 1) -> (0, 2)
+	# Road 5: (0, 2) -> (0, 3) -> (-1, 3) -> (0, 2) (loops back to its own junction)
 	var roadOneCoords = Vector2i(2, -1)
 	var roadTwoCoords = Vector2i(1, -1)
 	var roadThreeCoords = Vector2i(1, 0)
 	var roadFourCoords = Vector2i(0, 1)
 	var roadFiveCoords = Vector2i(-1, 1)
 	var roadSixCoords = Vector2i(-1, 2)
+	var roadSevenCoords = Vector2i(-3, 0)
+	var roadEightCoords = Vector2i(-2, 0)
+	var roadNineCoords = Vector2i(-1, 0)
+	var roadTenCoords = Vector2i(0, 2)
+	var roadElevenCoords = Vector2i(0, 3)
+	var roadTwelveCoords = Vector2i(-1, 3)
+
 	var roadOne: RoadData = RoadData.new()
 	roadOne.coords = roadOneCoords
 	roadOne.connections = [roadTwoCoords]
@@ -74,12 +86,36 @@ static func _HardcodedWorldDataOne() -> MapData:
 	roads.set(roadFourCoords, roadFour)
 	var roadFive: RoadData = RoadData.new()
 	roadFive.coords = roadFiveCoords
-	roadFive.connections = [roadFourCoords, roadSixCoords]
+	roadFive.connections = [roadFourCoords, roadSixCoords, roadNineCoords, roadTenCoords]
 	roads.set(roadFiveCoords, roadFive)
 	var roadSix: RoadData = RoadData.new()
 	roadSix.coords = roadSixCoords
 	roadSix.connections = [roadFiveCoords]
 	roads.set(roadSixCoords, roadSix)
+	var roadSeven: RoadData = RoadData.new()
+	roadSeven.coords = roadSevenCoords
+	roadSeven.connections = [roadEightCoords]
+	roads.set(roadSevenCoords, roadSeven)
+	var roadEight: RoadData = RoadData.new()
+	roadEight.coords = roadEightCoords
+	roadEight.connections = [roadSevenCoords, roadNineCoords]
+	roads.set(roadEightCoords, roadEight)
+	var roadNine: RoadData = RoadData.new()
+	roadNine.coords = roadNineCoords
+	roadNine.connections = [roadEightCoords, roadFiveCoords]
+	roads.set(roadNineCoords, roadNine)
+	var roadTen: RoadData = RoadData.new()
+	roadTen.coords = roadTenCoords
+	roadTen.connections = [roadFiveCoords, roadElevenCoords, roadTwelveCoords]
+	roads.set(roadTenCoords, roadTen)
+	var roadEleven: RoadData = RoadData.new()
+	roadEleven.coords = roadElevenCoords
+	roadEleven.connections = [roadTenCoords, roadTwelveCoords]
+	roads.set(roadElevenCoords, roadEleven)
+	var roadTwelve: RoadData = RoadData.new()
+	roadTwelve.coords = roadTwelveCoords
+	roadTwelve.connections = [roadElevenCoords, roadTenCoords]
+	roads.set(roadTwelveCoords, roadTwelve)
 	
 	# Combine the data into one object and return it
 	var mapData: MapData = MapData.new()
