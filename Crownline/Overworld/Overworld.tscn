@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dsu1ht30ah3pa" path="res://Overworld/Cities/MapCity.tscn" id="3_68let"]
 [ext_resource type="Script" uid="uid://btqkgjvo2layi" path="res://Overworld/Roads/RoadGenerator.gd" id="4_4rymo"]
 [ext_resource type="Material" uid="uid://drv8p78gb2nfj" path="res://Overworld/Roads/RoadMaterial.tres" id="5_w0xj0"]
+[ext_resource type="Material" uid="uid://1bevfr0m1h5q" path="res://Overworld/Roads/RoadDotMaterial.tres" id="6_0u72k"]
+[ext_resource type="Material" uid="uid://dg7xbvn4fqkta" path="res://Overworld/Roads/IntersectionDotMaterial.tres" id="7_3rv81"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
 
@@ -47,3 +49,6 @@ transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64
 [node name="Roads" type="Node3D" parent="." unique_id=1977423859]
 script = ExtResource("4_4rymo")
 roadMaterial = ExtResource("5_w0xj0")
+roadDotMaterial = ExtResource("6_0u72k")
+intersectionDotWidth = 0.35
+intersectionDotMaterial = ExtResource("7_3rv81")

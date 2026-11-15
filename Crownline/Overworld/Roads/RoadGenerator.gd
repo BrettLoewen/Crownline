@@ -4,10 +4,22 @@ extends Node3D
 class RoadSection:
 	var roadVectors: Array[Vector3]
 
+@export var roadY: float = 0.21
+@export var roadDotY: float = 0.22
+@export var intersectionDotY: float = 0.23
+
 @export var roadCurve: float = 6.0
 @export var roadDetail: float = 20.0
 @export var roadWidth: float = 0.2
 @export var roadMaterial: ShaderMaterial
+
+@export var roadDotWidth: float = 0.25
+@export var roadDotDetail: int = 20
+@export var roadDotMaterial: ShaderMaterial
+
+@export var intersectionDotWidth: float = 0.3
+@export var intersectionDotDetail: int = 20
+@export var intersectionDotMaterial: ShaderMaterial
 
 func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
 	var connectionMap: Dictionary[Vector3i, bool] = GetConnections(data)
@@ -15,7 +27,9 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
 	
 	for road in roads:
 		var curve: Curve3D = GetCurve(road.roadVectors)
-		GetMesh(curve)
+		CreateRoadSectionMesh(curve)
+		CreateRoadSectionDotMeshes(road, curve)
+	CreateRoadIntersectionDotMeshes(data)
 
 # Grab every road connection (for dead-ends and intersections, not linear paths)
 # and key it to a flag to record when a RoadSection is made for it
@@ -100,7 +114,7 @@ func GetCurve(road: Array[Vector3]) -> Curve3D:
 	
 	return curve
 
-func GetMesh(curve: Curve3D) -> void:
+func CreateRoadSectionMesh(curve: Curve3D) -> void:
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -150,9 +164,78 @@ func GetMesh(curve: Curve3D) -> void:
 	obj.material_override = roadMaterial
 	self.add_child(obj)
 
+func CreateRoadSectionDotMeshes(roadSection: RoadSection, curve: Curve3D) -> void:
+	var dotRadius: float = roadDotWidth / 2.0
+	
+	for point in roadSection.roadVectors:
+		var dotPosition: Vector3 = curve.get_closest_point(point)
+		
+		var st = SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		st.set_uv(Vector2(0, 0))
+		st.add_vertex(Vector3(dotPosition.x, roadDotY, dotPosition.z))
+		
+		for angleStep: int in roadDotDetail + 1:
+			var angleRad: float = angleStep * PI * 2.0 / roadDotDetail
+			# x = cx + r * cos(a)
+			# y = cy + r * sin(a)
+			var stepX: float = dotPosition.x + (dotRadius * cos(angleRad))
+			var stepZ: float = dotPosition.z + (dotRadius * sin(angleRad))
+			
+			st.set_uv(Vector2(angleRad, 1))
+			st.add_vertex(Vector3(stepX, roadDotY, stepZ))
+			
+			if angleStep < roadDotDetail:
+				st.add_index(0)				# Center
+				st.add_index(angleStep + 1)	# This edge coordinate
+				st.add_index(angleStep + 2)	# The next edge coordinate
+		
+		var mesh: ArrayMesh = st.commit()
+		var obj: MeshInstance3D = MeshInstance3D.new()
+		obj.mesh = mesh
+		obj.material_override = roadDotMaterial
+		obj.name = "Road Dot - " + str(dotPosition)
+		self.add_child(obj)
+
+func CreateRoadIntersectionDotMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
+	var dotRadius: float = intersectionDotWidth / 2.0
+	
+	for road: RoadData in data.values():
+		if road.connections.size() == 2:
+			continue
+		
+		var dotPosition: Vector3 = HexToWorldPoint(road.coords)
+		
+		var st = SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		st.set_uv(Vector2(0, 0))
+		st.add_vertex(Vector3(dotPosition.x, intersectionDotY, dotPosition.z))
+		
+		for angleStep: int in intersectionDotDetail + 1:
+			var angleRad: float = angleStep * PI * 2.0 / intersectionDotDetail
+			# x = cx + r * cos(a)
+			# y = cy + r * sin(a)
+			var stepX: float = dotPosition.x + (dotRadius * cos(angleRad))
+			var stepZ: float = dotPosition.z + (dotRadius * sin(angleRad))
+			
+			st.set_uv(Vector2(angleRad, 1))
+			st.add_vertex(Vector3(stepX, intersectionDotY, stepZ))
+			
+			if angleStep < intersectionDotDetail:
+				st.add_index(0)				# Center
+				st.add_index(angleStep + 1)	# This edge coordinate
+				st.add_index(angleStep + 2)	# The next edge coordinate
+		
+		var mesh: ArrayMesh = st.commit()
+		var obj: MeshInstance3D = MeshInstance3D.new()
+		obj.mesh = mesh
+		obj.material_override = intersectionDotMaterial
+		obj.name = "Intersection Dot - " + str(dotPosition)
+		self.add_child(obj)
+
 func HexToWorldPoint(point: Vector2i) -> Vector3:
 	var vec = ConvertGridToHexCoords(point)
-	return Vector3(vec.x, 0.21, vec.y)
+	return Vector3(vec.x, roadY, vec.y)
 
 func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
 	var tileSize = Vector2(1, 0.87)

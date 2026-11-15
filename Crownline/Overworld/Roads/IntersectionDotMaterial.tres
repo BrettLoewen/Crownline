@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dg7xbvn4fqkta"]
+
+[ext_resource type="Shader" uid="uid://biy5qxhb2687f" path="res://Overworld/Roads/RoadDot.gdshader" id="1_a7fab"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_a7fab")
+shader_parameter/fillColour = Color(0.9411765, 0.8862745, 0.77254903, 1)
+shader_parameter/outlineColour = Color(0.17, 0.10508834, 0.035699997, 1)
+shader_parameter/outlineCutoffInside = 0.7
+shader_parameter/outlineCutoffOutside = 0.85
