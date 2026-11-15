@@ -25,11 +25,17 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
 	var connectionMap: Dictionary[Vector3i, bool] = GetConnections(data)
 	var roads: Array[RoadSection] = GetRoadSections(connectionMap, data)
 	
+	# Every dot of the same type is an identical circle, so build each mesh once and reuse it
+	var roadDotMesh: ArrayMesh = CreateDotMesh(roadDotWidth / 2.0, roadDotDetail)
+	var intersectionDotMesh: ArrayMesh = CreateDotMesh(intersectionDotWidth / 2.0, intersectionDotDetail)
+
+	var sectionIndex: int = 0
 	for road in roads:
 		var curve: Curve3D = GetCurve(road.roadVectors)
 		CreateRoadSectionMesh(curve)
-		CreateRoadSectionDotMeshes(road, curve)
-	CreateRoadIntersectionDotMeshes(data)
+		CreateRoadSectionDotMeshes(road, curve, roadDotMesh, sectionIndex)
+		sectionIndex += 1
+	CreateRoadIntersectionDotMeshes(data, intersectionDotMesh)
 
 # Grab every road connection (for dead-ends and intersections, not linear paths)
 # and key it to a flag to record when a RoadSection is made for it
@@ -164,73 +170,57 @@ func CreateRoadSectionMesh(curve: Curve3D) -> void:
 	obj.material_override = roadMaterial
 	self.add_child(obj)
 
-func CreateRoadSectionDotMeshes(roadSection: RoadSection, curve: Curve3D) -> void:
-	var dotRadius: float = roadDotWidth / 2.0
-	
+# Builds a flat circle centred on the origin. Each dot node is moved into place with its
+# position, so one mesh can be shared by every dot of the same size.
+func CreateDotMesh(dotRadius: float, dotDetail: int) -> ArrayMesh:
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st.set_uv(Vector2(0, 0))
+	st.add_vertex(Vector3.ZERO)
+
+	for angleStep: int in dotDetail + 1:
+		var angleRad: float = angleStep * PI * 2.0 / dotDetail
+		# x = cx + r * cos(a)		(but cx is 0)
+		# y = cy + r * sin(a)		(but cx is 0)
+		var stepX: float = dotRadius * cos(angleRad)
+		var stepZ: float = dotRadius * sin(angleRad)
+
+		st.set_uv(Vector2(angleRad, 1))
+		st.add_vertex(Vector3(stepX, 0, stepZ))
+
+		if angleStep < dotDetail:
+			st.add_index(0)				# Center
+			st.add_index(angleStep + 1)	# This edge coordinate
+			st.add_index(angleStep + 2)	# The next edge coordinate
+
+	return st.commit()
+
+func CreateRoadSectionDotMeshes(roadSection: RoadSection, curve: Curve3D, dotMesh: ArrayMesh, sectionIndex: int) -> void:
+	var pointIndex: int = 0
 	for point in roadSection.roadVectors:
 		var dotPosition: Vector3 = curve.get_closest_point(point)
-		
-		var st = SurfaceTool.new()
-		st.begin(Mesh.PRIMITIVE_TRIANGLES)
-		st.set_uv(Vector2(0, 0))
-		st.add_vertex(Vector3(dotPosition.x, roadDotY, dotPosition.z))
-		
-		for angleStep: int in roadDotDetail + 1:
-			var angleRad: float = angleStep * PI * 2.0 / roadDotDetail
-			# x = cx + r * cos(a)
-			# y = cy + r * sin(a)
-			var stepX: float = dotPosition.x + (dotRadius * cos(angleRad))
-			var stepZ: float = dotPosition.z + (dotRadius * sin(angleRad))
-			
-			st.set_uv(Vector2(angleRad, 1))
-			st.add_vertex(Vector3(stepX, roadDotY, stepZ))
-			
-			if angleStep < roadDotDetail:
-				st.add_index(0)				# Center
-				st.add_index(angleStep + 1)	# This edge coordinate
-				st.add_index(angleStep + 2)	# The next edge coordinate
-		
-		var mesh: ArrayMesh = st.commit()
+
 		var obj: MeshInstance3D = MeshInstance3D.new()
-		obj.mesh = mesh
+		obj.mesh = dotMesh
 		obj.material_override = roadDotMaterial
-		obj.name = "Road Dot - " + str(dotPosition)
+		obj.position = Vector3(dotPosition.x, roadDotY, dotPosition.z)
+		obj.name = "Road Dot - Section " + str(sectionIndex) + " Point " + str(pointIndex)
 		self.add_child(obj)
 
-func CreateRoadIntersectionDotMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
-	var dotRadius: float = intersectionDotWidth / 2.0
-	
+		pointIndex += 1
+
+func CreateRoadIntersectionDotMeshes(data: Dictionary[Vector2i, RoadData], dotMesh: ArrayMesh) -> void:
 	for road: RoadData in data.values():
 		if road.connections.size() == 2:
 			continue
-		
+
 		var dotPosition: Vector3 = HexToWorldPoint(road.coords)
-		
-		var st = SurfaceTool.new()
-		st.begin(Mesh.PRIMITIVE_TRIANGLES)
-		st.set_uv(Vector2(0, 0))
-		st.add_vertex(Vector3(dotPosition.x, intersectionDotY, dotPosition.z))
-		
-		for angleStep: int in intersectionDotDetail + 1:
-			var angleRad: float = angleStep * PI * 2.0 / intersectionDotDetail
-			# x = cx + r * cos(a)
-			# y = cy + r * sin(a)
-			var stepX: float = dotPosition.x + (dotRadius * cos(angleRad))
-			var stepZ: float = dotPosition.z + (dotRadius * sin(angleRad))
-			
-			st.set_uv(Vector2(angleRad, 1))
-			st.add_vertex(Vector3(stepX, intersectionDotY, stepZ))
-			
-			if angleStep < intersectionDotDetail:
-				st.add_index(0)				# Center
-				st.add_index(angleStep + 1)	# This edge coordinate
-				st.add_index(angleStep + 2)	# The next edge coordinate
-		
-		var mesh: ArrayMesh = st.commit()
+
 		var obj: MeshInstance3D = MeshInstance3D.new()
-		obj.mesh = mesh
+		obj.mesh = dotMesh
 		obj.material_override = intersectionDotMaterial
-		obj.name = "Intersection Dot - " + str(dotPosition)
+		obj.position = Vector3(dotPosition.x, intersectionDotY, dotPosition.z)
+		obj.name = "Intersection Dot - " + str(road.coords)
 		self.add_child(obj)
 
 func HexToWorldPoint(point: Vector2i) -> Vector3:
