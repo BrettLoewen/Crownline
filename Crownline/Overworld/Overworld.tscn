@@ -7,6 +7,7 @@
 [ext_resource type="Material" uid="uid://drv8p78gb2nfj" path="res://Overworld/Roads/RoadMaterial.tres" id="5_w0xj0"]
 [ext_resource type="Material" uid="uid://1bevfr0m1h5q" path="res://Overworld/Roads/RoadDotMaterial.tres" id="6_0u72k"]
 [ext_resource type="Material" uid="uid://dg7xbvn4fqkta" path="res://Overworld/Roads/IntersectionDotMaterial.tres" id="7_3rv81"]
+[ext_resource type="PackedScene" uid="uid://dp7et4lkt8pd2" path="res://Overworld/UI/CoreDisplay.tscn" id="8_w5i8j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
 
@@ -52,3 +53,7 @@ roadMaterial = ExtResource("5_w0xj0")
 roadDotMaterial = ExtResource("6_0u72k")
 intersectionDotWidth = 0.35
 intersectionDotMaterial = ExtResource("7_3rv81")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
+
+[node name="CoreDisplay" parent="CanvasLayer" unique_id=1866020560 instance=ExtResource("8_w5i8j")]

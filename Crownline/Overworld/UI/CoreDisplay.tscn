@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://dp7et4lkt8pd2"]
+
+[ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="1_8rph5"]
+[ext_resource type="PackedScene" uid="uid://c0ofqymg4oyo6" path="res://Overworld/UI/ResourceDisplay.tscn" id="2_mq7ur"]
+
+[node name="CoreDisplay" type="Control" unique_id=1866020560]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_8rph5")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1834885327]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1065481168]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1887423302]
+layout_mode = 2
+
+[node name="ResourceDisplay" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=103881350 instance=ExtResource("2_mq7ur")]
+layout_mode = 2
+
+[node name="ResourceDisplay2" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=589069273 instance=ExtResource("2_mq7ur")]
+layout_mode = 2
+
+[node name="ResourceDisplay3" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=113639561 instance=ExtResource("2_mq7ur")]
+layout_mode = 2
