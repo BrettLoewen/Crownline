@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Commodity" format=3 uid="uid://coqnnugswltpb"]
+
+[ext_resource type="Script" uid="uid://bn763155mp5ok" path="res://Overworld/Commodities/Commodity.gd" id="1_7lxoo"]
+[ext_resource type="Texture2D" uid="uid://dy5t4h2bqpb" path="res://Art/Icons/CoinG.svg" id="1_hkpyj"]
+
+[resource]
+script = ExtResource("1_7lxoo")
+icon = ExtResource("1_hkpyj")
+colour = Color(0.7870134, 0.5898027, 0.12526742, 1)
+metadata/_custom_type_script = "uid://bn763155mp5ok"

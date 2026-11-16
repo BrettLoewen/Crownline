@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<defs><mask id="g" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><rect width="64" height="64" fill="#fff"/><path d="M40.5 23.5A12 12 0 1 0 44 32H33" fill="none" stroke="#000" stroke-width="5.5" stroke-linecap="butt" stroke-linejoin="miter"/></mask></defs>
+<g fill="#fff" fill-rule="evenodd" mask="url(#g)"><path d="M4 32a28 28 0 1 0 56 0a28 28 0 1 0 -56 0ZM8.5 32a23.5 23.5 0 1 0 47 0a23.5 23.5 0 1 0 -47 0ZM11 32a21 21 0 1 0 42 0a21 21 0 1 0 -42 0Z"/></g>
+</svg>

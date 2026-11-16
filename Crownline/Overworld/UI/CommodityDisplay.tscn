@@ -1,12 +1,16 @@
 [gd_scene format=3 uid="uid://c0ofqymg4oyo6"]
 
 [ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="1_p2cdd"]
-[ext_resource type="Texture2D" uid="uid://b0g1g0amvmqsb" path="res://Packages/Kenney Hexagon Kit/Previews/grass.png" id="2_iuwko"]
+[ext_resource type="Script" uid="uid://d2cf2jkfdlf4n" path="res://Overworld/UI/CommodityDisplay.gd" id="2_fnhm1"]
+[ext_resource type="Texture2D" uid="uid://dy5t4h2bqpb" path="res://Art/Icons/CoinG.svg" id="2_p2cdd"]
 
-[node name="ResourceDisplay" type="BoxContainer" unique_id=589069273]
+[node name="CommodityDisplay" type="BoxContainer" unique_id=589069273 node_paths=PackedStringArray("iconTexture", "amountLabel")]
 offset_right = 70.0
 offset_bottom = 50.0
 theme = ExtResource("1_p2cdd")
+script = ExtResource("2_fnhm1")
+iconTexture = NodePath("VBoxContainer/TextureRect")
+amountLabel = NodePath("VBoxContainer/RichTextLabel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=135331821]
 layout_mode = 2
@@ -14,7 +18,7 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer" unique_id=1946168493]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
-texture = ExtResource("2_iuwko")
+texture = ExtResource("2_p2cdd")
 expand_mode = 1
 stretch_mode = 5
 
