@@ -33,7 +33,18 @@ func _ready() -> void:
 	ironData.turnProfit = 5
 	commodityData.set(Commodity.CommodityType.IRON, ironData)
 	
-	for commodity in commodityData.values():
+	for commodity: CommodityData in commodityData.values():
 		var display: CommodityDisplay = commodityDisplay.instantiate()
 		display.Setup(commodity)
 		self.add_child(display)
+		commodityDisplays.set(commodity.commodity.type, display)
+
+func DoTurn() -> void:
+	for commodity: CommodityData in commodityData.values():
+		commodity.amount += commodity.turnProfit
+	
+	UpdateCommodityDisplays()
+
+func UpdateCommodityDisplays() -> void:
+	for commodity: CommodityData in commodityData.values():
+		commodityDisplays[commodity.commodity.type].UpdateDisplay(commodity)
