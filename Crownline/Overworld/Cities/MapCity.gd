@@ -1,6 +1,7 @@
 class_name MapCity
 extends Node3D
 
+@export var cityBarAnchor: Node3D
 @export var villageObjects: Array[Node3D]
 @export var castleObjects: Array[Node3D]
 @export var walledCastleObjects: Array[Node3D]

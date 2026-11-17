@@ -7,6 +7,9 @@ extends Node3D
 @export var cityScene: PackedScene
 @export var cityParent: Node3D
 @export var roadGenerator: RoadGenerator
+@export var empire: Empire
+
+var loadedMap: bool = false
 
 func _ready() -> void:
 	_LoadMap()
@@ -14,7 +17,7 @@ func _ready() -> void:
 func _LoadMap() -> void:
 	var mapData: MapData = OverworldDataManager.GetWorldData()
 	var tilemapData: Dictionary[Vector2i, MapTileType] = mapData.tilemap
-	var citiesData: Dictionary[Vector2i, CityData] = mapData.cities
+	var citiesData: Dictionary[Vector2i, CityData] = empire.GetCityData()
 	
 	roadGenerator.GenerateRoadMeshes(mapData.roads)
 	
@@ -38,9 +41,13 @@ func _LoadMap() -> void:
 			if city != null:
 				city.Setup(cityData)
 				var hexCoords = ConvertGridToHexCoords(coords)
-				city.translate(Vector3(hexCoords.x, 0, hexCoords.y))
+				city.translate(Vector3(hexCoords.x, 0.2, hexCoords.y))
 				city.name = cityData.name
 				cityParent.add_child(city)
+				
+				cityData.mapCity = city
+	
+	loadedMap = true
 
 func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
 	var xOffset = 0

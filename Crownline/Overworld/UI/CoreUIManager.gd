@@ -4,14 +4,23 @@ extends Control
 @export var commodityManager: CommodityManager
 @export var turnDisplay: TurnDisplay
 @export var cityBars: CityBars
+@export var quickAccess: EmpireQuickAccess
 
-# For early development only. Remove and replace with actual city data reference later
-@export var cityNodes: Array[Node3D]
-@export var cityNames: Array[String]
+@export var empire: Empire
+@export var overworldManager: OverworldManager
 
 func _ready() -> void:
 	turnDisplay.Setup()
-	cityBars.Setup(cityNodes, cityNames)
+	
+	# Ensure the map is loaded before continuing
+	while overworldManager.loadedMap == false:
+		await get_tree().process_frame
+	
+	cityBars.Setup(empire.GetCityData())
+	quickAccess.Setup(empire.GetCityData())
 
 func _on_turn_display_next_turn_signal() -> void:
 	commodityManager.DoTurn()
+
+func _on_city_clicked(cityCoords: Vector2i) -> void:
+	print("{0} was pressed".format([str(empire.GetCityData()[cityCoords].name)]))

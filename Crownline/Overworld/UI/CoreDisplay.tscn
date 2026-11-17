@@ -10,8 +10,9 @@
 [ext_resource type="Script" uid="uid://de65j7s36oakj" path="res://Overworld/UI/TurnDisplay.gd" id="7_bgfib"]
 [ext_resource type="Script" uid="uid://6xrlyscp4eh7" path="res://Overworld/UI/CityBars.gd" id="9_h6bfa"]
 [ext_resource type="PackedScene" uid="uid://dw0xixd31r6q5" path="res://Overworld/UI/CityBar.tscn" id="10_dtuk5"]
+[ext_resource type="PackedScene" uid="uid://cmi6dylv2odlo" path="res://Overworld/UI/EmpireQuickAccess.tscn" id="11_qp17h"]
 
-[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars")]
+[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,6 +25,7 @@ script = ExtResource("2_nkn37")
 commodityManager = NodePath("TopBar/MarginContainer/CommodityManager")
 turnDisplay = NodePath("TurnDisplay")
 cityBars = NodePath("CityBars")
+quickAccess = NodePath("EmpireQuickAccess")
 
 [node name="TopBar" type="PanelContainer" parent="." unique_id=1834885327]
 layout_mode = 1
@@ -83,5 +85,21 @@ anchors_preset = 0
 script = ExtResource("9_h6bfa")
 cityBarScene = ExtResource("10_dtuk5")
 
+[node name="EmpireQuickAccess" parent="." unique_id=112152225 instance=ExtResource("11_qp17h")]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 0.0
+offset_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 2
+
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
+[connection signal="cityBarClicked" from="CityBars" to="." method="_on_city_clicked"]
+[connection signal="cityQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_city_clicked"]

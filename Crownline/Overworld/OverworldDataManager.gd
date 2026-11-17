@@ -9,7 +9,6 @@ static func GetWorldData() -> MapData:
 # Temporary function for testing map generation
 static func _HardcodedWorldDataOne() -> MapData:
 	var tilemap: Dictionary[Vector2i, MapTileType] = {}
-	var cities: Dictionary[Vector2i, CityData] = {}
 	var roads: Dictionary[Vector2i, RoadData] = {}
 	
 	# Load map tile type resource files
@@ -40,14 +39,6 @@ static func _HardcodedWorldDataOne() -> MapData:
 					tilemap.set(Vector2i(x, y), ForestTileType)
 				else:
 					tilemap.set(Vector2i(x, y), GrassTileType)
-	
-	# Create 2 cities with different setups
-	var cityOne: CityData = CityData.new()
-	cityOne.castle = true
-	cityOne.walls = true
-	cities.set(Vector2i(2, -1), cityOne)
-	var cityTwo: CityData = CityData.new()
-	cities.set(Vector2i(-1, 2), cityTwo)
 	
 	# Test roads for multiple sections and intersections:
 	# Road 1: (2, -1) -> (1, -1) -> (1, 0) -> (0, 1) -> (-1, 1)
@@ -120,6 +111,5 @@ static func _HardcodedWorldDataOne() -> MapData:
 	# Combine the data into one object and return it
 	var mapData: MapData = MapData.new()
 	mapData.tilemap = tilemap
-	mapData.cities = cities
 	mapData.roads = roads
 	return mapData
