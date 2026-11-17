@@ -8,8 +8,10 @@
 [ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="5_nkn37"]
 [ext_resource type="Resource" uid="uid://lr3swtc5h50a" path="res://Overworld/Commodities/Commodities/Iron.tres" id="6_h6bfa"]
 [ext_resource type="Script" uid="uid://de65j7s36oakj" path="res://Overworld/UI/TurnDisplay.gd" id="7_bgfib"]
+[ext_resource type="Script" uid="uid://6xrlyscp4eh7" path="res://Overworld/UI/CityBars.gd" id="9_h6bfa"]
+[ext_resource type="PackedScene" uid="uid://dw0xixd31r6q5" path="res://Overworld/UI/CityBar.tscn" id="10_dtuk5"]
 
-[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay")]
+[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,6 +23,7 @@ theme = ExtResource("1_8rph5")
 script = ExtResource("2_nkn37")
 commodityManager = NodePath("TopBar/MarginContainer/CommodityManager")
 turnDisplay = NodePath("TurnDisplay")
+cityBars = NodePath("CityBars")
 
 [node name="TopBar" type="PanelContainer" parent="." unique_id=1834885327]
 layout_mode = 1
@@ -73,6 +76,12 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Next Turn"
+
+[node name="CityBars" type="Control" parent="." unique_id=1316101546]
+layout_mode = 1
+anchors_preset = 0
+script = ExtResource("9_h6bfa")
+cityBarScene = ExtResource("10_dtuk5")
 
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]

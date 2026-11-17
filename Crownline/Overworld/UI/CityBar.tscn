@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dw0xixd31r6q5"]
+
+[ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="1_axnbl"]
+[ext_resource type="Script" uid="uid://c61ypdckrr6tr" path="res://Overworld/UI/CityBar.gd" id="1_libgh"]
+
+[node name="CityBar" type="PanelContainer" unique_id=1458342976 node_paths=PackedStringArray("nameText")]
+offset_right = 152.0
+offset_bottom = 33.0
+theme = ExtResource("1_axnbl")
+script = ExtResource("1_libgh")
+nameText = NodePath("MarginContainer/HBoxContainer/CityNameLabel")
+
+[node name="Button" type="Button" parent="." unique_id=568677567]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1440954754]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1091892676]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="CityNameLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer" unique_id=1979738092]
+layout_mode = 2
+mouse_filter = 2
+text = "Placeholder Name"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

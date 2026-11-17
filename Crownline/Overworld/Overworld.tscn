@@ -56,4 +56,14 @@ intersectionDotMaterial = ExtResource("7_3rv81")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 
-[node name="CoreDisplay" parent="CanvasLayer" unique_id=1866020560 instance=ExtResource("8_w5i8j")]
+[node name="CoreDisplay" parent="CanvasLayer" unique_id=1866020560 node_paths=PackedStringArray("cityNodes") instance=ExtResource("8_w5i8j")]
+cityNodes = [NodePath("../../TempCityBarNodes/City One"), NodePath("../../TempCityBarNodes/City Two")]
+cityNames = Array[String](["City One", "City Two"])
+
+[node name="TempCityBarNodes" type="Node3D" parent="." unique_id=1634753601]
+
+[node name="City One" type="Node3D" parent="TempCityBarNodes" unique_id=1353682456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1, -0.87)
+
+[node name="City Two" type="Node3D" parent="TempCityBarNodes" unique_id=1452757768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 1.74)
