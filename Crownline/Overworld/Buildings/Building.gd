@@ -4,6 +4,9 @@ extends Resource
 @export var name: String
 @export var turnsToBuild: int
 
+@export var commodity: Commodity
+@export var commodityAmount: int
+
 @export var prerequisiteBuildings: Array[Building]
 
 func CityMeetsPrerequisites(city: CityData) -> bool:

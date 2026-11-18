@@ -22,12 +22,15 @@ func _ready() -> void:
 	quickAccess.Setup(empire.GetCityData())
 
 func _on_turn_display_next_turn_signal() -> void:
-	commodityManager.DoTurn()
+	empire.DoTurn()
 
 func _on_city_clicked(cityCoords: Vector2i) -> void:
-	print("{0} was pressed".format([str(empire.GetCityData()[cityCoords].name)]))
 	cityControlUI.Setup(empire.GetCityData()[cityCoords])
 	cityControlUI.visible = true
 
 func _on_city_control_ui_close_clicked() -> void:
 	cityControlUI.visible = false
+
+func _on_city_control_ui_city_updated() -> void:
+	cityControlUI.Refresh()
+	empire.UpdateCommodityTurnProfits()

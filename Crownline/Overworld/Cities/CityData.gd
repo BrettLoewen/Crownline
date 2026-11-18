@@ -1,14 +1,6 @@
 class_name CityData
 extends RefCounted
 
-class BuildingData:
-	var building: Building
-	var turnsToBuild: int # 0 means it is built
-	
-	func _init(newBuilding: Building):
-		building = newBuilding
-		turnsToBuild = building.turnsToBuild
-
 var name: String = "New City"
 var population: int = 1
 

@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Building" format=3 uid="uid://bp1sn7fs7yxlr"]
 
+[ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="1_k3wq4"]
 [ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="1_sjsjr"]
 [ext_resource type="Resource" uid="uid://dc7u1gxiohqst" path="res://Overworld/Buildings/Buildings/Farm.tres" id="2_4dpcy"]
 
@@ -7,5 +8,7 @@
 script = ExtResource("1_sjsjr")
 name = "Barn"
 turnsToBuild = 6
+commodity = ExtResource("1_k3wq4")
+commodityAmount = 2
 prerequisiteBuildings = Array[ExtResource("1_sjsjr")]([ExtResource("2_4dpcy")])
 metadata/_custom_type_script = "uid://qm0rq818fmec"

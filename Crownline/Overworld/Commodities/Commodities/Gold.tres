@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_7lxoo")
+name = "Gold"
 icon = ExtResource("1_hkpyj")
 colour = Color(0.7870134, 0.5898027, 0.12526742, 1)
 metadata/_custom_type_script = "uid://bn763155mp5ok"

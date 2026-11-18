@@ -4,9 +4,6 @@
 [ext_resource type="Script" uid="uid://bp61hhu100pgt" path="res://Overworld/UI/CommodityManager.gd" id="2_bt0us"]
 [ext_resource type="Script" uid="uid://iqxiajot40i3" path="res://Overworld/UI/CoreUIManager.gd" id="2_nkn37"]
 [ext_resource type="PackedScene" uid="uid://c0ofqymg4oyo6" path="res://Overworld/UI/CommodityDisplay.tscn" id="3_72xgs"]
-[ext_resource type="Resource" uid="uid://coqnnugswltpb" path="res://Overworld/Commodities/Commodities/Gold.tres" id="4_bgfib"]
-[ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="5_nkn37"]
-[ext_resource type="Resource" uid="uid://lr3swtc5h50a" path="res://Overworld/Commodities/Commodities/Iron.tres" id="6_h6bfa"]
 [ext_resource type="Script" uid="uid://de65j7s36oakj" path="res://Overworld/UI/TurnDisplay.gd" id="7_bgfib"]
 [ext_resource type="Script" uid="uid://6xrlyscp4eh7" path="res://Overworld/UI/CityBars.gd" id="9_h6bfa"]
 [ext_resource type="PackedScene" uid="uid://dw0xixd31r6q5" path="res://Overworld/UI/CityBar.tscn" id="10_dtuk5"]
@@ -43,9 +40,6 @@ layout_mode = 2
 layout_mode = 2
 script = ExtResource("2_bt0us")
 commodityDisplay = ExtResource("3_72xgs")
-goldCommodity = ExtResource("4_bgfib")
-foodCommodity = ExtResource("5_nkn37")
-ironCommodity = ExtResource("6_h6bfa")
 
 [node name="TurnDisplay" type="PanelContainer" parent="." unique_id=2015652083 node_paths=PackedStringArray("turnCounter")]
 layout_mode = 1
@@ -109,4 +103,5 @@ layout_mode = 1
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
 [connection signal="cityBarClicked" from="CityBars" to="." method="_on_city_clicked"]
 [connection signal="cityQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_city_clicked"]
+[connection signal="cityUpdated" from="CityControlUI" to="." method="_on_city_control_ui_city_updated"]
 [connection signal="closeClicked" from="CityControlUI" to="." method="_on_city_control_ui_close_clicked"]

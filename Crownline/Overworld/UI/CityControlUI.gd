@@ -2,6 +2,7 @@ class_name CityControlUI
 extends MarginContainer
 
 signal closeClicked
+signal cityUpdated
 
 @export var cityNameLabel: RichTextLabel
 @export var currentBuildingParent: Control
@@ -37,8 +38,17 @@ func Setup(newCityData: CityData) -> void:
 					buildingButton.buttonClicked.connect(_on_building_button_clicked)
 					newBuildingParent.add_child(buildingButton)
 
+func Refresh() -> void:
+	Setup(cityData)
+
 func _on_building_button_clicked(building: Building, mode: CityBuildingButton.BuildingButtonMode) -> void:
-	print("Clicked " + building.name + " in mode " + str(mode))
+	if mode == CityBuildingButton.BuildingButtonMode.CURRENT_BUILDING:
+		print("Current building, doing nothing for now")
+	else:
+		var buildingData: BuildingData = BuildingData.new(building)
+		cityData.buildings.append(buildingData)
+		cityData.mapCity.UpdateCityVisuals()
+		cityUpdated.emit()
 
 func _on_close_button_pressed() -> void:
 	closeClicked.emit()

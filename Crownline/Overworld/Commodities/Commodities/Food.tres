@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_27gt2")
+name = "Food"
 type = 1
 icon = ExtResource("1_2bmib")
 colour = Color(0.6666667, 0.48235294, 0.03529412, 1)
