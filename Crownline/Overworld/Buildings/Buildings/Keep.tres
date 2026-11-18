@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Building" format=3 uid="uid://cllurlnwtvryc"]
+
+[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="1_3s6va"]
+
+[resource]
+script = ExtResource("1_3s6va")
+name = "Keep"
+turnsToBuild = 5
+metadata/_custom_type_script = "uid://qm0rq818fmec"

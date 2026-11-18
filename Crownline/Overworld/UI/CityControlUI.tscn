@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://cxmw757yc5fud"]
+
+[ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="1_37qw4"]
+[ext_resource type="Script" uid="uid://b34jxma12ggrd" path="res://Overworld/UI/CityControlUI.gd" id="1_kvc3l"]
+[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="3_ekyib"]
+[ext_resource type="PackedScene" uid="uid://cspteq6r5ffmg" path="res://Overworld/UI/CityBuildingButton.tscn" id="3_nuvko"]
+[ext_resource type="Resource" uid="uid://bp1sn7fs7yxlr" path="res://Overworld/Buildings/Buildings/Barn.tres" id="4_nuvko"]
+[ext_resource type="Resource" uid="uid://dc7u1gxiohqst" path="res://Overworld/Buildings/Buildings/Farm.tres" id="5_wuk0n"]
+[ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="6_0mmu8"]
+[ext_resource type="Resource" uid="uid://i26racy3jp3o" path="res://Overworld/Buildings/Buildings/Walls.tres" id="7_w82o3"]
+
+[node name="CityControlUI" type="MarginContainer" unique_id=1914047455 node_paths=PackedStringArray("cityNameLabel", "currentBuildingParent", "newBuildingParent")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_37qw4")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_kvc3l")
+cityNameLabel = NodePath("PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CityNameLabel")
+currentBuildingParent = NodePath("PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings/HBoxContainer/CurrentBuildings/CurrentBuildingsParent")
+newBuildingParent = NodePath("PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings/HBoxContainer/NewBuildings/NewBuildingsParent")
+cityBuildingButtonScene = ExtResource("3_nuvko")
+buildings = Array[ExtResource("3_ekyib")]([ExtResource("4_nuvko"), ExtResource("5_wuk0n"), ExtResource("6_0mmu8"), ExtResource("7_w82o3")])
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=505985684]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=150026210]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" unique_id=1923167745]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" unique_id=88390150]
+layout_mode = 2
+
+[node name="CityNameLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=598260554]
+layout_mode = 2
+text = "City Name"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=846277966]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+text = "Close"
+
+[node name="TabContainer" type="TabContainer" parent="PanelContainer/VBoxContainer" unique_id=193150594]
+layout_mode = 2
+current_tab = 0
+
+[node name="Overview" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer" unique_id=761712855]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview" unique_id=518990490]
+layout_mode = 2
+
+[node name="CommodityOverview" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer" unique_id=645249040]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/CommodityOverview" unique_id=106842495]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/CommodityOverview/HBoxContainer" unique_id=1186385791]
+layout_mode = 2
+text = "Resource"
+
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/CommodityOverview/HBoxContainer" unique_id=272179885]
+layout_mode = 2
+text = "Resource"
+
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/CommodityOverview/HBoxContainer" unique_id=1679384756]
+layout_mode = 2
+text = "Resource"
+
+[node name="Buildings" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer" unique_id=377864116]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings" unique_id=1898562926]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="CurrentBuildings" type="ScrollContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings/HBoxContainer" unique_id=772111948]
+custom_minimum_size = Vector2(500, 300)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 2
+
+[node name="CurrentBuildingsParent" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings/HBoxContainer/CurrentBuildings" unique_id=247379474]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NewBuildings" type="ScrollContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings/HBoxContainer" unique_id=2074010491]
+custom_minimum_size = Vector2(500, 300)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 2
+
+[node name="NewBuildingsParent" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Overview/VBoxContainer/Buildings/HBoxContainer/NewBuildings" unique_id=1087988571]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Commodities" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer" unique_id=1298816018]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

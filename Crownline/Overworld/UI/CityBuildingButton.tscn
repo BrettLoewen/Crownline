@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://cspteq6r5ffmg"]
+
+[ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="1_w84m4"]
+[ext_resource type="Script" uid="uid://bbo2cwjshfhv7" path="res://Overworld/UI/CityBuildingButton.gd" id="2_jjg21"]
+
+[node name="CityBuildingButton" type="PanelContainer" unique_id=129529298 node_paths=PackedStringArray("nameLabel", "turnsToBuildLabel")]
+offset_right = 10.0
+offset_bottom = 10.0
+theme = ExtResource("1_w84m4")
+script = ExtResource("2_jjg21")
+nameLabel = NodePath("MarginContainer/BuildingNameLabel")
+turnsToBuildLabel = NodePath("MarginContainer/TurnsToBuildLabel")
+
+[node name="Button" type="Button" parent="." unique_id=284322013]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1198540998]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BuildingNameLabel" type="RichTextLabel" parent="MarginContainer" unique_id=1782003977]
+layout_mode = 2
+mouse_filter = 2
+text = "Building Name"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="TurnsToBuildLabel" type="RichTextLabel" parent="MarginContainer" unique_id=49150012]
+layout_mode = 2
+mouse_filter = 2
+text = "9 Turns"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

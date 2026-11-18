@@ -8,7 +8,10 @@
 [ext_resource type="Material" uid="uid://1bevfr0m1h5q" path="res://Overworld/Roads/RoadDotMaterial.tres" id="6_0u72k"]
 [ext_resource type="Material" uid="uid://dg7xbvn4fqkta" path="res://Overworld/Roads/IntersectionDotMaterial.tres" id="7_3rv81"]
 [ext_resource type="PackedScene" uid="uid://dp7et4lkt8pd2" path="res://Overworld/UI/CoreDisplay.tscn" id="8_w5i8j"]
+[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="9_p3a16"]
 [ext_resource type="Script" uid="uid://pfwo4d6vmyfc" path="res://Overworld/Empire.gd" id="9_paq86"]
+[ext_resource type="Resource" uid="uid://i26racy3jp3o" path="res://Overworld/Buildings/Buildings/Walls.tres" id="10_wiiu0"]
+[ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="11_jgjic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
 
@@ -58,6 +61,7 @@ intersectionDotMaterial = ExtResource("7_3rv81")
 
 [node name="Empire" type="Node3D" parent="." unique_id=482878947]
 script = ExtResource("9_paq86")
+cityOneBuildings = Array[ExtResource("9_p3a16")]([ExtResource("10_wiiu0"), ExtResource("11_jgjic")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 

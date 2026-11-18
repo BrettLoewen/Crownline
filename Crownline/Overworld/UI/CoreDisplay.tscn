@@ -11,8 +11,9 @@
 [ext_resource type="Script" uid="uid://6xrlyscp4eh7" path="res://Overworld/UI/CityBars.gd" id="9_h6bfa"]
 [ext_resource type="PackedScene" uid="uid://dw0xixd31r6q5" path="res://Overworld/UI/CityBar.tscn" id="10_dtuk5"]
 [ext_resource type="PackedScene" uid="uid://cmi6dylv2odlo" path="res://Overworld/UI/EmpireQuickAccess.tscn" id="11_qp17h"]
+[ext_resource type="PackedScene" uid="uid://cxmw757yc5fud" path="res://Overworld/UI/CityControlUI.tscn" id="12_t6mhb"]
 
-[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess")]
+[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess", "cityControlUI")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +27,7 @@ commodityManager = NodePath("TopBar/MarginContainer/CommodityManager")
 turnDisplay = NodePath("TurnDisplay")
 cityBars = NodePath("CityBars")
 quickAccess = NodePath("EmpireQuickAccess")
+cityControlUI = NodePath("CityControlUI")
 
 [node name="TopBar" type="PanelContainer" parent="." unique_id=1834885327]
 layout_mode = 1
@@ -99,7 +101,12 @@ offset_bottom = 16.0
 grow_horizontal = 0
 grow_vertical = 2
 
+[node name="CityControlUI" parent="." unique_id=1914047455 instance=ExtResource("12_t6mhb")]
+visible = false
+layout_mode = 1
+
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
 [connection signal="cityBarClicked" from="CityBars" to="." method="_on_city_clicked"]
 [connection signal="cityQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_city_clicked"]
+[connection signal="closeClicked" from="CityControlUI" to="." method="_on_city_control_ui_close_clicked"]

@@ -14,17 +14,17 @@ func Setup(newCityData: CityData) -> void:
 	UpdateCityVisuals()
 
 func UpdateCityVisuals() -> void:
-	if cityData.castle and cityData.walls:
+	if cityData.HasKeep() and cityData.HasWalls():
 		ControlObjects(villageObjects, false)
 		ControlObjects(castleObjects, false)
 		ControlObjects(walledVillageObjects, false)
 		ControlObjects(walledCastleObjects, true)
-	elif cityData.castle:
+	elif cityData.HasKeep():
 		ControlObjects(villageObjects, false)
 		ControlObjects(walledCastleObjects, false)
 		ControlObjects(walledVillageObjects, false)
 		ControlObjects(castleObjects, true)
-	elif cityData.walls:
+	elif cityData.HasWalls():
 		ControlObjects(villageObjects, false)
 		ControlObjects(castleObjects, false)
 		ControlObjects(walledCastleObjects, false)

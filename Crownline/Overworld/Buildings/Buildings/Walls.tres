@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Building" format=3 uid="uid://i26racy3jp3o"]
+
+[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="1_fpmx6"]
+
+[resource]
+script = ExtResource("1_fpmx6")
+name = "Walls"
+turnsToBuild = 3
+metadata/_custom_type_script = "uid://qm0rq818fmec"
