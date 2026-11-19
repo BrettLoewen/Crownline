@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cylt4tiyxmqhu" path="res://Overworld/Tiles/MapTile.tscn" id="2_c5u67"]
 [ext_resource type="PackedScene" uid="uid://dsu1ht30ah3pa" path="res://Overworld/Cities/MapCity.tscn" id="3_68let"]
 [ext_resource type="Script" uid="uid://btqkgjvo2layi" path="res://Overworld/Roads/RoadGenerator.gd" id="4_4rymo"]
+[ext_resource type="PackedScene" uid="uid://weysvw5etc15" path="res://Overworld/CameraController.tscn" id="4_xj8sk"]
 [ext_resource type="Material" uid="uid://drv8p78gb2nfj" path="res://Overworld/Roads/RoadMaterial.tres" id="5_w0xj0"]
 [ext_resource type="Material" uid="uid://1bevfr0m1h5q" path="res://Overworld/Roads/RoadDotMaterial.tres" id="6_0u72k"]
 [ext_resource type="Material" uid="uid://dg7xbvn4fqkta" path="res://Overworld/Roads/IntersectionDotMaterial.tres" id="7_3rv81"]
@@ -48,8 +49,7 @@ directional_shadow_max_distance = 40.0
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=77277214]
 environment = SubResource("Environment_c5u67")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=66520656]
-transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64278764, 0, 3, 4)
+[node name="CameraController" parent="." unique_id=825045141 instance=ExtResource("4_xj8sk")]
 
 [node name="TileMap" type="Node3D" parent="." unique_id=897811456]
 

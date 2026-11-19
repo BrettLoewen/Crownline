@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://weysvw5etc15"]
+
+[ext_resource type="Script" uid="uid://d1lrvlo2lo11r" path="res://Overworld/CameraController.gd" id="1_hfg4w"]
+
+[node name="CameraController" type="Node3D" unique_id=825045141 node_paths=PackedStringArray("camera")]
+script = ExtResource("1_hfg4w")
+cameraSpeed = 5.0
+camera = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1947474641]
+transform = Transform3D(1, 0, 0, 0, 0.76604456, 0.64278764, 0, -0.64278764, 0.76604456, 0, 6, 7)
+fov = 35.0
