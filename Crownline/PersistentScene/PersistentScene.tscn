@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b7rwemad88cvf" path="res://MainMenu/MainMenu.tscn" id="2_3cxgh"]
 [ext_resource type="Theme" uid="uid://defkbetwysh8u" path="res://PersistentScene/LoadingScreenTheme.tres" id="2_rmb5a"]
 [ext_resource type="PackedScene" uid="uid://cyrixlhlfuc8e" path="res://GameScene/Game.tscn" id="3_3cxgh"]
+[ext_resource type="PackedScene" uid="uid://b1ioaxehwrvxn" path="res://CharacterCreator/CharacterCreator.tscn" id="4_nf17l"]
 
 [node name="PersistentScene" type="Node" unique_id=1636791970]
 
@@ -11,6 +12,7 @@
 script = ExtResource("1_o8jx0")
 mainMenuScene = ExtResource("2_3cxgh")
 gameScene = ExtResource("3_3cxgh")
+characterCreatorScene = ExtResource("4_nf17l")
 loadingScreen = NodePath("../CanvasLayer/PanelContainer")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1097275067]

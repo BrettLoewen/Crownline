@@ -87,5 +87,15 @@ layout_mode = 2
 layout_mode = 2
 editable = false
 
+[node name="MainMenuButton" type="Button" parent="CanvasLayer" unique_id=610904709]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -8.0
+offset_bottom = 8.0
+grow_horizontal = 0
+text = "Main Menu"
+
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MaleButton" to="." method="SetGender" binds= ["Male"]]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/FemaleButton" to="." method="SetGender" binds= ["Female"]]
+[connection signal="pressed" from="CanvasLayer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

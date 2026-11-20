@@ -48,7 +48,7 @@ func SendOptionsToUnitAnimator():
 		if part.gender == gender or part.gender == "N/A":
 			var partName = "Chr_" + part.name + "_"
 			
-			if not gender == "N/A":
+			if not part.gender == "N/A":
 				partName += gender + "_"
 				
 			# Append index from dropdown (continue if None, otherwise convert to XX)
@@ -65,3 +65,7 @@ func SendOptionsToUnitAnimator():
 	unitAnimator.SetupModularCharacter(namesToEnable)
 	
 	outputField.text = str(namesToEnable)
+
+
+func _on_main_menu_button_pressed() -> void:
+	SceneManager.instance.LoadMainMenu()
