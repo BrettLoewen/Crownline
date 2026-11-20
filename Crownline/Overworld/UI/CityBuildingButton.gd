@@ -24,9 +24,9 @@ func SetupCurrentBuilding(newBuildingData: BuildingData) -> void:
 	building = currentBuildingData.building
 	nameLabel.text = building.name
 	if currentBuildingData.turnsToBuild > 0:
-		turnsToBuildLabel.text = ""
-	else:
 		turnsToBuildLabel.text = str(currentBuildingData.turnsToBuild) + " Turns Left"
+	else:
+		turnsToBuildLabel.text = ""
 
 func _on_button_pressed() -> void:
 	buttonClicked.emit(building, mode)

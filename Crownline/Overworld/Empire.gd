@@ -18,7 +18,9 @@ func _ready() -> void:
 	var cityOne: CityData = CityData.new()
 	cityOne.name = "Enbarr"
 	for b: Building in cityOneBuildings:
-		cityOne.buildings.append(BuildingData.new(b))
+		var bd: BuildingData = BuildingData.new(b)
+		bd.turnsToBuild = 0
+		cityOne.buildings.append(bd)
 	cityOne.coords = Vector2i(2, -1)
 	cities.set(cityOne.coords, cityOne)
 	var cityTwo: CityData = CityData.new()
@@ -44,6 +46,14 @@ func _ready() -> void:
 	coreUIManager.commodityManager.UpdateCommodityDisplays(commodityData)
 
 func DoTurn() -> void:
+	for city: CityData in cities.values():
+		# Progress construction of buildings
+		for building: BuildingData in city.buildings:
+			if building.turnsToBuild > 0:
+				building.turnsToBuild -= 1
+		# Ensure newly constructed buildings are shown
+		city.mapCity.UpdateCityVisuals()
+	
 	UpdateCommodityTurnProfits()
 	
 	for commodity: CommodityData in commodityData.values():
@@ -59,7 +69,10 @@ func UpdateCommodityTurnProfits() -> void:
 		var turnProfit: int = 0
 		for city: CityData in cities.values():
 			for building: BuildingData in city.buildings:
-				if building.building.commodity != null and building.building.commodity.name == c.commodity.name:
+				# If the building has finished being build
+				# And the building has a commodity
+				# And that commodity matches the current commodity of the loop
+				if building.turnsToBuild == 0 and building.building.commodity != null and building.building.commodity.name == c.commodity.name:
 					turnProfit += building.building.commodityAmount
 		c.turnProfit = turnProfit
 	coreUIManager.commodityManager.UpdateCommodityDisplays(commodityData)

@@ -10,21 +10,23 @@ var coords: Vector2i = Vector2i(0,0)
 var mapCity: MapCity
 
 func HasKeep() -> bool:
-	return HasBuildingByName("Keep")
+	return HasBuildingByName("Keep", false)
 
 func HasWalls() -> bool:
-	return HasBuildingByName("Walls")
+	return HasBuildingByName("Walls", false)
 
-func HasBuilding(building: Building) -> bool:
+func HasBuilding(building: Building, _returnEvenIfUnfinished: bool = true) -> bool:
 	for b: BuildingData in buildings:
 		if b.building.name == building.name:
-			return true
+			if b.turnsToBuild == 0 or _returnEvenIfUnfinished:
+				return true
 	return false
 
-func HasBuildingByName(buildingName: String) -> bool:
+func HasBuildingByName(buildingName: String, _returnEvenIfUnfinished: bool = true) -> bool:
 	for b: BuildingData in buildings:
 		if b.building.name == buildingName:
-			return true
+			if b.turnsToBuild == 0 or _returnEvenIfUnfinished:
+				return true
 	return false
 
 func GetBuildingData(building: Building) -> BuildingData:
