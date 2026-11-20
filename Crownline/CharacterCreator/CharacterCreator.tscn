@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://b1ioaxehwrvxn"]
+
+[ext_resource type="Script" uid="uid://v6jikyj33x06" path="res://CharacterCreator/CharacterCreator.gd" id="1_66msi"]
+[ext_resource type="PackedScene" uid="uid://cpevqo4dwficn" path="res://CharacterCreator/UnitAnimator.tscn" id="1_wtjjg"]
+[ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="2_q2gdg"]
+[ext_resource type="PackedScene" uid="uid://bguha4a02a58j" path="res://CharacterCreator/CharacterCreatorOption.tscn" id="3_yxaj8"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hiwkm"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_emkr8"]
+sky_material = SubResource("ProceduralSkyMaterial_hiwkm")
+
+[sub_resource type="Environment" id="Environment_2y1xs"]
+background_mode = 2
+sky = SubResource("Sky_emkr8")
+
+[node name="CharacterCreator" type="Node3D" unique_id=438789571]
+script = ExtResource("1_66msi")
+characterCreatorOptionScene = ExtResource("3_yxaj8")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1694493037]
+environment = SubResource("Environment_2y1xs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=368206285]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=211437611]
+transform = Transform3D(1, 0, 0, 0, 0.99055755, 0.13709772, 0, -0.13709772, 0.99055755, 0, 1.3835598, 2.0175657)
+
+[node name="UnitAnimator" parent="." unique_id=1401109805 instance=ExtResource("1_wtjjg")]
+transform = Transform3D(0.9848077, 0, -0.17364818, 0, 1, 0, 0.17364818, 0, 0.9848077, 0, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1285771693]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1121413019]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 149.0
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_q2gdg")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=1781230845]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=1725578628]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1261014498]
+layout_mode = 2
+text = "Character Creator"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1257875148]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=351802799]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Male"
+
+[node name="Button2" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=631166886]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Female"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=740327508]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1716777139]
+layout_mode = 2
+
+[node name="CharacterCreatorOption" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1285930365 instance=ExtResource("3_yxaj8")]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1399073694]
+layout_mode = 2
+editable = false

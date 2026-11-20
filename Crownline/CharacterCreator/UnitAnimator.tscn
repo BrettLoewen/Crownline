@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cpevqo4dwficn"]
+
+[ext_resource type="Script" uid="uid://jvjbotdyphwb" path="res://CharacterCreator/UnitAnimator.gd" id="1_78pdv"]
+[ext_resource type="PackedScene" uid="uid://cu32uffv4weva" path="res://Packages/Modular Character/ModularCharacter.fbx" id="2_pt8ix"]
+
+[node name="UnitAnimator" type="Node3D" unique_id=1401109805]
+script = ExtResource("1_78pdv")
+
+[node name="ModularHumanoid" type="Node3D" parent="." unique_id=573095397]
+
+[node name="ModularCharacter" parent="ModularHumanoid" unique_id=1418663991 instance=ExtResource("2_pt8ix")]
