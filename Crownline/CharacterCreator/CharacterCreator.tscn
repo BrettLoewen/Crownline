@@ -31,7 +31,7 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 0.99055755, 0.13709772, 0, -0.13709772, 0.99055755, 0, 1.3835598, 2.0175657)
 
 [node name="UnitAnimator" parent="." unique_id=1401109805 instance=ExtResource("1_wtjjg")]
-transform = Transform3D(0.9848077, 0, -0.17364818, 0, 1, 0, 0.17364818, 0, 0.9848077, 0, 0, 0)
+transform = Transform3D(0.91783845, 0, -0.39695412, 0, 1, 0, 0.39695412, 0, 0.91783845, 1.2100029, 0, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1285771693]
 
@@ -62,12 +62,12 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=351802799]
+[node name="MaleButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=351802799]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Male"
 
-[node name="Button2" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=631166886]
+[node name="FemaleButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=631166886]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Female"
@@ -86,3 +86,6 @@ layout_mode = 2
 [node name="LineEdit" type="LineEdit" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1399073694]
 layout_mode = 2
 editable = false
+
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MaleButton" to="." method="SetGender" binds= ["Male"]]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/FemaleButton" to="." method="SetGender" binds= ["Female"]]

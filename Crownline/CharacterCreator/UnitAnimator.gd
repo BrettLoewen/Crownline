@@ -8,10 +8,10 @@ func _ready() -> void:
 	pass
 
 func GetCharacterOptions():
-	var parts = []
+	var parts = {}
 	for child in modularCharacter.get_children():
 		var pieces = child.name.split("_")
-		var index = pieces[pieces.size() - 1]
+		#var index = pieces[pieces.size() - 1]
 		var gender = pieces[pieces.size() - 2]
 		
 		var partEnd = pieces.size() - 2
@@ -19,18 +19,21 @@ func GetCharacterOptions():
 			partEnd = pieces.size() - 1
 			gender = "N/A"
 		
-		var part = ""
+		var partName = ""
 		for i in range(1, partEnd):
-			part += pieces[i] + "_"
-		part = part.trim_suffix("_")
+			partName += pieces[i] + "_"
+		partName = partName.trim_suffix("_")
 		
-		if not parts.has(part):
-			parts.append(part)
+		if not parts.has(partName + "-" + gender):
+			parts.set(partName + "-" + gender, {"name": partName, "gender": gender, "count": 1})
+		else:
+			parts[partName + "-" + gender].count += 1
 		
 		#print(part + " - " + gender + " - " + index)
-	print(parts)
+	#print(parts)
 	
-	var character = {"parts": parts}
-	
-	return character
-	
+	return parts
+
+func SetupModularCharacter(namesToEnable: Array) -> void:
+	for child in modularCharacter.get_children():
+		child.visible = namesToEnable.has(child.name)

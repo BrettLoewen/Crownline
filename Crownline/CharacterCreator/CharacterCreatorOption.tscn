@@ -2,13 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bit6pfa5inys4" path="res://CharacterCreator/CharacterCreatorOption.gd" id="1_6okrm"]
 
-[node name="CharacterCreatorOption" type="HBoxContainer" unique_id=1285930365 node_paths=PackedStringArray("label")]
+[node name="CharacterCreatorOption" type="HBoxContainer" unique_id=1285930365 node_paths=PackedStringArray("label", "dropdown")]
 offset_right = 467.0
 offset_bottom = 31.0
 theme_override_constants/separation = 5
 alignment = 2
 script = ExtResource("1_6okrm")
 label = NodePath("OptionLabel")
+dropdown = NodePath("OptionDropdown")
 
 [node name="OptionLabel" type="RichTextLabel" parent="." unique_id=1596420040]
 layout_mode = 2
@@ -35,3 +36,7 @@ popup/item_0/id = 0
 layout_mode = 2
 size_flags_horizontal = 4
 text = ">"
+
+[connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="item_selected" from="OptionDropdown" to="." method="_on_option_dropdown_item_selected"]
+[connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
