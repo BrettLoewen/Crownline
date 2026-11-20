@@ -16,6 +16,7 @@
 [ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="10_xj8sk"]
 [ext_resource type="Resource" uid="uid://lr3swtc5h50a" path="res://Overworld/Commodities/Commodities/Iron.tres" id="11_23kps"]
 [ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="11_jgjic"]
+[ext_resource type="PackedScene" uid="uid://de1enmt44t5sr" path="res://Overworld/MapUnit.tscn" id="16_23kps"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
 
@@ -70,6 +71,11 @@ goldCommodity = ExtResource("9_1c5pt")
 foodCommodity = ExtResource("10_xj8sk")
 ironCommodity = ExtResource("11_23kps")
 cityOneBuildings = Array[ExtResource("9_p3a16")]([ExtResource("10_wiiu0"), ExtResource("11_jgjic")])
+
+[node name="Units" type="Node3D" parent="." unique_id=1094873246]
+
+[node name="MapUnit" parent="Units" unique_id=142065167 instance=ExtResource("16_23kps")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.5, 0.2, 0.87)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 
