@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://Packages/Modular Character/PolygonCharacter.gdshader" id="Shader"]
+[ext_resource type="Texture2D" path="res://Packages/Modular Character/Textures/PolygonFantasyHero_Texture_01_A.png" id="BaseTexture"]
+[ext_resource type="Texture2D" path="res://Packages/Modular Character/Masks/PolygonFantasyHero_Texture_Mask_01.png" id="Mask01"]
+[ext_resource type="Texture2D" path="res://Packages/Modular Character/Masks/PolygonFantasyHero_Texture_Mask_02.png" id="Mask02"]
+[ext_resource type="Texture2D" path="res://Packages/Modular Character/Masks/PolygonFantasyHero_Texture_Mask_03.png" id="Mask03"]
+[ext_resource type="Texture2D" path="res://Packages/Modular Character/Masks/PolygonFantasyHero_Texture_Mask_04.png" id="Mask04"]
+[ext_resource type="Texture2D" path="res://Packages/Modular Character/Masks/PolygonFantasyHero_Texture_Mask_05.png" id="Mask05"]
+
+[resource]
+resource_name = "PolygonCharacter"
+shader = ExtResource("Shader")
+shader_parameter/BaseTexture = ExtResource("BaseTexture")
+shader_parameter/Mask01 = ExtResource("Mask01")
+shader_parameter/Mask02 = ExtResource("Mask02")
+shader_parameter/Mask03 = ExtResource("Mask03")
+shader_parameter/Mask04 = ExtResource("Mask04")
+shader_parameter/Mask05 = ExtResource("Mask05")
