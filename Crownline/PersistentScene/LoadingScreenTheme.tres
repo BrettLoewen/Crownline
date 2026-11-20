@@ -1,0 +1,6 @@
+[gd_resource type="Theme" format=3 uid="uid://defkbetwysh8u"]
+
+[ext_resource type="StyleBox" uid="uid://i2n23bo3xadj" path="res://PersistentScene/LoadingScreenBackground.tres" id="1_0x61f"]
+
+[resource]
+PanelContainer/styles/panel = ExtResource("1_0x61f")

@@ -6,12 +6,17 @@ extends Control
 @export var cityBars: CityBars
 @export var quickAccess: EmpireQuickAccess
 @export var cityControlUI: CityControlUI
+@export var pauseMenu: PauseMenu
 
 @export var empire: Empire
 @export var overworldManager: OverworldManager
 
+var isLoaded: bool = false
+var isPaused: bool = false
+
 func _ready() -> void:
 	cityControlUI.visible = false
+	UnpauseGame()
 	turnDisplay.Setup()
 	
 	# Ensure the map is loaded before continuing
@@ -20,6 +25,25 @@ func _ready() -> void:
 	
 	cityBars.Setup(empire.GetCityData())
 	quickAccess.Setup(empire.GetCityData())
+	
+	isLoaded = true
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Pause"):
+		if isPaused:
+			UnpauseGame()
+		else:
+			PauseGame()
+
+func PauseGame() -> void:
+	isPaused = true
+	pauseMenu.visible = true
+	pauseMenu.canAct = true
+
+func UnpauseGame() -> void:
+	isPaused = false
+	pauseMenu.visible = false
+	pauseMenu.canAct = false
 
 func _on_turn_display_next_turn_signal() -> void:
 	empire.DoTurn()
@@ -34,3 +58,6 @@ func _on_city_control_ui_close_clicked() -> void:
 func _on_city_control_ui_city_updated() -> void:
 	cityControlUI.Refresh()
 	empire.UpdateCommodityTurnProfits()
+
+func _on_pause_menu_resume_game() -> void:
+	UnpauseGame()

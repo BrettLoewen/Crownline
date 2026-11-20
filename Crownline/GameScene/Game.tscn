@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cyrixlhlfuc8e"]
+
+[ext_resource type="Script" uid="uid://dxpxu77ouo1u0" path="res://GameScene/GameManager.gd" id="1_6iyer"]
+[ext_resource type="PackedScene" uid="uid://k3nrgvin38s7" path="res://Overworld/Overworld.tscn" id="2_282lv"]
+
+[node name="Game" type="Node3D" unique_id=646699077]
+script = ExtResource("1_6iyer")
+overworldScene = ExtResource("2_282lv")

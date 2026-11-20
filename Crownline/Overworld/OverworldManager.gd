@@ -8,6 +8,7 @@ extends Node3D
 @export var cityParent: Node3D
 @export var roadGenerator: RoadGenerator
 @export var empire: Empire
+@export var coreUIManager: CoreUIManager
 
 var loadedMap: bool = false
 

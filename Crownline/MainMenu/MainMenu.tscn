@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://b7rwemad88cvf"]
+
+[ext_resource type="Script" uid="uid://c3n5wryjsti0u" path="res://MainMenu/MainMenu.gd" id="1_otibh"]
+
+[node name="MainMenu" type="Node" unique_id=1698954001]
+script = ExtResource("1_otibh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1853433144]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1975818510]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer" unique_id=976469132]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=1817963448]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer" unique_id=850130604]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 64
+text = "CROWNLINE"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/PanelContainer/VBoxContainer" unique_id=754531986]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2" unique_id=168700503]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=416518039]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Play"
+
+[node name="CustomizeButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=578990483]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Customize"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer" unique_id=1233661935]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Quit"
+
+[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer/CustomizeButton" to="." method="_on_customize_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/VBoxContainer/MarginContainer2/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

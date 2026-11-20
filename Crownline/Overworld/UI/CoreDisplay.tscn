@@ -7,10 +7,11 @@
 [ext_resource type="Script" uid="uid://de65j7s36oakj" path="res://Overworld/UI/TurnDisplay.gd" id="7_bgfib"]
 [ext_resource type="Script" uid="uid://6xrlyscp4eh7" path="res://Overworld/UI/CityBars.gd" id="9_h6bfa"]
 [ext_resource type="PackedScene" uid="uid://dw0xixd31r6q5" path="res://Overworld/UI/CityBar.tscn" id="10_dtuk5"]
+[ext_resource type="PackedScene" uid="uid://dfsolows27c4" path="res://Overworld/UI/PauseMenu.tscn" id="10_qp17h"]
 [ext_resource type="PackedScene" uid="uid://cmi6dylv2odlo" path="res://Overworld/UI/EmpireQuickAccess.tscn" id="11_qp17h"]
 [ext_resource type="PackedScene" uid="uid://cxmw757yc5fud" path="res://Overworld/UI/CityControlUI.tscn" id="12_t6mhb"]
 
-[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess", "cityControlUI")]
+[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess", "cityControlUI", "pauseMenu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,6 +26,7 @@ turnDisplay = NodePath("TurnDisplay")
 cityBars = NodePath("CityBars")
 quickAccess = NodePath("EmpireQuickAccess")
 cityControlUI = NodePath("CityControlUI")
+pauseMenu = NodePath("PauseMenu")
 
 [node name="TopBar" type="PanelContainer" parent="." unique_id=1834885327]
 layout_mode = 1
@@ -99,9 +101,13 @@ grow_vertical = 2
 visible = false
 layout_mode = 1
 
+[node name="PauseMenu" parent="." unique_id=999653066 instance=ExtResource("10_qp17h")]
+layout_mode = 1
+
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
 [connection signal="cityBarClicked" from="CityBars" to="." method="_on_city_clicked"]
 [connection signal="cityQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_city_clicked"]
 [connection signal="cityUpdated" from="CityControlUI" to="." method="_on_city_control_ui_city_updated"]
 [connection signal="closeClicked" from="CityControlUI" to="." method="_on_city_control_ui_close_clicked"]
+[connection signal="resumeGame" from="PauseMenu" to="." method="_on_pause_menu_resume_game"]
