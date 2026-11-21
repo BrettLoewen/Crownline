@@ -9,6 +9,7 @@ extends Node3D
 @export var roadGenerator: RoadGenerator
 @export var empire: Empire
 @export var coreUIManager: CoreUIManager
+@export var playerController: PlayerController
 
 var loadedMap: bool = false
 
@@ -28,10 +29,11 @@ func _LoadMap() -> void:
 		if mapTileScene != null:
 			var tile: MapTile = mapTileScene.instantiate() as MapTile
 			if tile != null:
-				tile.Setup(tileData)
+				tile.Setup(tileData, coords)
 				var hexCoords = ConvertGridToHexCoords(coords)
 				tile.translate(Vector3(hexCoords.x, 0, hexCoords.y))
 				tile.name = str(coords)
+				tile.inputEvent.connect(OnTileInputEvent)
 				tileMapParent.add_child(tile)
 	
 	for coords in citiesData:
@@ -57,3 +59,6 @@ func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
 	var tileX = inputCoords.x * tileSize.x + xOffset
 	var tileZ = inputCoords.y * tileSize.y
 	return Vector2(tileX, tileZ)
+
+func OnTileInputEvent(coords: Vector2i, camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	playerController.HandleTileInputEvent(coords, camera, event, event_position, normal, shape_idx)
