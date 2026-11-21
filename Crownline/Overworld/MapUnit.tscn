@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://cfr8fd4lkdntu" path="res://Overworld/MapUnit.gd" id="1_1p76r"]
 [ext_resource type="PackedScene" uid="uid://cpevqo4dwficn" path="res://CharacterCreator/UnitAnimator.tscn" id="2_wb2jo"]
 
-[node name="MapUnit" type="Node3D" unique_id=142065167]
+[node name="MapUnit" type="Node3D" unique_id=142065167 node_paths=PackedStringArray("unitAnimator")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
 script = ExtResource("1_1p76r")
+unitAnimator = NodePath("UnitAnimator")
 
 [node name="UnitAnimator" parent="." unique_id=1401109805 instance=ExtResource("2_wb2jo")]

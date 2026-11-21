@@ -6,7 +6,7 @@
 [node name="CityQuickAccess" type="PanelContainer" unique_id=127277327 node_paths=PackedStringArray("cityNameLabel")]
 theme = ExtResource("1_atxa5")
 script = ExtResource("2_6glrq")
-cityNameLabel = NodePath("MarginContainer/HBoxContainer/CityNameLabel")
+cityNameLabel = NodePath("MarginContainer/HBoxContainer/NameLabel")
 
 [node name="Button" type="Button" parent="." unique_id=43343055]
 layout_mode = 2
@@ -19,7 +19,7 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="CityNameLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer" unique_id=1680018106]
+[node name="NameLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer" unique_id=1680018106]
 layout_mode = 2
 mouse_filter = 2
 text = "Placeholder Name"

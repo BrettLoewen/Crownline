@@ -2,13 +2,13 @@ class_name Empire
 extends Node3D
 
 var cities: Dictionary[Vector2i, CityData] = {}
+var commodityData: Dictionary[Commodity.CommodityType, CommodityData] = {}
+var units: Dictionary[String, UnitData] = {}
 
 @export var coreUIManager: CoreUIManager
 @export var goldCommodity: Commodity
 @export var foodCommodity: Commodity
 @export var ironCommodity: Commodity
-
-var commodityData: Dictionary[Commodity.CommodityType, CommodityData]
 
 # For early development, remove later
 @export var cityOneBuildings: Array[Building]
@@ -44,6 +44,12 @@ func _ready() -> void:
 	UpdateCommodityTurnProfits()
 	
 	coreUIManager.commodityManager.UpdateCommodityDisplays(commodityData)
+	
+	var unitOne: UnitData = UnitData.new()
+	unitOne.name = "John"
+	unitOne.mapUnit = $"../Units/MapUnit"
+	unitOne.mapUnit.Setup(unitOne.appearanceData)
+	units.set("John", unitOne)
 
 func DoTurn() -> void:
 	for city: CityData in cities.values():
@@ -63,6 +69,9 @@ func DoTurn() -> void:
 
 func GetCityData() -> Dictionary[Vector2i, CityData]:
 	return cities
+
+func GetUnitData() -> Dictionary[String, UnitData]:
+	return units
 
 func UpdateCommodityTurnProfits() -> void:
 	for c: CommodityData in commodityData.values():

@@ -7,6 +7,8 @@ extends Control
 @export var quickAccess: EmpireQuickAccess
 @export var cityControlUI: CityControlUI
 @export var pauseMenu: PauseMenu
+@export var unitDisplay: Control
+@export var unitDisplayLabel: RichTextLabel
 
 @export var empire: Empire
 @export var overworldManager: OverworldManager
@@ -18,13 +20,14 @@ func _ready() -> void:
 	cityControlUI.visible = false
 	UnpauseGame()
 	turnDisplay.Setup()
+	unitDisplay.visible = false
 	
 	# Ensure the map is loaded before continuing
 	while overworldManager.loadedMap == false:
 		await get_tree().process_frame
 	
 	cityBars.Setup(empire.GetCityData())
-	quickAccess.Setup(empire.GetCityData())
+	quickAccess.Setup(empire.GetCityData(), empire.GetUnitData())
 	
 	isLoaded = true
 
@@ -61,3 +64,7 @@ func _on_city_control_ui_city_updated() -> void:
 
 func _on_pause_menu_resume_game() -> void:
 	UnpauseGame()
+
+func _on_unit_clicked(unitName: String) -> void:
+	unitDisplayLabel.text = unitName
+	unitDisplay.visible = true

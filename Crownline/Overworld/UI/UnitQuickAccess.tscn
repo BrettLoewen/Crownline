@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bgjjf0hqiwxb"]
+
+[ext_resource type="Theme" uid="uid://btat2q08l6u07" path="res://Overworld/UI/CoreUI.tres" id="1_uh8gy"]
+[ext_resource type="Script" uid="uid://wbqjueq1v5jy" path="res://Overworld/UI/UnitQuickAccess.gd" id="2_dq5ur"]
+
+[node name="UnitQuickAccess" type="PanelContainer" unique_id=127277327 node_paths=PackedStringArray("unitNameLabel")]
+theme = ExtResource("1_uh8gy")
+script = ExtResource("2_dq5ur")
+unitNameLabel = NodePath("MarginContainer/HBoxContainer/NameLabel")
+
+[node name="Button" type="Button" parent="." unique_id=43343055]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1005708827]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=729714362]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer" unique_id=1680018106]
+layout_mode = 2
+mouse_filter = 2
+text = "Placeholder Name"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

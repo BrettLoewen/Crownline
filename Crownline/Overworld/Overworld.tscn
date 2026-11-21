@@ -64,6 +64,11 @@ roadDotMaterial = ExtResource("6_0u72k")
 intersectionDotWidth = 0.35
 intersectionDotMaterial = ExtResource("7_3rv81")
 
+[node name="Units" type="Node3D" parent="." unique_id=1094873246]
+
+[node name="MapUnit" parent="Units" unique_id=142065167 instance=ExtResource("16_23kps")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.5, 0.2, 0.87)
+
 [node name="Empire" type="Node3D" parent="." unique_id=482878947 node_paths=PackedStringArray("coreUIManager")]
 script = ExtResource("9_paq86")
 coreUIManager = NodePath("../CanvasLayer/CoreDisplay")
@@ -71,11 +76,6 @@ goldCommodity = ExtResource("9_1c5pt")
 foodCommodity = ExtResource("10_xj8sk")
 ironCommodity = ExtResource("11_23kps")
 cityOneBuildings = Array[ExtResource("9_p3a16")]([ExtResource("10_wiiu0"), ExtResource("11_jgjic")])
-
-[node name="Units" type="Node3D" parent="." unique_id=1094873246]
-
-[node name="MapUnit" parent="Units" unique_id=142065167 instance=ExtResource("16_23kps")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.5, 0.2, 0.87)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 

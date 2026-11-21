@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cmi6dylv2odlo" path="res://Overworld/UI/EmpireQuickAccess.tscn" id="11_qp17h"]
 [ext_resource type="PackedScene" uid="uid://cxmw757yc5fud" path="res://Overworld/UI/CityControlUI.tscn" id="12_t6mhb"]
 
-[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess", "cityControlUI", "pauseMenu")]
+[node name="CoreDisplay" type="Control" unique_id=1866020560 node_paths=PackedStringArray("commodityManager", "turnDisplay", "cityBars", "quickAccess", "cityControlUI", "pauseMenu", "unitDisplay", "unitDisplayLabel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +27,8 @@ cityBars = NodePath("CityBars")
 quickAccess = NodePath("EmpireQuickAccess")
 cityControlUI = NodePath("CityControlUI")
 pauseMenu = NodePath("PauseMenu")
+unitDisplay = NodePath("UnitDisplay")
+unitDisplayLabel = NodePath("UnitDisplay/MarginContainer/UnitNameDisplayLabel")
 
 [node name="TopBar" type="PanelContainer" parent="." unique_id=1834885327]
 layout_mode = 1
@@ -104,10 +106,36 @@ layout_mode = 1
 [node name="PauseMenu" parent="." unique_id=999653066 instance=ExtResource("10_qp17h")]
 layout_mode = 1
 
+[node name="UnitDisplay" type="PanelContainer" parent="." unique_id=316143574]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UnitDisplay" unique_id=564352301]
+layout_mode = 2
+
+[node name="UnitNameDisplayLabel" type="RichTextLabel" parent="UnitDisplay/MarginContainer" unique_id=365144334]
+layout_mode = 2
+text = "John"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
 [connection signal="cityBarClicked" from="CityBars" to="." method="_on_city_clicked"]
 [connection signal="cityQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_city_clicked"]
+[connection signal="unitQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_unit_clicked"]
 [connection signal="cityUpdated" from="CityControlUI" to="." method="_on_city_control_ui_city_updated"]
 [connection signal="closeClicked" from="CityControlUI" to="." method="_on_city_control_ui_close_clicked"]
 [connection signal="resumeGame" from="PauseMenu" to="." method="_on_pause_menu_resume_game"]
