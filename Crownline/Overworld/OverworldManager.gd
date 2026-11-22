@@ -11,6 +11,8 @@ extends Node3D
 @export var coreUIManager: CoreUIManager
 @export var playerController: PlayerController
 
+var roads: Dictionary[Vector2i, RoadData] = {}
+
 var loadedMap: bool = false
 
 func _ready() -> void:
@@ -21,7 +23,8 @@ func _LoadMap() -> void:
 	var tilemapData: Dictionary[Vector2i, MapTileType] = mapData.tilemap
 	var citiesData: Dictionary[Vector2i, CityData] = empire.GetCityData()
 	
-	roadGenerator.GenerateRoadMeshes(mapData.roads)
+	roads = mapData.roads
+	roadGenerator.GenerateRoadMeshes(roads)
 	
 	for coords in tilemapData:
 		var tileData: MapTileType = tilemapData[coords]
