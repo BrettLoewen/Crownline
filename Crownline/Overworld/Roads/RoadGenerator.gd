@@ -21,7 +21,7 @@ class RoadSection:
 @export var intersectionDotDetail: int = 20
 @export var intersectionDotMaterial: ShaderMaterial
 
-func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
+func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], _includeDots: bool = true) -> void:
 	var connectionMap: Dictionary[Vector3i, bool] = GetConnections(data)
 	var roads: Array[RoadSection] = GetRoadSections(connectionMap, data)
 	
@@ -33,9 +33,11 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData]) -> void:
 	for road in roads:
 		var curve: Curve3D = GetCurve(road.roadVectors)
 		CreateRoadSectionMesh(curve)
-		CreateRoadSectionDotMeshes(road, curve, roadDotMesh, sectionIndex)
+		if _includeDots:
+			CreateRoadSectionDotMeshes(road, curve, roadDotMesh, sectionIndex)
 		sectionIndex += 1
-	CreateRoadIntersectionDotMeshes(data, intersectionDotMesh)
+	if _includeDots:
+		CreateRoadIntersectionDotMeshes(data, intersectionDotMesh)
 
 # Grab every road connection (for dead-ends and intersections, not linear paths)
 # and key it to a flag to record when a RoadSection is made for it

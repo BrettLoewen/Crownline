@@ -18,6 +18,7 @@
 [ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="11_jgjic"]
 [ext_resource type="PackedScene" uid="uid://de1enmt44t5sr" path="res://Overworld/MapUnit.tscn" id="16_23kps"]
 [ext_resource type="Script" uid="uid://drmnxjq2scnch" path="res://Overworld/PlayerController.gd" id="17_kgvnc"]
+[ext_resource type="Material" uid="uid://3iodmd15hxj" path="res://Overworld/Roads/WalkableRoadMaterial.tres" id="18_b1dxb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
 
@@ -81,6 +82,16 @@ cityOneBuildings = Array[ExtResource("9_p3a16")]([ExtResource("10_wiiu0"), ExtRe
 
 [node name="PlayerController" type="Node3D" parent="." unique_id=1128486340]
 script = ExtResource("17_kgvnc")
+
+[node name="WalkableRoads" type="Node3D" parent="PlayerController" unique_id=467700542]
+script = ExtResource("4_4rymo")
+roadY = 0.215
+roadDotY = 0.221
+intersectionDotY = 0.231
+roadMaterial = ExtResource("18_b1dxb")
+roadDotMaterial = ExtResource("6_0u72k")
+intersectionDotWidth = 0.35
+intersectionDotMaterial = ExtResource("7_3rv81")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 

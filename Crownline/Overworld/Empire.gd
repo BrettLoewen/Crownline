@@ -48,7 +48,7 @@ func _ready() -> void:
 	var unitOne: UnitData = UnitData.new()
 	unitOne.name = "John"
 	unitOne.mapUnit = $"../Units/MapUnit"
-	unitOne.coords = Vector2i(0, 1)
+	unitOne.coords = Vector2i(1, 0)
 	unitOne.mapUnit.Setup(unitOne.appearanceData)
 	units.set("John", unitOne)
 

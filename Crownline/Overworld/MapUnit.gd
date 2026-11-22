@@ -1,8 +1,6 @@
 class_name MapUnit
 extends Node3D
 
-const WALK_DISTANCE_PER_TURN = 3
-
 @export var unitAnimator: UnitAnimator
 
 func Setup(appearanceData: Array[String]) -> void:
