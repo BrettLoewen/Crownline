@@ -68,3 +68,7 @@ func _on_pause_menu_resume_game() -> void:
 func _on_unit_clicked(unitName: String) -> void:
 	unitDisplayLabel.text = unitName
 	unitDisplay.visible = true
+
+func _on_deselect_button_pressed() -> void:
+	unitDisplay.visible = false
+	overworldManager.playerController.DeselectUnit()

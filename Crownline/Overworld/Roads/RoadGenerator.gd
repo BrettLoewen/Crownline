@@ -3,6 +3,11 @@ extends Node3D
 
 class RoadSection:
 	var roadVectors: Array[Vector3]
+	var roadCoords: Array[Vector2i]
+
+# The curve handle at a road tile pointing towards a connected road tile, keyed by
+# Vector4i(fromX, fromY, toX, toY). Lets the walkable path follow the road curves beneath it.
+var roadHandles: Dictionary[Vector4i, Vector3] = {}
 
 @export var roadY: float = 0.21
 @export var roadDotY: float = 0.22
@@ -34,9 +39,11 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], _includeDots: bool
 	var roadDotMesh: ArrayMesh = CreateDotMesh(roadDotWidth / 2.0, roadDotDetail)
 	var intersectionDotMesh: ArrayMesh = CreateDotMesh(intersectionDotWidth / 2.0, intersectionDotDetail)
 
+	roadHandles.clear()
 	var sectionIndex: int = 0
 	for road in roads:
 		var curve: Curve3D = GetCurve(road.roadVectors)
+		SaveRoadHandles(road, curve)
 		CreateRoadSectionMesh(curve)
 		if _includeDots:
 			CreateRoadSectionDotMeshes(road, curve, roadDotMesh, sectionIndex)
@@ -47,83 +54,120 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], _includeDots: bool
 func GenerateWalkablePathMesh(destination: RoadData, start: RoadData) -> MeshInstance3D:
 	if destination == start:
 		return
-	var pathPositions: Array[Vector3] = []
+	var pathCoords: Array[Vector2i] = []
 	var current: RoadData = destination
 	while current != null:
-		var pos = HexToWorldPoint(current.coords)
-		pathPositions.append(Vector3(pos.x, walkablePathY, pos.z))
+		pathCoords.append(current.coords)
 		current = current.previous
-		
-	if pathPositions.size() <= 1:
+	
+	if pathCoords.size() <= 1:
 		return
-	pathPositions.reverse()
-	var curve: Curve3D = GetCurve(pathPositions)
+	pathCoords.reverse()
+	
+	# Build the curve from the saved road handles instead of GetCurve so it matches the roads beneath it
+	var curve: Curve3D = Curve3D.new()
+	for index: int in pathCoords.size():
+		var coords: Vector2i = pathCoords[index]
+		var inHandle: Vector3 = Vector3.ZERO
+		var outHandle: Vector3 = Vector3.ZERO
+		if index > 0:
+			var prev: Vector2i = pathCoords[index - 1]
+			inHandle = roadHandles.get(Vector4i(coords.x, coords.y, prev.x, prev.y), Vector3.ZERO)
+		if index < pathCoords.size() - 1:
+			var next: Vector2i = pathCoords[index + 1]
+			outHandle = roadHandles.get(Vector4i(coords.x, coords.y, next.x, next.y), Vector3.ZERO)
+		
+		var pos: Vector3 = HexToWorldPoint(coords)
+		curve.add_point(Vector3(pos.x, walkablePathY, pos.z), inHandle, outHandle)
 	
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	# Loop along the curve sampling a number of points, the number determined by roadDetail.
-	# Plus one makes sure the end point is also included (inclusive vs exclusive).
-	var numSegments = int((curve.get_baked_length() - arrowLength) * roadDetail)
-	var dist: float = 0.0
-	for step: int in numSegments + 1:
-		dist = step / roadDetail
-		var pathSampledPoint: Transform3D = curve.sample_baked_with_rotation(dist)
-		
-		# Start at the sampled point, add offset by half the width using the point's rotation (basis)
-		var pathRightPoint: Vector3 = pathSampledPoint.origin + (pathSampledPoint.basis.x * roadWidth / 2.0)
-		var pathLeftPoint: Vector3 = pathSampledPoint.origin + (-pathSampledPoint.basis.x * roadWidth / 2.0)
-		
-		st.set_uv(Vector2(dist, 0))
-		st.add_vertex(pathRightPoint)
-		st.set_uv(Vector2(dist, 1))
-		st.add_vertex(pathLeftPoint)
-		
-		# Vertices get added linearly (right, left, right, left, etc.) and need to get combined into
-		# clockwise-winding triangles for the mesh
-		# L0 ---- L1
-		# |       |
-		# R0 ---- R1     (road heading → this way)
-		# 
-		# L(i == 1) ---- L(i == 3)
-		# |              |
-		# R(i == 0) ---- R(i == 2)
-		# 
-		# L((2*step)+1) ---- L((2*(step+1))+1)
-		# |                  |
-		# R(2*step) -------- R(2*(step+1))
-		# 
-		# Triangle 1: R(2*step), L((2*step)+1), L((2*(step+1))+1)
-		# Triangle 2: L((2*(step+1))+1), R(2*(step+1)), R(2*step)
-		if step < numSegments:
-			st.add_index(2 * step)					# R0
-			st.add_index((2 * step) + 1)			# L0
-			st.add_index((2 * (step + 1)) + 1)		# L1
-			st.add_index((2 * (step + 1)) + 1)		# L1
-			st.add_index(2 * (step + 1))			# R1
-			st.add_index(2 * step)					# R0
+	# Stop the strip short of the end to leave room for the arrow head
+	var numSegments: int = AddCurveStrip(st, curve, curve.get_baked_length() - arrowLength)
+	AddArrowHead(st, curve, numSegments)
+
+	return CreateMeshInstance(st, walkablePathMaterial)
+
+# The road shader colours by UV.y (0.5 = centre, 0 or 1 = edge), so to keep the outline the same
+# width as the path, the arrow is an outer triangle with an inner triangle inset by half the road
+# width. The band between them gets the edge-to-centre fade and the inner triangle is all fill.
+# The path's last right vertex (SR) and a copy of its last left vertex (SL) become the shoulders
+# where the outline turns out to the wings. SL is a copy because the path's left edge uses UV.y = 1,
+# and blending that into the arrow's UV.y = 0 edges would pass through 0.5 (fill) along the back edge.
+#
+#                T
+#               / \
+#              / IT \
+#             / /  \ \
+#            / /    \ \
+#           / IL-M--IR \
+#          /  / /|\  \  \
+#        WL--SL--C0--SR--WR
+#             |      |
+#             | path |
+func AddArrowHead(st: SurfaceTool, curve: Curve3D, numSegments: int) -> void:
+	var dist: float = numSegments / roadDetail
+	var halfRoadWidth: float = roadWidth / 2.0
 	
 	var sampledPoint: Transform3D = curve.sample_baked_with_rotation(dist)
-	var rightPoint: Vector3 = sampledPoint.origin + (sampledPoint.basis.x * arrowWidth / 2.0)
-	var leftPoint: Vector3 = sampledPoint.origin + (-sampledPoint.basis.x * arrowWidth / 2.0)
-	var endPoint: Vector3 = curve.sample_baked_with_rotation(1.0).origin
-	st.set_uv(Vector2(dist, 1))
-	st.add_vertex(rightPoint)		# (numSegments + 1) * 2
-	st.set_uv(Vector2(dist, 1))
-	st.add_vertex(leftPoint)		# ((numSegments + 1) * 2) + 1
-	st.set_uv(Vector2(dist, 1))
-	st.add_vertex(endPoint)			# (numSegments + 2) * 2
+	var baseCenter: Vector3 = sampledPoint.origin
+	var tip: Vector3 = curve.sample_baked(curve.get_baked_length())
+	var forward: Vector3 = (tip - baseCenter).normalized()
+	# Keep the path's sideways direction (so the shoulders line up), just squared up to the arrow
+	var right: Vector3 = (sampledPoint.basis.x - forward * sampledPoint.basis.x.dot(forward)).normalized()
+	var wingRight: Vector3 = baseCenter + (right * arrowWidth / 2.0)
+	var wingLeft: Vector3 = baseCenter + (-right * arrowWidth / 2.0)
+	# Same position as the path's last left vertex (see AddCurveStrip)
+	var shoulderLeft: Vector3 = baseCenter + (-sampledPoint.basis.x * halfRoadWidth)
 	
-	st.add_index((numSegments + 1) * 2)
-	st.add_index(((numSegments + 1) * 2) + 1)
-	st.add_index((numSegments + 2) * 2)
+	# Shrinking a triangle towards its incenter moves every edge inwards by the same distance,
+	# so scale it down until the edges sit half a road width in
+	var height: float = baseCenter.distance_to(tip)
+	var sideLength: float = Vector2(arrowWidth / 2.0, height).length()
+	var inradius: float = (arrowWidth * height) / (arrowWidth + (2.0 * sideLength))
+	var incenter: Vector3 = baseCenter + (forward * inradius)
+	var innerScale: float = max(inradius - halfRoadWidth, 0.0) / inradius
+	var innerRight: Vector3 = incenter + ((wingRight - incenter) * innerScale)
+	var innerLeft: Vector3 = incenter + ((wingLeft - incenter) * innerScale)
+	var innerTip: Vector3 = incenter + ((tip - incenter) * innerScale)
+	var innerBase: Vector3 = baseCenter + (forward * halfRoadWidth)
 	
-	var mesh: ArrayMesh = st.commit()
-	var obj: MeshInstance3D = MeshInstance3D.new()
-	obj.mesh = mesh
-	obj.material_override = walkablePathMaterial
-	self.add_child(obj)
-	return obj
+	var arrowPoints: Array[Vector3] = [baseCenter, wingRight, tip, wingLeft, innerBase, innerRight, innerTip, innerLeft, shoulderLeft]
+	var arrowUVs: Array[float] = [0.5, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0]
+	for index: int in arrowPoints.size():
+		st.set_uv(Vector2(dist, arrowUVs[index]))
+		st.add_vertex(arrowPoints[index])
+	
+	# Vertex indices, continuing on from the path strip's vertices
+	var pathRightIndex: int = 2 * numSegments				# SR
+	var baseCenterIndex: int = (numSegments + 1) * 2		# C0
+	var wingRightIndex: int = baseCenterIndex + 1			# WR
+	var tipIndex: int = baseCenterIndex + 2				# T
+	var wingLeftIndex: int = baseCenterIndex + 3			# WL
+	var innerBaseIndex: int = baseCenterIndex + 4			# M
+	var innerRightIndex: int = baseCenterIndex + 5		# IR
+	var innerTipIndex: int = baseCenterIndex + 6			# IT
+	var innerLeftIndex: int = baseCenterIndex + 7			# IL
+	var shoulderLeftIndex: int = baseCenterIndex + 8		# SL
+	
+	# Clockwise-winding triangles, same as the path strip
+	var arrowIndices: Array[int] = [
+		pathRightIndex, baseCenterIndex, innerBaseIndex,	# Right shoulder (turns the outline corner)
+		shoulderLeftIndex, innerBaseIndex, baseCenterIndex,	# Left shoulder
+		pathRightIndex, innerBaseIndex, innerRightIndex,	# Right back edge
+		pathRightIndex, innerRightIndex, wingRightIndex,
+		shoulderLeftIndex, innerLeftIndex, innerBaseIndex,	# Left back edge
+		shoulderLeftIndex, wingLeftIndex, innerLeftIndex,
+		wingRightIndex, innerRightIndex, innerTipIndex,		# Right side
+		wingRightIndex, innerTipIndex, tipIndex,
+		wingLeftIndex, tipIndex, innerTipIndex,				# Left side
+		wingLeftIndex, innerTipIndex, innerLeftIndex,
+		innerBaseIndex, innerTipIndex, innerRightIndex,		# Inner fill
+		innerBaseIndex, innerLeftIndex, innerTipIndex,
+	]
+	for index: int in arrowIndices:
+		st.add_index(index)
 
 # Grab every road connection (for dead-ends and intersections, not linear paths)
 # and key it to a flag to record when a RoadSection is made for it
@@ -155,6 +199,7 @@ func GetRoadSections(connectionMap: Dictionary[Vector3i, bool], data: Dictionary
 		while true:
 			var coords3d: Vector3 = HexToWorldPoint(currentCoords)
 			section.roadVectors.append(coords3d)
+			section.roadCoords.append(currentCoords)
 			
 			# If the current node has non-2 connections (is an intersection) and
 			# if more than one node have been added to the road section (isn't the start),
@@ -208,13 +253,27 @@ func GetCurve(road: Array[Vector3]) -> Curve3D:
 	
 	return curve
 
+# Record the handles of each step along the section in both directions, so a path travelling
+# either way along this road can rebuild the same curve
+func SaveRoadHandles(roadSection: RoadSection, curve: Curve3D) -> void:
+	for index: int in roadSection.roadCoords.size() - 1:
+		var from: Vector2i = roadSection.roadCoords[index]
+		var to: Vector2i = roadSection.roadCoords[index + 1]
+		roadHandles.set(Vector4i(from.x, from.y, to.x, to.y), curve.get_point_out(index))
+		roadHandles.set(Vector4i(to.x, to.y, from.x, from.y), curve.get_point_in(index + 1))
+
 func CreateRoadSectionMesh(curve: Curve3D) -> void:
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
+	AddCurveStrip(st, curve, curve.get_baked_length())
+	CreateMeshInstance(st, roadMaterial)
+
+# Adds a road-width strip along the curve, from its start up to the given length.
+# Returns the number of segments so extra vertices (like an arrow head) can be indexed after it.
+func AddCurveStrip(st: SurfaceTool, curve: Curve3D, length: float) -> int:
 	# Loop along the curve sampling a number of points, the number determined by roadDetail.
 	# Plus one makes sure the end point is also included (inclusive vs exclusive).
-	var numSegments = int(curve.get_baked_length() * roadDetail)
+	var numSegments = int(length * roadDetail)
 	for step: int in numSegments + 1:
 		var dist: float = step / roadDetail
 		var sampledPoint: Transform3D = curve.sample_baked_with_rotation(dist)
@@ -251,12 +310,16 @@ func CreateRoadSectionMesh(curve: Curve3D) -> void:
 			st.add_index((2 * (step + 1)) + 1)		# L1
 			st.add_index(2 * (step + 1))			# R1
 			st.add_index(2 * step)					# R0
-	
+
+	return numSegments
+
+func CreateMeshInstance(st: SurfaceTool, material: ShaderMaterial) -> MeshInstance3D:
 	var mesh: ArrayMesh = st.commit()
 	var obj: MeshInstance3D = MeshInstance3D.new()
 	obj.mesh = mesh
-	obj.material_override = roadMaterial
+	obj.material_override = material
 	self.add_child(obj)
+	return obj
 
 # Builds a flat circle centred on the origin. Each dot node is moved into place with its
 # position, so one mesh can be shared by every dot of the same size.

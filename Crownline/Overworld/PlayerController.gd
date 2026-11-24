@@ -20,22 +20,16 @@ func HandleTileInputEvent(coords: Vector2i, _camera: Node, _event: InputEvent, _
 				SelectUnit(unit)
 	elif _event is InputEventMouseMotion:
 		if selectedUnit != null:
-			if overworldManager.roads.has(coords):
-				if walkablePath != null:
-					walkableRoadGenerator.remove_child(walkablePath)
+			if walkablePath != null:
+				walkablePath.queue_free()
+				walkablePath = null
+			# Only show a path to roads the unit can reach this turn
+			if overworldManager.roads.has(coords) and overworldManager.roads[coords].distance <= WALK_DISTANCE_PER_TURN:
 				walkablePath = walkableRoadGenerator.GenerateWalkablePathMesh(overworldManager.roads[coords], overworldManager.roads[selectedUnit.coords])
-				
-				#var road = overworldManager.roads[coords]
-				#print("Has Previous: " + str(road.previous.coords if road.previous != null else "Null"))
-				
-				
-			#var roads: Dictionary[Vector2i, RoadData] = overworldManager.roads
-			#if roads.has(coords):
-				#var distance: int = roads[coords].distance
-				#var previous: Vector2i = roads[coords].previous.coords if roads[coords].previous != null else coords
-				#print("(" + str(coords) + "): " + str(distance) + " via (" + str(previous) + ")")
 
 func SelectUnit(unit: UnitData) -> void:
+	# Clear out any meshes from a previous selection
+	DeselectUnit()
 	empire.coreUIManager._on_unit_clicked(unit.name)
 	selectedUnit = unit
 	
@@ -56,8 +50,9 @@ func SelectUnit(unit: UnitData) -> void:
 			walkableRoads.set(road.coords, walkableRoad)
 	
 	walkableRoadGenerator.GenerateRoadMeshes(walkableRoads, false)
-	
-	#if roads.has(unit.coords):
-		#var distance: int = roads[unit.coords].distance
-		#var previous: Vector2i = roads[unit.coords].previous.coords if roads[unit.coords].previous != null else unit.coords
-		#print("(" + str(unit.coords) + "): " + str(distance) + " via (" + str(previous) + ")")
+
+func DeselectUnit() -> void:
+	selectedUnit = null
+	walkablePath = null
+	for child: Node in walkableRoadGenerator.get_children():
+		child.queue_free()

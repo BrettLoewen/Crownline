@@ -28,7 +28,7 @@ quickAccess = NodePath("EmpireQuickAccess")
 cityControlUI = NodePath("CityControlUI")
 pauseMenu = NodePath("PauseMenu")
 unitDisplay = NodePath("UnitDisplay")
-unitDisplayLabel = NodePath("UnitDisplay/MarginContainer/UnitNameDisplayLabel")
+unitDisplayLabel = NodePath("UnitDisplay/MarginContainer/HBoxContainer/UnitNameDisplayLabel")
 
 [node name="TopBar" type="PanelContainer" parent="." unique_id=1834885327]
 layout_mode = 1
@@ -122,7 +122,10 @@ grow_vertical = 0
 [node name="MarginContainer" type="MarginContainer" parent="UnitDisplay" unique_id=564352301]
 layout_mode = 2
 
-[node name="UnitNameDisplayLabel" type="RichTextLabel" parent="UnitDisplay/MarginContainer" unique_id=365144334]
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitDisplay/MarginContainer" unique_id=1739204518]
+layout_mode = 2
+
+[node name="UnitNameDisplayLabel" type="RichTextLabel" parent="UnitDisplay/MarginContainer/HBoxContainer" unique_id=365144334]
 layout_mode = 2
 text = "John"
 fit_content = true
@@ -130,6 +133,10 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DeselectButton" type="Button" parent="UnitDisplay/MarginContainer/HBoxContainer" unique_id=882915407]
+layout_mode = 2
+text = "Deselect"
 
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
 [connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
@@ -139,3 +146,4 @@ vertical_alignment = 1
 [connection signal="cityUpdated" from="CityControlUI" to="." method="_on_city_control_ui_city_updated"]
 [connection signal="closeClicked" from="CityControlUI" to="." method="_on_city_control_ui_close_clicked"]
 [connection signal="resumeGame" from="PauseMenu" to="." method="_on_pause_menu_resume_game"]
+[connection signal="pressed" from="UnitDisplay/MarginContainer/HBoxContainer/DeselectButton" to="." method="_on_deselect_button_pressed"]
