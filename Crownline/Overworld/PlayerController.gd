@@ -7,6 +7,7 @@ const WALK_DISTANCE_PER_TURN = 3
 @onready var overworldManager: OverworldManager = $"../../Overworld"
 
 @onready var walkableRoadGenerator: RoadGenerator = $"WalkableRoads"
+var walkablePath: MeshInstance3D
 
 var selectedUnit: UnitData
 
@@ -17,8 +18,17 @@ func HandleTileInputEvent(coords: Vector2i, _camera: Node, _event: InputEvent, _
 		for unit: UnitData in empire.units.values():
 			if unit.coords == coords:
 				SelectUnit(unit)
-	#elif _event is InputEventMouseMotion:
-		#if selectedUnit != null:
+	elif _event is InputEventMouseMotion:
+		if selectedUnit != null:
+			if overworldManager.roads.has(coords):
+				if walkablePath != null:
+					walkableRoadGenerator.remove_child(walkablePath)
+				walkablePath = walkableRoadGenerator.GenerateWalkablePathMesh(overworldManager.roads[coords], overworldManager.roads[selectedUnit.coords])
+				
+				#var road = overworldManager.roads[coords]
+				#print("Has Previous: " + str(road.previous.coords if road.previous != null else "Null"))
+				
+				
 			#var roads: Dictionary[Vector2i, RoadData] = overworldManager.roads
 			#if roads.has(coords):
 				#var distance: int = roads[coords].distance

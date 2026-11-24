@@ -7,6 +7,7 @@ class RoadSection:
 @export var roadY: float = 0.21
 @export var roadDotY: float = 0.22
 @export var intersectionDotY: float = 0.23
+@export var walkablePathY: float = 0.215
 
 @export var roadCurve: float = 6.0
 @export var roadDetail: float = 20.0
@@ -20,6 +21,10 @@ class RoadSection:
 @export var intersectionDotWidth: float = 0.3
 @export var intersectionDotDetail: int = 20
 @export var intersectionDotMaterial: ShaderMaterial
+
+@export var walkablePathMaterial: ShaderMaterial
+@export var arrowLength: float = 0.5
+@export var arrowWidth: float = 0.5
 
 func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], _includeDots: bool = true) -> void:
 	var connectionMap: Dictionary[Vector3i, bool] = GetConnections(data)
@@ -38,6 +43,87 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], _includeDots: bool
 		sectionIndex += 1
 	if _includeDots:
 		CreateRoadIntersectionDotMeshes(data, intersectionDotMesh)
+
+func GenerateWalkablePathMesh(destination: RoadData, start: RoadData) -> MeshInstance3D:
+	if destination == start:
+		return
+	var pathPositions: Array[Vector3] = []
+	var current: RoadData = destination
+	while current != null:
+		var pos = HexToWorldPoint(current.coords)
+		pathPositions.append(Vector3(pos.x, walkablePathY, pos.z))
+		current = current.previous
+		
+	if pathPositions.size() <= 1:
+		return
+	pathPositions.reverse()
+	var curve: Curve3D = GetCurve(pathPositions)
+	
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	# Loop along the curve sampling a number of points, the number determined by roadDetail.
+	# Plus one makes sure the end point is also included (inclusive vs exclusive).
+	var numSegments = int((curve.get_baked_length() - arrowLength) * roadDetail)
+	var dist: float = 0.0
+	for step: int in numSegments + 1:
+		dist = step / roadDetail
+		var pathSampledPoint: Transform3D = curve.sample_baked_with_rotation(dist)
+		
+		# Start at the sampled point, add offset by half the width using the point's rotation (basis)
+		var pathRightPoint: Vector3 = pathSampledPoint.origin + (pathSampledPoint.basis.x * roadWidth / 2.0)
+		var pathLeftPoint: Vector3 = pathSampledPoint.origin + (-pathSampledPoint.basis.x * roadWidth / 2.0)
+		
+		st.set_uv(Vector2(dist, 0))
+		st.add_vertex(pathRightPoint)
+		st.set_uv(Vector2(dist, 1))
+		st.add_vertex(pathLeftPoint)
+		
+		# Vertices get added linearly (right, left, right, left, etc.) and need to get combined into
+		# clockwise-winding triangles for the mesh
+		# L0 ---- L1
+		# |       |
+		# R0 ---- R1     (road heading → this way)
+		# 
+		# L(i == 1) ---- L(i == 3)
+		# |              |
+		# R(i == 0) ---- R(i == 2)
+		# 
+		# L((2*step)+1) ---- L((2*(step+1))+1)
+		# |                  |
+		# R(2*step) -------- R(2*(step+1))
+		# 
+		# Triangle 1: R(2*step), L((2*step)+1), L((2*(step+1))+1)
+		# Triangle 2: L((2*(step+1))+1), R(2*(step+1)), R(2*step)
+		if step < numSegments:
+			st.add_index(2 * step)					# R0
+			st.add_index((2 * step) + 1)			# L0
+			st.add_index((2 * (step + 1)) + 1)		# L1
+			st.add_index((2 * (step + 1)) + 1)		# L1
+			st.add_index(2 * (step + 1))			# R1
+			st.add_index(2 * step)					# R0
+	
+	var sampledPoint: Transform3D = curve.sample_baked_with_rotation(dist)
+	var rightPoint: Vector3 = sampledPoint.origin + (sampledPoint.basis.x * arrowWidth / 2.0)
+	var leftPoint: Vector3 = sampledPoint.origin + (-sampledPoint.basis.x * arrowWidth / 2.0)
+	var endPoint: Vector3 = curve.sample_baked_with_rotation(1.0).origin
+	st.set_uv(Vector2(dist, 1))
+	st.add_vertex(rightPoint)		# (numSegments + 1) * 2
+	st.set_uv(Vector2(dist, 1))
+	st.add_vertex(leftPoint)		# ((numSegments + 1) * 2) + 1
+	st.set_uv(Vector2(dist, 1))
+	st.add_vertex(endPoint)			# (numSegments + 2) * 2
+	
+	st.add_index((numSegments + 1) * 2)
+	st.add_index(((numSegments + 1) * 2) + 1)
+	st.add_index((numSegments + 2) * 2)
+	
+	var mesh: ArrayMesh = st.commit()
+	var obj: MeshInstance3D = MeshInstance3D.new()
+	obj.mesh = mesh
+	obj.material_override = walkablePathMaterial
+	self.add_child(obj)
+	return obj
 
 # Grab every road connection (for dead-ends and intersections, not linear paths)
 # and key it to a flag to record when a RoadSection is made for it

@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://de1enmt44t5sr" path="res://Overworld/MapUnit.tscn" id="16_23kps"]
 [ext_resource type="Script" uid="uid://drmnxjq2scnch" path="res://Overworld/PlayerController.gd" id="17_kgvnc"]
 [ext_resource type="Material" uid="uid://3iodmd15hxj" path="res://Overworld/Roads/WalkableRoadMaterial.tres" id="18_b1dxb"]
+[ext_resource type="Material" uid="uid://bqyajp11cch4k" path="res://Overworld/Roads/WalkablePathMaterial.tres" id="19_7e0qx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_68let"]
 
@@ -88,10 +89,12 @@ script = ExtResource("4_4rymo")
 roadY = 0.215
 roadDotY = 0.221
 intersectionDotY = 0.231
+walkablePathY = 0.216
 roadMaterial = ExtResource("18_b1dxb")
 roadDotMaterial = ExtResource("6_0u72k")
 intersectionDotWidth = 0.35
 intersectionDotMaterial = ExtResource("7_3rv81")
+walkablePathMaterial = ExtResource("19_7e0qx")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 
