@@ -2,10 +2,19 @@
 
 [ext_resource type="Script" uid="uid://jvjbotdyphwb" path="res://CharacterCreator/UnitAnimator.gd" id="1_78pdv"]
 [ext_resource type="PackedScene" uid="uid://cu32uffv4weva" path="res://Packages/Modular Character/ModularCharacter.fbx" id="2_pt8ix"]
+[ext_resource type="AnimationLibrary" uid="uid://d2pimjllk5dpg" path="res://Art/Animation/Swordsman.tres" id="3_f04gk"]
 
-[node name="UnitAnimator" type="Node3D" unique_id=1401109805]
+[node name="UnitAnimator" type="Node3D" unique_id=1401109805 node_paths=PackedStringArray("modularAnimationPlayer")]
 script = ExtResource("1_78pdv")
+modularAnimationPlayer = NodePath("ModularHumanoid/AnimationPlayer")
 
 [node name="ModularHumanoid" type="Node3D" parent="." unique_id=573095397]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="ModularCharacter" parent="ModularHumanoid" unique_id=1418663991 instance=ExtResource("2_pt8ix")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ModularHumanoid" unique_id=2092949971]
+root_node = NodePath("../ModularCharacter")
+root_motion_track = NodePath("%GeneralSkeleton:Root")
+libraries/Swordsman = ExtResource("3_f04gk")
+autoplay = &"Swordsman/SwordsmanIdle"

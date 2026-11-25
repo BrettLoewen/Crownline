@@ -2,7 +2,7 @@ class_name MapUnit
 extends Node3D
 
 @export var unitAnimator: UnitAnimator
-@export var moveSpeed: float = 2.0
+@export var moveSpeed: float = 2
 
 var curve: Curve3D
 var isWalking: bool = false
@@ -22,6 +22,7 @@ func _process(delta: float) -> void:
 			isWalking = false
 			progressPercent = 1.0
 			curve = null
+			unitAnimator.PlayAnimation("SwordsmanIdle", 1.0)
 		else:
 			progressPercent = nextLength / curveLength
 
@@ -60,3 +61,4 @@ func WalkCurve(newCurve: Curve3D) -> void:
 	curve = newCurve
 	isWalking = true
 	progressPercent = 0.0
+	unitAnimator.PlayAnimation("SwordsmanRun", 1.0)
