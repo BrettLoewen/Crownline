@@ -8,24 +8,36 @@ const WALK_DISTANCE_PER_TURN = 3
 
 @onready var walkableRoadGenerator: RoadGenerator = $"WalkableRoads"
 var walkablePath: MeshInstance3D
+var walkableCurve: Curve3D
 
 var selectedUnit: UnitData
 
 func HandleTileInputEvent(coords: Vector2i, _camera: Node, _event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if _event.is_action_pressed("MouseSelect"):
-		print(coords)
-		
-		for unit: UnitData in empire.units.values():
-			if unit.coords == coords:
-				SelectUnit(unit)
+		if selectedUnit == null:
+			for unit: UnitData in empire.units.values():
+				if unit.coords == coords:
+					SelectUnit(unit)
+		else:
+			if overworldManager.roads.has(coords) and overworldManager.roads[coords].distance <= WALK_DISTANCE_PER_TURN:
+				if walkablePath != null and walkableCurve != null:
+					selectedUnit.mapUnit.WalkCurve(walkableCurve)
+					DeselectUnit()
 	elif _event is InputEventMouseMotion:
 		if selectedUnit != null:
 			if walkablePath != null:
 				walkablePath.queue_free()
 				walkablePath = null
+				walkableCurve = null
 			# Only show a path to roads the unit can reach this turn
 			if overworldManager.roads.has(coords) and overworldManager.roads[coords].distance <= WALK_DISTANCE_PER_TURN:
-				walkablePath = walkableRoadGenerator.GenerateWalkablePathMesh(overworldManager.roads[coords], overworldManager.roads[selectedUnit.coords])
+				var walkableData: Dictionary = walkableRoadGenerator.GenerateWalkablePathMesh(overworldManager.roads[coords], overworldManager.roads[selectedUnit.coords])
+				if walkableData.has("mesh"):
+					walkablePath = walkableData["mesh"]
+					walkableCurve = walkableData["curve"]
+				else:
+					walkablePath = null
+					walkableCurve = null
 
 func SelectUnit(unit: UnitData) -> void:
 	# Clear out any meshes from a previous selection

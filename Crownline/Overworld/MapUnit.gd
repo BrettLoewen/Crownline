@@ -2,6 +2,28 @@ class_name MapUnit
 extends Node3D
 
 @export var unitAnimator: UnitAnimator
+@export var moveSpeed: float = 2.0
+
+var curve: Curve3D
+var isWalking: bool = false
+var progressPercent: float = 0.0
+
+func _process(delta: float) -> void:
+	if isWalking and curve != null:
+		var curveLength: float = curve.get_baked_length()
+		var walkedLength: float = progressPercent * curveLength
+		var nextLength: float = walkedLength + (moveSpeed * delta)
+		if nextLength >= curveLength:
+			nextLength = curveLength
+		var nextPos: Transform3D = curve.sample_baked_with_rotation(nextLength)
+		position = nextPos.origin
+		rotation = nextPos.basis.get_euler()
+		if nextLength == curveLength:
+			isWalking = false
+			progressPercent = 1.0
+			curve = null
+		else:
+			progressPercent = nextLength / curveLength
 
 func Setup(appearanceData: Array[String]) -> void:
 	unitAnimator.SetupModularCharacter(appearanceData)
@@ -33,3 +55,8 @@ func GetConnectedRoads(road: RoadData, allRoads: Array[RoadData]) -> Array[RoadD
 			if connectedVector2i == r.coords:
 				connectedRoads.append(r)
 	return connectedRoads
+
+func WalkCurve(newCurve: Curve3D) -> void:
+	curve = newCurve
+	isWalking = true
+	progressPercent = 0.0

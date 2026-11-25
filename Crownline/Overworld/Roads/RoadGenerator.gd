@@ -51,9 +51,9 @@ func GenerateRoadMeshes(data: Dictionary[Vector2i, RoadData], _includeDots: bool
 	if _includeDots:
 		CreateRoadIntersectionDotMeshes(data, intersectionDotMesh)
 
-func GenerateWalkablePathMesh(destination: RoadData, start: RoadData) -> MeshInstance3D:
+func GenerateWalkablePathMesh(destination: RoadData, start: RoadData) -> Dictionary:
 	if destination == start:
-		return
+		return {}
 	var pathCoords: Array[Vector2i] = []
 	var current: RoadData = destination
 	while current != null:
@@ -61,7 +61,7 @@ func GenerateWalkablePathMesh(destination: RoadData, start: RoadData) -> MeshIns
 		current = current.previous
 	
 	if pathCoords.size() <= 1:
-		return
+		return {}
 	pathCoords.reverse()
 	
 	# Build the curve from the saved road handles instead of GetCurve so it matches the roads beneath it
@@ -87,7 +87,7 @@ func GenerateWalkablePathMesh(destination: RoadData, start: RoadData) -> MeshIns
 	var numSegments: int = AddCurveStrip(st, curve, curve.get_baked_length() - arrowLength)
 	AddArrowHead(st, curve, numSegments)
 
-	return CreateMeshInstance(st, walkablePathMaterial)
+	return {"mesh": CreateMeshInstance(st, walkablePathMaterial), "curve": curve}
 
 # The road shader colours by UV.y (0.5 = centre, 0 or 1 = edge), so to keep the outline the same
 # width as the path, the arrow is an outer triangle with an inner triangle inset by half the road
