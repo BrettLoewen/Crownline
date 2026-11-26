@@ -26,7 +26,8 @@ func _ready() -> void:
 	while overworldManager.loadedMap == false:
 		await get_tree().process_frame
 	
-	cityBars.Setup(empire.GetCityData())
+	# Every city on the map gets a bar, the quick access only shows the player's own
+	cityBars.Setup(SaveDataManager.instance.GetCities())
 	quickAccess.Setup(empire.GetCityData(), empire.GetUnitData())
 	
 	isLoaded = true
@@ -52,7 +53,7 @@ func _on_turn_display_next_turn_signal() -> void:
 	empire.DoTurn()
 
 func _on_city_clicked(cityCoords: Vector2i) -> void:
-	cityControlUI.Setup(empire.GetCityData()[cityCoords])
+	cityControlUI.Setup(SaveDataManager.instance.GetCity(cityCoords))
 	cityControlUI.visible = true
 
 func _on_city_control_ui_close_clicked() -> void:

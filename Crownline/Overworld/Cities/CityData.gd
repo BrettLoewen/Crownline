@@ -2,6 +2,7 @@ class_name CityData
 extends RefCounted
 
 var name: String = "New City"
+var empire: String = ""
 var population: int = 1
 
 var buildings: Array[BuildingData]

@@ -6,6 +6,8 @@ extends Node3D
 @export var tileSize: Vector2
 @export var cityScene: PackedScene
 @export var cityParent: Node3D
+@export var unitScene: PackedScene
+@export var unitParent: Node3D
 @export var roadGenerator: RoadGenerator
 @export var empire: Empire
 @export var coreUIManager: CoreUIManager
@@ -19,11 +21,13 @@ func _ready() -> void:
 	_LoadMap()
 
 func _LoadMap() -> void:
-	var mapData: MapData = OverworldDataManager.GetWorldData()
-	var tilemapData: Dictionary[Vector2i, MapTileType] = mapData.tilemap
-	var citiesData: Dictionary[Vector2i, CityData] = empire.GetCityData()
+	var saveData: SaveDataManager = SaveDataManager.instance
+	var tilemapData: Dictionary[Vector2i, MapTileType] = saveData.GetTilemap()
+	# All cities and units on the map, regardless of which empire owns them
+	var citiesData: Dictionary[Vector2i, CityData] = saveData.GetCities()
+	var unitsData: Dictionary[String, UnitData] = saveData.GetUnits()
 	
-	roads = mapData.roads
+	roads = saveData.GetRoads()
 	roadGenerator.GenerateRoadMeshes(roads)
 	
 	for coords in tilemapData:
@@ -52,6 +56,21 @@ func _LoadMap() -> void:
 				cityParent.add_child(city)
 				
 				cityData.mapCity = city
+	
+	for unitName in unitsData:
+		var unitData: UnitData = unitsData[unitName]
+		
+		if unitScene != null:
+			var unit: MapUnit = unitScene.instantiate() as MapUnit
+			if unit != null:
+				var hexCoords = ConvertGridToHexCoords(unitData.coords)
+				unit.position = Vector3(hexCoords.x, 0.2, hexCoords.y)
+				unit.name = unitData.name
+				unitParent.add_child(unit)
+				# Setup after adding to the tree so the animator's nodes are ready
+				unit.Setup(unitData.appearanceData)
+				
+				unitData.mapUnit = unit
 	
 	loadedMap = true
 

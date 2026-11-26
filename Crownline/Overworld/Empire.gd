@@ -1,81 +1,45 @@
 class_name Empire
 extends Node3D
 
-var cities: Dictionary[Vector2i, CityData] = {}
-var commodityData: Dictionary[Commodity.CommodityType, CommodityData] = {}
-var units: Dictionary[String, UnitData] = {}
+# Runtime controller for the player's empire. All data lives in SaveDataManager.
 
 @export var coreUIManager: CoreUIManager
-@export var goldCommodity: Commodity
-@export var foodCommodity: Commodity
-@export var ironCommodity: Commodity
 
-# For early development, remove later
-@export var cityOneBuildings: Array[Building]
+var empireId: String
 
 func _ready() -> void:
-	# Create 2 cities with different setups
-	var cityOne: CityData = CityData.new()
-	cityOne.name = "Enbarr"
-	for b: Building in cityOneBuildings:
-		var bd: BuildingData = BuildingData.new(b)
-		bd.turnsToBuild = 0
-		cityOne.buildings.append(bd)
-	cityOne.coords = Vector2i(2, -1)
-	cities.set(cityOne.coords, cityOne)
-	var cityTwo: CityData = CityData.new()
-	cityTwo.name = "Fhirdiad"
-	cityTwo.coords = Vector2i(-1, 2)
-	cities.set(cityTwo.coords, cityTwo)
-	
-	var goldData: CommodityData = CommodityData.new()
-	goldData.commodity = goldCommodity
-	goldData.amount = 500
-	commodityData.set(Commodity.CommodityType.GOLD, goldData)
-	var foodData: CommodityData = CommodityData.new()
-	foodData.commodity = foodCommodity
-	foodData.amount = 200
-	commodityData.set(Commodity.CommodityType.FOOD, foodData)
-	var ironData: CommodityData = CommodityData.new()
-	ironData.commodity = ironCommodity
-	ironData.amount = 100
-	commodityData.set(Commodity.CommodityType.IRON, ironData)
-	
+	empireId = SaveDataManager.instance.GetPlayerEmpireId()
+
 	UpdateCommodityTurnProfits()
-	
-	coreUIManager.commodityManager.UpdateCommodityDisplays(commodityData)
-	
-	var unitOne: UnitData = UnitData.new()
-	unitOne.name = "John"
-	unitOne.mapUnit = $"../Units/MapUnit"
-	unitOne.coords = Vector2i(0, 1)
-	unitOne.mapUnit.Setup(unitOne.appearanceData)
-	units.set("John", unitOne)
 
 func DoTurn() -> void:
-	for city: CityData in cities.values():
+	for city: CityData in GetCityData().values():
 		# Progress construction of buildings
 		for building: BuildingData in city.buildings:
 			if building.turnsToBuild > 0:
 				building.turnsToBuild -= 1
 		# Ensure newly constructed buildings are shown
 		city.mapCity.UpdateCityVisuals()
-	
+
 	UpdateCommodityTurnProfits()
-	
-	for commodity: CommodityData in commodityData.values():
+
+	for commodity: CommodityData in GetCommodityData().values():
 		commodity.amount += commodity.turnProfit
-	
-	coreUIManager.commodityManager.UpdateCommodityDisplays(commodityData)
+
+	coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())
 
 func GetCityData() -> Dictionary[Vector2i, CityData]:
-	return cities
+	return SaveDataManager.instance.GetCitiesForEmpire(empireId)
 
 func GetUnitData() -> Dictionary[String, UnitData]:
-	return units
+	return SaveDataManager.instance.GetUnitsForEmpire(empireId)
+
+func GetCommodityData() -> Dictionary[Commodity.CommodityType, CommodityData]:
+	return SaveDataManager.instance.GetCommodities(empireId)
 
 func UpdateCommodityTurnProfits() -> void:
-	for c: CommodityData in commodityData.values():
+	var cities: Dictionary[Vector2i, CityData] = GetCityData()
+	for c: CommodityData in GetCommodityData().values():
 		var turnProfit: int = 0
 		for city: CityData in cities.values():
 			for building: BuildingData in city.buildings:
@@ -85,4 +49,4 @@ func UpdateCommodityTurnProfits() -> void:
 				if building.turnsToBuild == 0 and building.building.commodity != null and building.building.commodity.name == c.commodity.name:
 					turnProfit += building.building.commodityAmount
 		c.turnProfit = turnProfit
-	coreUIManager.commodityManager.UpdateCommodityDisplays(commodityData)
+	coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())

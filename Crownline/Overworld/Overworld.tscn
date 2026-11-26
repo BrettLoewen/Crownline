@@ -9,13 +9,7 @@
 [ext_resource type="Material" uid="uid://1bevfr0m1h5q" path="res://Overworld/Roads/RoadDotMaterial.tres" id="6_0u72k"]
 [ext_resource type="Material" uid="uid://dg7xbvn4fqkta" path="res://Overworld/Roads/IntersectionDotMaterial.tres" id="7_3rv81"]
 [ext_resource type="PackedScene" uid="uid://dp7et4lkt8pd2" path="res://Overworld/UI/CoreDisplay.tscn" id="8_w5i8j"]
-[ext_resource type="Resource" uid="uid://coqnnugswltpb" path="res://Overworld/Commodities/Commodities/Gold.tres" id="9_1c5pt"]
-[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="9_p3a16"]
 [ext_resource type="Script" uid="uid://pfwo4d6vmyfc" path="res://Overworld/Empire.gd" id="9_paq86"]
-[ext_resource type="Resource" uid="uid://i26racy3jp3o" path="res://Overworld/Buildings/Buildings/Walls.tres" id="10_wiiu0"]
-[ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="10_xj8sk"]
-[ext_resource type="Resource" uid="uid://lr3swtc5h50a" path="res://Overworld/Commodities/Commodities/Iron.tres" id="11_23kps"]
-[ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="11_jgjic"]
 [ext_resource type="PackedScene" uid="uid://de1enmt44t5sr" path="res://Overworld/MapUnit.tscn" id="16_23kps"]
 [ext_resource type="Script" uid="uid://drmnxjq2scnch" path="res://Overworld/PlayerController.gd" id="17_kgvnc"]
 [ext_resource type="Material" uid="uid://3iodmd15hxj" path="res://Overworld/Roads/WalkableRoadMaterial.tres" id="18_b1dxb"]
@@ -33,13 +27,15 @@ ambient_light_source = 3
 ambient_light_energy = 0.8
 tonemap_mode = 2
 
-[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent", "cityParent", "roadGenerator", "empire", "coreUIManager", "playerController")]
+[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent", "cityParent", "unitParent", "roadGenerator", "empire", "coreUIManager", "playerController")]
 script = ExtResource("1_m0wi0")
 mapTileScene = ExtResource("2_c5u67")
 tileMapParent = NodePath("TileMap")
 tileSize = Vector2(1, 0.87)
 cityScene = ExtResource("3_68let")
 cityParent = NodePath("Cities")
+unitScene = ExtResource("16_23kps")
+unitParent = NodePath("Units")
 roadGenerator = NodePath("Roads")
 empire = NodePath("Empire")
 coreUIManager = NodePath("CanvasLayer/CoreDisplay")
@@ -70,16 +66,9 @@ intersectionDotMaterial = ExtResource("7_3rv81")
 
 [node name="Units" type="Node3D" parent="." unique_id=1094873246]
 
-[node name="MapUnit" parent="Units" unique_id=142065167 instance=ExtResource("16_23kps")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.5, 0.2, 0.87)
-
 [node name="Empire" type="Node3D" parent="." unique_id=482878947 node_paths=PackedStringArray("coreUIManager")]
 script = ExtResource("9_paq86")
 coreUIManager = NodePath("../CanvasLayer/CoreDisplay")
-goldCommodity = ExtResource("9_1c5pt")
-foodCommodity = ExtResource("10_xj8sk")
-ironCommodity = ExtResource("11_23kps")
-cityOneBuildings = Array[ExtResource("9_p3a16")]([ExtResource("10_wiiu0"), ExtResource("11_jgjic")])
 
 [node name="PlayerController" type="Node3D" parent="." unique_id=1128486340]
 script = ExtResource("17_kgvnc")

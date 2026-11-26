@@ -1,12 +1,26 @@
 [gd_scene format=3 uid="uid://dhljal4l6gswt"]
 
+[ext_resource type="Script" uid="uid://cnbk6wh5bmasv" path="res://PersistentScene/SaveDataManager.gd" id="1_74thl"]
 [ext_resource type="Script" uid="uid://clrvis45kgyg0" path="res://PersistentScene/SceneManager.gd" id="1_o8jx0"]
 [ext_resource type="PackedScene" uid="uid://b7rwemad88cvf" path="res://MainMenu/MainMenu.tscn" id="2_3cxgh"]
 [ext_resource type="Theme" uid="uid://defkbetwysh8u" path="res://PersistentScene/LoadingScreenTheme.tres" id="2_rmb5a"]
 [ext_resource type="PackedScene" uid="uid://cyrixlhlfuc8e" path="res://GameScene/Game.tscn" id="3_3cxgh"]
 [ext_resource type="PackedScene" uid="uid://b1ioaxehwrvxn" path="res://CharacterCreator/CharacterCreator.tscn" id="4_nf17l"]
+[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="5_bldg"]
+[ext_resource type="Resource" uid="uid://i26racy3jp3o" path="res://Overworld/Buildings/Buildings/Walls.tres" id="6_wall"]
+[ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="7_keep"]
+[ext_resource type="Resource" uid="uid://coqnnugswltpb" path="res://Overworld/Commodities/Commodities/Gold.tres" id="8_gold"]
+[ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="9_food"]
+[ext_resource type="Resource" uid="uid://lr3swtc5h50a" path="res://Overworld/Commodities/Commodities/Iron.tres" id="10_iron"]
 
 [node name="PersistentScene" type="Node" unique_id=1636791970]
+
+[node name="SaveDataManager" type="Node" parent="." unique_id=1090819631]
+script = ExtResource("1_74thl")
+cityOneBuildings = Array[ExtResource("5_bldg")]([ExtResource("6_wall"), ExtResource("7_keep")])
+goldCommodity = ExtResource("8_gold")
+foodCommodity = ExtResource("9_food")
+ironCommodity = ExtResource("10_iron")
 
 [node name="SceneManager" type="Node" parent="." unique_id=321475283 node_paths=PackedStringArray("loadingScreen")]
 script = ExtResource("1_o8jx0")

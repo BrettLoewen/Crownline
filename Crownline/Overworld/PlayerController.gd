@@ -15,7 +15,7 @@ var selectedUnit: UnitData
 func HandleTileInputEvent(coords: Vector2i, _camera: Node, _event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if _event.is_action_pressed("MouseSelect"):
 		if selectedUnit == null:
-			for unit: UnitData in empire.units.values():
+			for unit: UnitData in empire.GetUnitData().values():
 				if unit.coords == coords:
 					SelectUnit(unit)
 		else:

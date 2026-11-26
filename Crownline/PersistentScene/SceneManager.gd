@@ -45,6 +45,8 @@ func LoadGame() -> void:
 	if mainMenu != null:
 		get_tree().root.remove_child(mainMenu)
 	
+	SaveDataManager.instance.LoadGameData()
+	
 	gameManager = gameScene.instantiate() as GameManager
 	get_tree().root.add_child.call_deferred(gameManager)
 	
