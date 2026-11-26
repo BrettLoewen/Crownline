@@ -31,7 +31,6 @@ tonemap_mode = 2
 script = ExtResource("1_m0wi0")
 mapTileScene = ExtResource("2_c5u67")
 tileMapParent = NodePath("TileMap")
-tileSize = Vector2(1, 0.87)
 cityScene = ExtResource("3_68let")
 cityParent = NodePath("Cities")
 unitScene = ExtResource("16_23kps")
@@ -70,8 +69,11 @@ intersectionDotMaterial = ExtResource("7_3rv81")
 script = ExtResource("9_paq86")
 coreUIManager = NodePath("../CanvasLayer/CoreDisplay")
 
-[node name="PlayerController" type="Node3D" parent="." unique_id=1128486340]
+[node name="PlayerController" type="Node3D" parent="." unique_id=1128486340 node_paths=PackedStringArray("empire", "overworldManager", "walkableRoadGenerator")]
 script = ExtResource("17_kgvnc")
+empire = NodePath("../Empire")
+overworldManager = NodePath("..")
+walkableRoadGenerator = NodePath("WalkableRoads")
 
 [node name="WalkableRoads" type="Node3D" parent="PlayerController" unique_id=467700542]
 script = ExtResource("4_4rymo")

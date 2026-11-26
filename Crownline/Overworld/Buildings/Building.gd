@@ -11,6 +11,6 @@ extends Resource
 
 func CityMeetsPrerequisites(city: CityData) -> bool:
 	for prereqBuilding: Building in prerequisiteBuildings:
-		if not city.HasBuilding(prereqBuilding):
+		if not city.HasBuilding(prereqBuilding, false):
 			return false 
 	return true

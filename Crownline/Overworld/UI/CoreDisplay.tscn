@@ -139,7 +139,7 @@ layout_mode = 2
 text = "Deselect"
 
 [connection signal="nextTurnSignal" from="TurnDisplay" to="." method="_on_turn_display_next_turn_signal"]
-[connection signal="button_up" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_button_up"]
+[connection signal="pressed" from="TurnDisplay/MarginContainer/VBoxContainer/NextTurnButton" to="TurnDisplay" method="_on_next_turn_button_pressed"]
 [connection signal="cityBarClicked" from="CityBars" to="." method="_on_city_clicked"]
 [connection signal="cityQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_city_clicked"]
 [connection signal="unitQuickAccessClicked" from="EmpireQuickAccess" to="." method="_on_unit_clicked"]

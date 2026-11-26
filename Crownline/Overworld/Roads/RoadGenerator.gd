@@ -375,14 +375,5 @@ func CreateRoadIntersectionDotMeshes(data: Dictionary[Vector2i, RoadData], dotMe
 		self.add_child(obj)
 
 func HexToWorldPoint(point: Vector2i) -> Vector3:
-	var vec = ConvertGridToHexCoords(point)
+	var vec: Vector2 = HexMath.GridToWorld(point)
 	return Vector3(vec.x, roadY, vec.y)
-
-func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
-	var tileSize = Vector2(1, 0.87)
-	var xOffset = 0
-	if inputCoords.y % 2 != 0:
-		xOffset = (tileSize.x / 2)
-	var tileX = inputCoords.x * tileSize.x + xOffset
-	var tileZ = inputCoords.y * tileSize.y
-	return Vector2(tileX, tileZ)

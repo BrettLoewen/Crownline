@@ -1,7 +1,7 @@
 class_name CityQuickAccess
 extends PanelContainer
 
-signal barClicked(Vector2i)
+signal barClicked(cityCoords: Vector2i)
 
 @export var cityNameLabel: RichTextLabel
 

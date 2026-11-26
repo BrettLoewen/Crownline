@@ -21,7 +21,8 @@ func DoTurn() -> void:
 		# Ensure newly constructed buildings are shown
 		city.mapCity.UpdateCityVisuals()
 
-	UpdateCommodityTurnProfits()
+	# Display is refreshed once below, after the amounts change
+	CalculateCommodityTurnProfits()
 
 	for commodity: CommodityData in GetCommodityData().values():
 		commodity.amount += commodity.turnProfit
@@ -38,6 +39,10 @@ func GetCommodityData() -> Dictionary[Commodity.CommodityType, CommodityData]:
 	return SaveDataManager.instance.GetCommodities(empireId)
 
 func UpdateCommodityTurnProfits() -> void:
+	CalculateCommodityTurnProfits()
+	coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())
+
+func CalculateCommodityTurnProfits() -> void:
 	var cities: Dictionary[Vector2i, CityData] = GetCityData()
 	for c: CommodityData in GetCommodityData().values():
 		var turnProfit: int = 0
@@ -49,4 +54,3 @@ func UpdateCommodityTurnProfits() -> void:
 				if building.turnsToBuild == 0 and building.building.commodity != null and building.building.commodity.name == c.commodity.name:
 					turnProfit += building.building.commodityAmount
 		c.turnProfit = turnProfit
-	coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())

@@ -1,12 +1,14 @@
 class_name PlayerController
 extends Node3D
 
+signal unitSelected(unit: UnitData)
+signal unitDeselected
+
 const WALK_DISTANCE_PER_TURN = 3
 
-@onready var empire: Empire = $"../Empire"
-@onready var overworldManager: OverworldManager = $"../../Overworld"
-
-@onready var walkableRoadGenerator: RoadGenerator = $"WalkableRoads"
+@export var empire: Empire
+@export var overworldManager: OverworldManager
+@export var walkableRoadGenerator: RoadGenerator
 var walkablePath: MeshInstance3D
 var walkableCurve: Curve3D
 
@@ -22,6 +24,7 @@ func HandleTileInputEvent(coords: Vector2i, _camera: Node, _event: InputEvent, _
 			if overworldManager.roads.has(coords) and overworldManager.roads[coords].distance <= WALK_DISTANCE_PER_TURN:
 				if walkablePath != null and walkableCurve != null:
 					selectedUnit.mapUnit.WalkCurve(walkableCurve)
+					selectedUnit.coords = coords
 					DeselectUnit()
 	elif _event is InputEventMouseMotion:
 		if selectedUnit != null:
@@ -42,9 +45,9 @@ func HandleTileInputEvent(coords: Vector2i, _camera: Node, _event: InputEvent, _
 func SelectUnit(unit: UnitData) -> void:
 	# Clear out any meshes from a previous selection
 	DeselectUnit()
-	empire.coreUIManager._on_unit_clicked(unit.name)
 	selectedUnit = unit
-	
+	unitSelected.emit(unit)
+
 	var roads: Dictionary[Vector2i, RoadData] = overworldManager.roads
 	unit.mapUnit.CalculateWalkableTiles(unit.coords, roads)
 	var walkableRoads: Dictionary[Vector2i, RoadData] = {}
@@ -68,3 +71,4 @@ func DeselectUnit() -> void:
 	walkablePath = null
 	for child: Node in walkableRoadGenerator.get_children():
 		child.queue_free()
+	unitDeselected.emit()

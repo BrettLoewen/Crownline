@@ -11,7 +11,7 @@ var maxTurns: int = 300
 func Setup() -> void:
 	DisplayTurn()
 
-func _on_next_turn_button_button_up() -> void:
+func _on_next_turn_button_pressed() -> void:
 	turn += 1
 	DisplayTurn()
 	nextTurnSignal.emit()

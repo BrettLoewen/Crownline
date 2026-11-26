@@ -23,18 +23,17 @@ func LoadMainMenu() -> void:
 	loadingScreen.visible = true
 	
 	if gameManager != null:
-		get_tree().root.remove_child(gameManager)
+		gameManager.queue_free()
 		gameManager = null
 	
 	if characterCreator != null:
-		get_tree().root.remove_child(characterCreator)
+		characterCreator.queue_free()
 		characterCreator = null
 	
 	mainMenu = mainMenuScene.instantiate() as MainMenu
 	get_tree().root.add_child.call_deferred(mainMenu)
 	
-	while mainMenu == null or mainMenu.loaded == false:
-		await get_tree().process_frame
+	await mainMenu.ready
 	
 	loadingScreen.visible = false
 	
@@ -43,15 +42,15 @@ func LoadGame() -> void:
 	loadingScreen.visible = true
 	
 	if mainMenu != null:
-		get_tree().root.remove_child(mainMenu)
+		mainMenu.queue_free()
+		mainMenu = null
 	
 	SaveDataManager.instance.LoadGameData()
 	
 	gameManager = gameScene.instantiate() as GameManager
 	get_tree().root.add_child.call_deferred(gameManager)
 	
-	while gameManager == null or gameManager.IsLoaded() == false:
-		await get_tree().process_frame
+	await gameManager.loaded
 	
 	loadingScreen.visible = false
 	
@@ -60,12 +59,12 @@ func LoadCharacterCreator() -> void:
 	loadingScreen.visible = true
 	
 	if mainMenu != null:
-		get_tree().root.remove_child(mainMenu)
+		mainMenu.queue_free()
+		mainMenu = null
 	
 	characterCreator = characterCreatorScene.instantiate() as CharacterCreator
 	get_tree().root.add_child.call_deferred(characterCreator)
 	
-	while characterCreator == null:
-		await get_tree().process_frame
+	await characterCreator.ready
 	
 	loadingScreen.visible = false

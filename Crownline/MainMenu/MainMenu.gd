@@ -1,11 +1,6 @@
 class_name MainMenu
 extends Node
 
-var loaded: bool = false
-
-func _ready() -> void:
-	loaded = true
-
 func _on_play_button_pressed() -> void:
 	SceneManager.instance.LoadGame()
 

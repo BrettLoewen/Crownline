@@ -3,7 +3,7 @@ extends PanelContainer
 
 enum BuildingButtonMode {NEW_BUILDING, CURRENT_BUILDING}
 
-signal buttonClicked(Building, BuildingButtonMode)
+signal buttonClicked(building: Building, mode: BuildingButtonMode)
 
 @export var nameLabel: RichTextLabel
 @export var turnsToBuildLabel: RichTextLabel

@@ -1,7 +1,7 @@
 class_name CityBars
 extends Control
 
-signal cityBarClicked(Vector2i)
+signal cityBarClicked(cityCoords: Vector2i)
 
 @export var cityBarScene: PackedScene
 

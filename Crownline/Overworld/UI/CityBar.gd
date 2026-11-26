@@ -1,7 +1,7 @@
 class_name CityBar
 extends WorldAnchoredControl
 
-signal barClicked(Vector2i)
+signal barClicked(cityCoords: Vector2i)
 
 @export var nameText: RichTextLabel
 

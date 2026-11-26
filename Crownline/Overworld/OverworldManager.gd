@@ -1,9 +1,10 @@
 class_name OverworldManager
 extends Node3D
 
+signal mapLoaded
+
 @export var mapTileScene: PackedScene
 @export var tileMapParent: Node3D
-@export var tileSize: Vector2
 @export var cityScene: PackedScene
 @export var cityParent: Node3D
 @export var unitScene: PackedScene
@@ -37,7 +38,7 @@ func _LoadMap() -> void:
 			var tile: MapTile = mapTileScene.instantiate() as MapTile
 			if tile != null:
 				tile.Setup(tileData, coords)
-				var hexCoords = ConvertGridToHexCoords(coords)
+				var hexCoords: Vector2 = HexMath.GridToWorld(coords)
 				tile.translate(Vector3(hexCoords.x, 0, hexCoords.y))
 				tile.name = str(coords)
 				tile.inputEvent.connect(OnTileInputEvent)
@@ -50,7 +51,7 @@ func _LoadMap() -> void:
 			var city: MapCity = cityScene.instantiate() as MapCity
 			if city != null:
 				city.Setup(cityData)
-				var hexCoords = ConvertGridToHexCoords(coords)
+				var hexCoords: Vector2 = HexMath.GridToWorld(coords)
 				city.translate(Vector3(hexCoords.x, 0.2, hexCoords.y))
 				city.name = cityData.name
 				cityParent.add_child(city)
@@ -63,7 +64,7 @@ func _LoadMap() -> void:
 		if unitScene != null:
 			var unit: MapUnit = unitScene.instantiate() as MapUnit
 			if unit != null:
-				var hexCoords = ConvertGridToHexCoords(unitData.coords)
+				var hexCoords: Vector2 = HexMath.GridToWorld(unitData.coords)
 				unit.position = Vector3(hexCoords.x, 0.2, hexCoords.y)
 				unit.name = unitData.name
 				unitParent.add_child(unit)
@@ -73,14 +74,7 @@ func _LoadMap() -> void:
 				unitData.mapUnit = unit
 	
 	loadedMap = true
-
-func ConvertGridToHexCoords(inputCoords: Vector2i) -> Vector2:
-	var xOffset = 0
-	if inputCoords.y % 2 != 0:
-		xOffset = (tileSize.x / 2)
-	var tileX = inputCoords.x * tileSize.x + xOffset
-	var tileZ = inputCoords.y * tileSize.y
-	return Vector2(tileX, tileZ)
+	mapLoaded.emit()
 
 func OnTileInputEvent(coords: Vector2i, camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	playerController.HandleTileInputEvent(coords, camera, event, event_position, normal, shape_idx)

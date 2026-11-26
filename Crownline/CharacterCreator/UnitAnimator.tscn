@@ -4,8 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://cu32uffv4weva" path="res://Packages/Modular Character/ModularCharacter.fbx" id="2_pt8ix"]
 [ext_resource type="AnimationLibrary" uid="uid://d2pimjllk5dpg" path="res://Art/Animation/Swordsman.tres" id="3_f04gk"]
 
-[node name="UnitAnimator" type="Node3D" unique_id=1401109805 node_paths=PackedStringArray("modularAnimationPlayer")]
+[node name="UnitAnimator" type="Node3D" unique_id=1401109805 node_paths=PackedStringArray("modularCharacter", "modularAnimationPlayer")]
 script = ExtResource("1_78pdv")
+modularCharacter = NodePath("ModularHumanoid/ModularCharacter/Armature/GeneralSkeleton")
 modularAnimationPlayer = NodePath("ModularHumanoid/AnimationPlayer")
 
 [node name="ModularHumanoid" type="Node3D" parent="." unique_id=573095397]

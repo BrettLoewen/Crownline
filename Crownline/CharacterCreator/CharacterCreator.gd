@@ -2,10 +2,10 @@ class_name CharacterCreator
 extends Node3D
 
 @export var characterCreatorOptionScene: PackedScene
-@onready var characterOptionParent: Control = $CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer
-@onready var outputField: LineEdit = $CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/LineEdit
+@export var characterOptionParent: Control
+@export var outputField: LineEdit
 
-@onready var unitAnimator: UnitAnimator = $UnitAnimator
+@export var unitAnimator: UnitAnimator
 
 var gender = "Male"
 
@@ -19,14 +19,15 @@ func _ready() -> void:
 func SetupOptions():
 	for child in characterOptionParent.get_children():
 		characterOptionParent.remove_child(child)
+		child.queue_free()
 	
 	characterParts = unitAnimator.GetCharacterOptions()
 	for part in characterParts.values():
 		if part.gender == gender or part.gender == "N/A":
 			var option = characterCreatorOptionScene.instantiate()
 			var optionNames = ["None"]
-			for i in range(0, part.count):
-				optionNames.append(part.name + "_" + str(i))
+			for suffix: String in part.suffixes:
+				optionNames.append(part.name + "_" + suffix)
 			(option as CharacterCreatorOption).label.text = part.name
 			(option as CharacterCreatorOption).Setup(optionNames)
 			(option as CharacterCreatorOption).optionChanged.connect(SendOptionsToUnitAnimator)
@@ -58,8 +59,8 @@ func SendOptionsToUnitAnimator():
 			var index = part.dropdown.get_item_index(id)
 			if index == 0:
 				continue
-			var strIndex = "%02d" % index
-			partName += strIndex
+			# Index 0 is "None", so the suffixes start at index 1
+			partName += part.suffixes[index - 1]
 			
 			namesToEnable.append(partName)
 	unitAnimator.SetupModularCharacter(namesToEnable)

@@ -1,8 +1,8 @@
 class_name EmpireQuickAccess
 extends FoldableContainer
 
-signal cityQuickAccessClicked(Vector2i)
-signal unitQuickAccessClicked(String)
+signal cityQuickAccessClicked(cityCoords: Vector2i)
+signal unitQuickAccessClicked(unitName: String)
 
 @export var cityQuickAccessGroup: Control
 @export var unitQuickAccessGroup: Control

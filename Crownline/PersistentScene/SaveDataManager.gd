@@ -141,8 +141,9 @@ func _HardcodedMapData() -> MapData:
 	const WaterTileType = preload("res://Overworld/Tiles/Map Tile Types/Water.tres")
 	const DesertTileType = preload("res://Overworld/Tiles/Map Tile Types/Desert.tres")
 
-	# Ensure the hardcoded map is consistent
-	seed(67)
+	# Ensure the hardcoded map is consistent, without reseeding the global RNG
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.seed = 67
 
 	# Fill dictionary with pairs of coordinates and tile types based on rules
 	for x in range(-4, 5):
@@ -156,7 +157,7 @@ func _HardcodedMapData() -> MapData:
 			elif abs(x - y) <= 1:
 				tilemap.set(Vector2i(x, y), HillTileType)
 			else:
-				var rand = randi_range(0, 4)
+				var rand = rng.randi_range(0, 4)
 				if rand == 0:
 					tilemap.set(Vector2i(x, y), ForestTileType)
 				else:

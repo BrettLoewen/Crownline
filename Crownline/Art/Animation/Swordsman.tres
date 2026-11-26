@@ -1,7 +1,7 @@
 [gd_resource type="AnimationLibrary" format=3 uid="uid://d2pimjllk5dpg"]
 
-[ext_resource type="Animation" uid="uid://lwuuschjiapc" path="res://Art/Animation/SwordsmanIdle.anim" id="1_8pmyw"]
-[ext_resource type="Animation" uid="uid://dqg5xf8tsohk8" path="res://Art/Animation/SwordsmanWalk.anim" id="2_67tnm"]
+[ext_resource type="Animation" uid="uid://cp3dxbdfdhmns" path="res://Art/Animation/SwordsmanIdle.anim" id="1_8pmyw"]
+[ext_resource type="Animation" uid="uid://b8ei7wmn143ou" path="res://Art/Animation/SwordsmanWalk.anim" id="2_67tnm"]
 [ext_resource type="Animation" uid="uid://oix230o5b8rd" path="res://Art/Animation/SwordsmanRun.anim" id="2_qx8ar"]
 
 [resource]

@@ -16,9 +16,12 @@ sky_material = SubResource("ProceduralSkyMaterial_hiwkm")
 background_mode = 2
 sky = SubResource("Sky_emkr8")
 
-[node name="CharacterCreator" type="Node3D" unique_id=438789571]
+[node name="CharacterCreator" type="Node3D" unique_id=438789571 node_paths=PackedStringArray("characterOptionParent", "outputField", "unitAnimator")]
 script = ExtResource("1_66msi")
 characterCreatorOptionScene = ExtResource("3_yxaj8")
+characterOptionParent = NodePath("CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer")
+outputField = NodePath("CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/LineEdit")
+unitAnimator = NodePath("UnitAnimator")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1694493037]
 environment = SubResource("Environment_2y1xs")
@@ -31,7 +34,7 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 0.99055755, 0.13709772, 0, -0.13709772, 0.99055755, 0, 1.3835598, 2.0175657)
 
 [node name="UnitAnimator" parent="." unique_id=1401109805 instance=ExtResource("1_wtjjg")]
-transform = Transform3D(0.91783845, 0, -0.39695412, 0, 1, 0, 0.39695412, 0, 0.91783845, 1.2100029, 0, 0)
+transform = Transform3D(-0.9177546, 0, 0.39714795, 0, 1, 0, -0.39714795, 0, -0.9177546, 1.2100029, 0, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1285771693]
 

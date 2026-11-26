@@ -1,7 +1,7 @@
 class_name UnitAnimator
 extends Node3D
 
-@onready var modularCharacter: Node3D = $ModularHumanoid/ModularCharacter/Armature/GeneralSkeleton
+@export var modularCharacter: Skeleton3D
 @export var modularAnimationPlayer: AnimationPlayer
 
 # Called when the node enters the scene tree for the first time.
@@ -12,6 +12,7 @@ func GetCharacterOptions():
 	var parts = {}
 	for child in modularCharacter.get_children():
 		var pieces = child.name.split("_")
+		var suffix: String = pieces[pieces.size() - 1]
 		var gender = pieces[pieces.size() - 2]
 		
 		var partEnd = pieces.size() - 2
@@ -25,9 +26,12 @@ func GetCharacterOptions():
 		partName = partName.trim_suffix("_")
 		
 		if not parts.has(partName + "-" + gender):
-			parts.set(partName + "-" + gender, {"name": partName, "gender": gender, "count": 1})
-		else:
-			parts[partName + "-" + gender].count += 1
+			parts.set(partName + "-" + gender, {"name": partName, "gender": gender, "suffixes": []})
+		parts[partName + "-" + gender].suffixes.append(suffix)
+	
+	# Keep the options in numeric order regardless of node order
+	for part in parts.values():
+		part.suffixes.sort()
 	
 	return parts
 

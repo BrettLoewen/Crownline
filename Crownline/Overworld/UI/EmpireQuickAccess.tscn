@@ -13,7 +13,7 @@ title = "Quick Access"
 title_alignment = 2
 script = ExtResource("2_6382i")
 cityQuickAccessGroup = NodePath("MarginContainer/VBoxContainer/CityFoldable/VBoxContainer")
-unitQuickAccessGroup = NodePath("MarginContainer/VBoxContainer/UnitFoldable")
+unitQuickAccessGroup = NodePath("MarginContainer/VBoxContainer/UnitFoldable/VBoxContainer")
 cityQuickAccessScene = ExtResource("2_10rj5")
 unitQuickAccessScene = ExtResource("4_6382i")
 

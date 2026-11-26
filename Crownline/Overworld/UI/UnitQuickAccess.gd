@@ -1,7 +1,7 @@
 class_name UnitQuickAccess
 extends PanelContainer
 
-signal barClicked(String)
+signal barClicked(unitName: String)
 
 @export var unitNameLabel: RichTextLabel
 

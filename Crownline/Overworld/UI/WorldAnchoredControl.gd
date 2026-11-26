@@ -15,6 +15,7 @@ func UpdatePosition() -> void:
 		visible = false
 		return
 
+	visible = true
 	var world_position := target.global_position
 
 	position = camera.unproject_position(world_position) - size * pivot
