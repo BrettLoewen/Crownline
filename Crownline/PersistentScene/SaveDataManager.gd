@@ -126,7 +126,7 @@ func GenerateV1Data() -> void:
 	var cityFour: CityData = CityData.new()
 	cityFour.name = "Derdrui"
 	cityFour.buildings.append(BuildingData.new(townHall, true))
-	cityFour.coords = Vector2i(3, 1)
+	cityFour.coords = Vector2i(4, 2)
 	cities.set(cityFour.coords, cityFour)
 	var cityFive: CityData = CityData.new()
 	cityFive.name = "Remire"
@@ -178,7 +178,7 @@ func GenerateV1Data() -> void:
 	var unitOne: UnitData = UnitData.new()
 	unitOne.name = "John"
 	unitOne.empire = playerEmpire.id
-	unitOne.coords = Vector2i(0, 1)
+	unitOne.coords = Vector2i(0, 0)
 	units.set(unitOne.name, unitOne)
 
 func _HardcodedMapData() -> MapData:
@@ -195,7 +195,8 @@ func _HardcodedMapData() -> MapData:
 
 	# Ensure the hardcoded map is consistent, without reseeding the global RNG
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	rng.seed = 67
+	# Seed picked so every road tile below is grass or desert (no forests in the way)
+	rng.seed = 203667
 
 	# Fill dictionary with pairs of coordinates and tile types based on rules
 	for x in range(-10, 11):
@@ -215,77 +216,42 @@ func _HardcodedMapData() -> MapData:
 				else:
 					tilemap.set(Vector2i(x, y), GrassTileType)
 
-	# Test roads for multiple sections and intersections:
-	# Road 1: (2, -1) -> (1, -1) -> (1, 0) -> (0, 1) -> (-1, 1)
-	# Road 2: (-1, 1) -> (-1, 2)
-	# Road 3: (-3, 0) -> (-2, 0) -> (-1, 0) -> (-1, 1)
-	# Road 4: (-1, 1) -> (0, 2)
-	# Road 5: (0, 2) -> (0, 3) -> (-1, 3) -> (0, 2) (loops back to its own junction)
-	var roadOneCoords = Vector2i(2, -1)
-	var roadTwoCoords = Vector2i(1, -1)
-	var roadThreeCoords = Vector2i(1, 0)
-	var roadFourCoords = Vector2i(0, 1)
-	var roadFiveCoords = Vector2i(-1, 1)
-	var roadSixCoords = Vector2i(-1, 2)
-	var roadSevenCoords = Vector2i(-3, 0)
-	var roadEightCoords = Vector2i(-2, 0)
-	var roadNineCoords = Vector2i(-1, 0)
-	var roadTenCoords = Vector2i(0, 2)
-	var roadElevenCoords = Vector2i(0, 3)
-	var roadTwelveCoords = Vector2i(-1, 3)
-
-	var roadOne: RoadData = RoadData.new()
-	roadOne.coords = roadOneCoords
-	roadOne.connections = [roadTwoCoords]
-	roads.set(roadOneCoords, roadOne)
-	var roadTwo: RoadData = RoadData.new()
-	roadTwo.coords = roadTwoCoords
-	roadTwo.connections = [roadOneCoords, roadThreeCoords]
-	roads.set(roadTwoCoords, roadTwo)
-	var roadThree: RoadData = RoadData.new()
-	roadThree.coords = roadThreeCoords
-	roadThree.connections = [roadTwoCoords, roadFourCoords]
-	roads.set(roadThreeCoords, roadThree)
-	var roadFour: RoadData = RoadData.new()
-	roadFour.coords = roadFourCoords
-	roadFour.connections = [roadThreeCoords, roadFiveCoords]
-	roads.set(roadFourCoords, roadFour)
-	var roadFive: RoadData = RoadData.new()
-	roadFive.coords = roadFiveCoords
-	roadFive.connections = [roadFourCoords, roadSixCoords, roadNineCoords, roadTenCoords]
-	roads.set(roadFiveCoords, roadFive)
-	var roadSix: RoadData = RoadData.new()
-	roadSix.coords = roadSixCoords
-	roadSix.connections = [roadFiveCoords]
-	roads.set(roadSixCoords, roadSix)
-	var roadSeven: RoadData = RoadData.new()
-	roadSeven.coords = roadSevenCoords
-	roadSeven.connections = [roadEightCoords]
-	roads.set(roadSevenCoords, roadSeven)
-	var roadEight: RoadData = RoadData.new()
-	roadEight.coords = roadEightCoords
-	roadEight.connections = [roadSevenCoords, roadNineCoords]
-	roads.set(roadEightCoords, roadEight)
-	var roadNine: RoadData = RoadData.new()
-	roadNine.coords = roadNineCoords
-	roadNine.connections = [roadEightCoords, roadFiveCoords]
-	roads.set(roadNineCoords, roadNine)
-	var roadTen: RoadData = RoadData.new()
-	roadTen.coords = roadTenCoords
-	roadTen.connections = [roadFiveCoords, roadElevenCoords, roadTwelveCoords]
-	roads.set(roadTenCoords, roadTen)
-	var roadEleven: RoadData = RoadData.new()
-	roadEleven.coords = roadElevenCoords
-	roadEleven.connections = [roadTenCoords, roadTwelveCoords]
-	roads.set(roadElevenCoords, roadEleven)
-	var roadTwelve: RoadData = RoadData.new()
-	roadTwelve.coords = roadTwelveCoords
-	roadTwelve.connections = [roadElevenCoords, roadTenCoords]
-	roads.set(roadTwelveCoords, roadTwelve)
+	# Roads are listed as paths from one end to the other. Each empire's half mirrors the other's
+	# through Garreg Mach.
+	# Faerghus (east)
+	_AddRoadPath(roads, [Vector2i(6, 0), Vector2i(5, -1), Vector2i(5, -2), Vector2i(4, -3)])			# Fhirdiad -> Arianrhod
+	_AddRoadPath(roads, [Vector2i(6, 0), Vector2i(5, 1), Vector2i(5, 2), Vector2i(4, 2)])				# Fhirdiad -> Derdrui
+	_AddRoadPath(roads, [Vector2i(4, 2), Vector2i(3, 1), Vector2i(3, 0), Vector2i(2, 0), Vector2i(1, 0), Vector2i(0, 0)])	# Derdrui -> Garreg Mach
+	_AddRoadPath(roads, [Vector2i(4, -3), Vector2i(3, -3), Vector2i(2, -3), Vector2i(2, -2), Vector2i(1, -2), Vector2i(0, -1), Vector2i(0, 0)])	# Arianrhod -> Garreg Mach
+	_AddRoadPath(roads, [Vector2i(4, -3), Vector2i(5, -4), Vector2i(5, -5)])							# Dead end: Arianrhod -> north coast
+	_AddRoadPath(roads, [Vector2i(6, 0), Vector2i(7, 0), Vector2i(7, 1), Vector2i(7, 2), Vector2i(7, 3)])	# Dead end: Fhirdiad -> east coast
+	_AddRoadPath(roads, [Vector2i(2, -3), Vector2i(2, -4), Vector2i(1, -4), Vector2i(0, -5)])			# Dead end: Arianrhod road -> north
+	# Adrestia (west)
+	_AddRoadPath(roads, [Vector2i(-6, 0), Vector2i(-6, 1), Vector2i(-5, 2), Vector2i(-5, 3)])			# Enbarr -> Fort Merceus
+	_AddRoadPath(roads, [Vector2i(-6, 0), Vector2i(-6, -1), Vector2i(-5, -2), Vector2i(-4, -2)])		# Enbarr -> Remire
+	_AddRoadPath(roads, [Vector2i(-4, -2), Vector2i(-4, -1), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0)])	# Remire -> Garreg Mach
+	_AddRoadPath(roads, [Vector2i(-5, 3), Vector2i(-4, 3), Vector2i(-3, 3), Vector2i(-2, 2), Vector2i(-1, 2), Vector2i(-1, 1), Vector2i(0, 0)])	# Fort Merceus -> Garreg Mach
+	_AddRoadPath(roads, [Vector2i(-5, 3), Vector2i(-5, 4), Vector2i(-6, 5)])							# Dead end: Fort Merceus -> south coast
+	_AddRoadPath(roads, [Vector2i(-6, 0), Vector2i(-7, 0), Vector2i(-8, -1), Vector2i(-7, -2), Vector2i(-8, -3)])	# Dead end: Enbarr -> west coast
+	_AddRoadPath(roads, [Vector2i(-3, 3), Vector2i(-2, 4), Vector2i(-1, 4), Vector2i(-1, 5)])			# Dead end: Fort Merceus road -> south
 
 	# Combine the data into one object and return it
 	var data: MapData = MapData.new()
 	data.tilemap = tilemap
 	data.roads = roads
 	return data
+
+# Links each tile in the path to the next, creating road tiles as needed. Tiles shared
+# between paths (cities, junctions) collect the connections from every path through them.
+func _AddRoadPath(roads: Dictionary[Vector2i, RoadData], path: Array[Vector2i]) -> void:
+	for index: int in path.size():
+		var coords: Vector2i = path[index]
+		if not roads.has(coords):
+			var road: RoadData = RoadData.new()
+			road.coords = coords
+			roads.set(coords, road)
+		if index > 0:
+			var previousCoords: Vector2i = path[index - 1]
+			roads[coords].connections.append(previousCoords)
+			roads[previousCoords].connections.append(coords)
 #endregion

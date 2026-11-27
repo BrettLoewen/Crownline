@@ -9,9 +9,6 @@ signal cityUpdated
 @export var newBuildingParent: Control
 @export var cityBuildingButtonScene: PackedScene
 
-# For early development, replace later
-@export var buildings: Array[Building]
-
 var cityData: CityData
 
 func Setup(newCityData: CityData) -> void:
@@ -26,7 +23,7 @@ func Setup(newCityData: CityData) -> void:
 		newBuildingParent.remove_child(child)
 		child.queue_free()
 	
-	for building: Building in buildings:
+	for building: Building in ResourceManager.instance.buildingResources:
 		if building.CityMeetsPrerequisites(cityData):
 			if cityData.HasBuilding(building):
 				var buildingButton: CityBuildingButton = cityBuildingButtonScene.instantiate() as CityBuildingButton
