@@ -1,7 +1,7 @@
 class_name Commodity
 extends Resource
 
-enum CommodityType {GOLD, FOOD, IRON}
+enum CommodityType {GOLD, FOOD, WOOD, STONE, BRONZE, IRON}
 
 @export var name: String
 @export var type: CommodityType

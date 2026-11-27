@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Building" format=3 uid="uid://cti3e15jc1cra"]
+
+[ext_resource type="Resource" uid="uid://coqnnugswltpb" path="res://Overworld/Commodities/Commodities/Gold.tres" id="1_6rhih"]
+[ext_resource type="Script" uid="uid://qm0rq818fmec" path="res://Overworld/Buildings/Building.gd" id="2_wkugi"]
+
+[resource]
+script = ExtResource("2_wkugi")
+name = "Manor House"
+turnsToBuild = 5
+commodity = ExtResource("1_6rhih")
+commodityAmount = 10
+metadata/_custom_type_script = "uid://qm0rq818fmec"

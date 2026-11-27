@@ -5,6 +5,10 @@ extends RefCounted
 var building: Building
 var turnsToBuild: int # 0 means it is built
 
-func _init(newBuilding: Building):
+func _init(newBuilding: Building, _startsFinished = false):
 	building = newBuilding
-	turnsToBuild = building.turnsToBuild
+	
+	if _startsFinished:
+		turnsToBuild = 0
+	else:
+		turnsToBuild = building.turnsToBuild

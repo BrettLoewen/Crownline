@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_r83o1")
 name = "Iron"
-type = 2
+type = 5
 icon = ExtResource("1_7wt35")
 colour = Color(0.64986396, 0.6461118, 0.6348464, 1)
 metadata/_custom_type_script = "uid://bn763155mp5ok"

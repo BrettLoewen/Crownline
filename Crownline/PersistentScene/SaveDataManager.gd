@@ -7,12 +7,6 @@ extends Node
 
 static var instance: SaveDataManager
 
-# For early development, remove later
-@export var cityOneBuildings: Array[Building]
-@export var goldCommodity: Commodity
-@export var foodCommodity: Commodity
-@export var ironCommodity: Commodity
-
 var mapData: MapData
 var empires: Dictionary[String, EmpireData] = {}
 # Cities and units live on the map (so other empires can see them),
@@ -90,38 +84,96 @@ func GenerateV1Data() -> void:
 	# Player empire
 	var playerEmpire: EmpireData = EmpireData.new()
 	playerEmpire.id = "Player"
-	playerEmpire.name = "Adrestia"
+	playerEmpire.name = "Faerghus"
 	empires.set(playerEmpire.id, playerEmpire)
 	playerEmpireId = playerEmpire.id
 
-	# Create 2 cities with different setups
+	# AI empire
+	var aiEmpire: EmpireData = EmpireData.new()
+	aiEmpire.id = "1"
+	aiEmpire.name = "Adrestia"
+	empires.set(aiEmpire.id, aiEmpire)
+	
+	var startingCityBuildings: Array[Building] = []
+	startingCityBuildings.append(ResourceManager.instance.GetBuildingResourceByName("Town Hall"))
+	startingCityBuildings.append(ResourceManager.instance.GetBuildingResourceByName("Farm"))
+	startingCityBuildings.append(ResourceManager.instance.GetBuildingResourceByName("Woodcutter's Hut"))
+	startingCityBuildings.append(ResourceManager.instance.GetBuildingResourceByName("Quarry"))
+
+	# Create each empire's starting cities
 	var cityOne: CityData = CityData.new()
-	cityOne.name = "Enbarr"
+	cityOne.name = "Fhirdiad"
 	cityOne.empire = playerEmpire.id
-	for b: Building in cityOneBuildings:
-		var bd: BuildingData = BuildingData.new(b)
-		bd.turnsToBuild = 0
-		cityOne.buildings.append(bd)
-	cityOne.coords = Vector2i(2, -1)
+	for b: Building in startingCityBuildings:
+		cityOne.buildings.append(BuildingData.new(b, true))
+	cityOne.coords = Vector2i(6, 0)
 	cities.set(cityOne.coords, cityOne)
+	
 	var cityTwo: CityData = CityData.new()
-	cityTwo.name = "Fhirdiad"
-	cityTwo.empire = playerEmpire.id
-	cityTwo.coords = Vector2i(-1, 2)
+	cityTwo.name = "Enbarr"
+	cityTwo.empire = aiEmpire.id
+	for b: Building in startingCityBuildings:
+		cityTwo.buildings.append(BuildingData.new(b, true))
+	cityTwo.coords = Vector2i(-6, 0)
 	cities.set(cityTwo.coords, cityTwo)
+	
+	var townHall: Building = ResourceManager.instance.GetBuildingResourceByName("Town Hall")
+	var cityThree: CityData = CityData.new()
+	cityThree.name = "Arianrhod"
+	cityThree.buildings.append(BuildingData.new(townHall, true))
+	cityThree.coords = Vector2i(4, -3)
+	cities.set(cityThree.coords, cityThree)
+	var cityFour: CityData = CityData.new()
+	cityFour.name = "Derdrui"
+	cityFour.buildings.append(BuildingData.new(townHall, true))
+	cityFour.coords = Vector2i(3, 1)
+	cities.set(cityFour.coords, cityFour)
+	var cityFive: CityData = CityData.new()
+	cityFive.name = "Remire"
+	cityFive.buildings.append(BuildingData.new(townHall, true))
+	cityFive.coords = Vector2i(-4, -2)
+	cities.set(cityFive.coords, cityFive)
+	var citySix: CityData = CityData.new()
+	citySix.name = "Fort Merceus"
+	citySix.buildings.append(BuildingData.new(townHall, true))
+	citySix.coords = Vector2i(-5, 3)
+	cities.set(citySix.coords, citySix)
+	var citySeven: CityData = CityData.new()
+	citySeven.name = "Garreg Mach"
+	citySeven.buildings.append(BuildingData.new(townHall, true))
+	citySeven.coords = Vector2i(0, 0)
+	cities.set(citySeven.coords, citySeven)
 
 	var goldData: CommodityData = CommodityData.new()
-	goldData.commodity = goldCommodity
-	goldData.amount = 500
+	goldData.commodity = ResourceManager.instance.GetCommodityResourceByName("Gold")
+	goldData.amount = 200
 	playerEmpire.commodityData.set(Commodity.CommodityType.GOLD, goldData)
+	aiEmpire.commodityData.set(Commodity.CommodityType.GOLD, goldData)
 	var foodData: CommodityData = CommodityData.new()
-	foodData.commodity = foodCommodity
-	foodData.amount = 200
+	foodData.commodity = ResourceManager.instance.GetCommodityResourceByName("Food")
+	foodData.amount = 100
 	playerEmpire.commodityData.set(Commodity.CommodityType.FOOD, foodData)
+	aiEmpire.commodityData.set(Commodity.CommodityType.FOOD, foodData)
+	var woodData: CommodityData = CommodityData.new()
+	woodData.commodity = ResourceManager.instance.GetCommodityResourceByName("Wood")
+	woodData.amount = 50
+	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, woodData)
+	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, woodData)
+	var stoneData: CommodityData = CommodityData.new()
+	stoneData.commodity = ResourceManager.instance.GetCommodityResourceByName("Stone")
+	stoneData.amount = 50
+	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, stoneData)
+	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, stoneData)
+	var bronzeData: CommodityData = CommodityData.new()
+	bronzeData.commodity = ResourceManager.instance.GetCommodityResourceByName("Bronze")
+	bronzeData.amount = 0
+	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, bronzeData)
+	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, bronzeData)
 	var ironData: CommodityData = CommodityData.new()
-	ironData.commodity = ironCommodity
-	ironData.amount = 100
+	ironData.commodity = ResourceManager.instance.GetCommodityResourceByName("Iron")
+	ironData.amount = 0
 	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, ironData)
+	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, ironData)
 
 	var unitOne: UnitData = UnitData.new()
 	unitOne.name = "John"
@@ -146,9 +198,9 @@ func _HardcodedMapData() -> MapData:
 	rng.seed = 67
 
 	# Fill dictionary with pairs of coordinates and tile types based on rules
-	for x in range(-4, 5):
-		for y in range(-4, 5):
-			if x == -4 or x == 4 or y == -4 or y == 4:
+	for x in range(-10, 11):
+		for y in range(-7, 8):
+			if x == -10 or x == 10 or x == -9 or x == 9 or y == -7 or y == 7 or y == -6 or y == 6:
 				tilemap.set(Vector2i(x, y), WaterTileType)
 			elif x >= -1 and x <= 1 and y >= -1 and y <= 1:
 				tilemap.set(Vector2i(x, y), DesertTileType)

@@ -12,15 +12,31 @@
 [ext_resource type="Resource" uid="uid://coqnnugswltpb" path="res://Overworld/Commodities/Commodities/Gold.tres" id="8_gold"]
 [ext_resource type="Resource" uid="uid://yuhyw70k65xp" path="res://Overworld/Commodities/Commodities/Food.tres" id="9_food"]
 [ext_resource type="Resource" uid="uid://lr3swtc5h50a" path="res://Overworld/Commodities/Commodities/Iron.tres" id="10_iron"]
+[ext_resource type="Resource" uid="uid://dc7u1gxiohqst" path="res://Overworld/Buildings/Buildings/Farm.tres" id="13_5sj8w"]
+[ext_resource type="Script" uid="uid://jmu5fu6cky7m" path="res://PersistentScene/ResourceManager.gd" id="13_m24nk"]
+[ext_resource type="Resource" uid="uid://bp1sn7fs7yxlr" path="res://Overworld/Buildings/Buildings/Barn.tres" id="14_fahsq"]
+[ext_resource type="Resource" uid="uid://ty35u64nv2sp" path="res://Overworld/Buildings/Buildings/BronzeMine.tres" id="15_k0n8c"]
+[ext_resource type="Resource" uid="uid://cgheltpqtg632" path="res://Overworld/Buildings/Buildings/WoodcutterHut.tres" id="16_e83pt"]
+[ext_resource type="Script" uid="uid://dxm3f6xnfyt10" path="res://Overworld/Tiles/MapTileType.gd" id="16_it3ou"]
+[ext_resource type="Resource" uid="uid://x8bn7irhcy33" path="res://Overworld/Buildings/Buildings/TownHall.tres" id="17_1k4a8"]
+[ext_resource type="Resource" uid="uid://dfkjptein2skc" path="res://Overworld/Tiles/Map Tile Types/Grass.tres" id="17_rnrp7"]
+[ext_resource type="Resource" uid="uid://ct20k34e4qqn0" path="res://Overworld/Tiles/Map Tile Types/Forest.tres" id="18_0a6yl"]
+[ext_resource type="Resource" uid="uid://wn1fgc4dugao" path="res://Overworld/Buildings/Buildings/Quarry.tres" id="18_y88g3"]
+[ext_resource type="Resource" uid="uid://bo5t4obvsxguf" path="res://Overworld/Tiles/Map Tile Types/Hill.tres" id="19_ij3st"]
+[ext_resource type="Resource" uid="uid://cti3e15jc1cra" path="res://Overworld/Buildings/Buildings/ManorHouse.tres" id="19_muufo"]
+[ext_resource type="Resource" uid="uid://qd7272ipu8dw" path="res://Overworld/Buildings/Buildings/IronMine.tres" id="20_lcopl"]
+[ext_resource type="Resource" uid="uid://k876lw5fb0ae" path="res://Overworld/Tiles/Map Tile Types/Mountain.tres" id="20_mskex"]
+[ext_resource type="Resource" uid="uid://cneaevmkoiocx" path="res://Overworld/Tiles/Map Tile Types/Desert.tres" id="21_e83pt"]
+[ext_resource type="Resource" uid="uid://cg430kqruewtx" path="res://Overworld/Tiles/Map Tile Types/Water.tres" id="22_1k4a8"]
+[ext_resource type="Script" uid="uid://bn763155mp5ok" path="res://Overworld/Commodities/Commodity.gd" id="23_y88g3"]
+[ext_resource type="Resource" uid="uid://saxnpjwsj3sl" path="res://Overworld/Commodities/Commodities/Wood.tres" id="24_it3ou"]
+[ext_resource type="Resource" uid="uid://bdvu5dm7gmsle" path="res://Overworld/Commodities/Commodities/Stone.tres" id="25_rnrp7"]
+[ext_resource type="Resource" uid="uid://bv3c4v2l8tu4l" path="res://Overworld/Commodities/Commodities/Bronze.tres" id="26_0a6yl"]
 
 [node name="PersistentScene" type="Node" unique_id=1636791970]
 
 [node name="SaveDataManager" type="Node" parent="." unique_id=1090819631]
 script = ExtResource("1_74thl")
-cityOneBuildings = Array[ExtResource("5_bldg")]([ExtResource("6_wall"), ExtResource("7_keep")])
-goldCommodity = ExtResource("8_gold")
-foodCommodity = ExtResource("9_food")
-ironCommodity = ExtResource("10_iron")
 
 [node name="SceneManager" type="Node" parent="." unique_id=321475283 node_paths=PackedStringArray("loadingScreen")]
 script = ExtResource("1_o8jx0")
@@ -28,6 +44,12 @@ mainMenuScene = ExtResource("2_3cxgh")
 gameScene = ExtResource("3_3cxgh")
 characterCreatorScene = ExtResource("4_nf17l")
 loadingScreen = NodePath("../CanvasLayer/PanelContainer")
+
+[node name="ResourceManager" type="Node" parent="." unique_id=958364555]
+script = ExtResource("13_m24nk")
+buildingResources = Array[ExtResource("5_bldg")]([ExtResource("7_keep"), ExtResource("13_5sj8w"), ExtResource("14_fahsq"), ExtResource("15_k0n8c"), ExtResource("6_wall"), ExtResource("16_e83pt"), ExtResource("17_1k4a8"), ExtResource("18_y88g3"), ExtResource("19_muufo"), ExtResource("20_lcopl")])
+tileResources = Array[ExtResource("16_it3ou")]([ExtResource("17_rnrp7"), ExtResource("18_0a6yl"), ExtResource("19_ij3st"), ExtResource("20_mskex"), ExtResource("21_e83pt"), ExtResource("22_1k4a8")])
+commodityResources = Array[ExtResource("23_y88g3")]([ExtResource("8_gold"), ExtResource("9_food"), ExtResource("24_it3ou"), ExtResource("25_rnrp7"), ExtResource("26_0a6yl"), ExtResource("10_iron")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1097275067]
 layer = 10

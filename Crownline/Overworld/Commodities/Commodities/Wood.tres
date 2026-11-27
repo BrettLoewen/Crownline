@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Commodity" format=3 uid="uid://saxnpjwsj3sl"]
+
+[ext_resource type="Texture2D" uid="uid://cihy2r4gix177" path="res://Art/Icons/IronIngot.svg" id="1_sb5xe"]
+[ext_resource type="Script" uid="uid://bn763155mp5ok" path="res://Overworld/Commodities/Commodity.gd" id="2_utfo7"]
+
+[resource]
+script = ExtResource("2_utfo7")
+name = "Wood"
+type = 2
+icon = ExtResource("1_sb5xe")
+colour = Color(0.2749105, 0.104764186, 0.0077959904, 1)
+metadata/_custom_type_script = "uid://bn763155mp5ok"

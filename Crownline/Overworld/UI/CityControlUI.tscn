@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://dc7u1gxiohqst" path="res://Overworld/Buildings/Buildings/Farm.tres" id="5_wuk0n"]
 [ext_resource type="Resource" uid="uid://cllurlnwtvryc" path="res://Overworld/Buildings/Buildings/Keep.tres" id="6_0mmu8"]
 [ext_resource type="Resource" uid="uid://i26racy3jp3o" path="res://Overworld/Buildings/Buildings/Walls.tres" id="7_w82o3"]
-[ext_resource type="Resource" uid="uid://ty35u64nv2sp" path="res://Overworld/Buildings/Buildings/Mine.tres" id="9_wuk0n"]
+[ext_resource type="Resource" uid="uid://ty35u64nv2sp" path="res://Overworld/Buildings/Buildings/BronzeMine.tres" id="9_wuk0n"]
 
 [node name="CityControlUI" type="MarginContainer" unique_id=1914047455 node_paths=PackedStringArray("cityNameLabel", "currentBuildingParent", "newBuildingParent")]
 anchors_preset = 15
