@@ -1,18 +1,20 @@
 class_name Empire
 extends Node3D
 
-# Runtime controller for the player's empire. All data lives in SaveDataManager.
+# Runtime controller for the an empire. All data lives in SaveDataManager.
 
-@export var coreUIManager: CoreUIManager
-
+var overworldManager: OverworldManager
 var empireId: String
 
 func _ready() -> void:
-	empireId = SaveDataManager.instance.GetPlayerEmpireId()
+	if empireId != null and empireId != "":
+		UpdateCommodityTurnProfits()
 
-	UpdateCommodityTurnProfits()
+func Setup(newEmpireId: String, newOverworldManager) -> void:
+	empireId = newEmpireId
+	overworldManager = newOverworldManager
 
-func DoTurn() -> void:
+func StartTurn() -> void:
 	for city: CityData in GetCityData().values():
 		# Progress construction of buildings
 		for building: BuildingData in city.buildings:
@@ -24,10 +26,25 @@ func DoTurn() -> void:
 	# Display is refreshed once below, after the amounts change
 	CalculateCommodityTurnProfits()
 
+	print("Updating Empire " + empireId + "'s commodities")
 	for commodity: CommodityData in GetCommodityData().values():
 		commodity.amount += commodity.turnProfit
-
-	coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())
+	
+	if empireId == "Player":
+		overworldManager.coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())
+		
+	overworldManager.coreUIManager.turnDisplay.DisplayActiveEmpire()
+	
+	# Tell all units they can act again
+	for unit: UnitData in GetUnitData().values():
+		unit.hasActed = false
+	
+	overworldManager.coreUIManager.turnDisplay.DisplayTurn()
+	
+	if empireId != "Player":
+		for unit: UnitData in GetUnitData().values():
+			unit.hasActed = true
+		GameManager.instance.EndTurn(empireId)
 
 func GetCityData() -> Dictionary[Vector2i, CityData]:
 	return SaveDataManager.instance.GetCitiesForEmpire(empireId)
@@ -40,7 +57,7 @@ func GetCommodityData() -> Dictionary[Commodity.CommodityType, CommodityData]:
 
 func UpdateCommodityTurnProfits() -> void:
 	CalculateCommodityTurnProfits()
-	coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())
+	overworldManager.coreUIManager.commodityManager.UpdateCommodityDisplays(GetCommodityData())
 
 func CalculateCommodityTurnProfits() -> void:
 	var cities: Dictionary[Vector2i, CityData] = GetCityData()
@@ -54,3 +71,9 @@ func CalculateCommodityTurnProfits() -> void:
 				if building.turnsToBuild == 0 and building.building.commodity != null and building.building.commodity.name == c.commodity.name:
 					turnProfit += building.building.commodityAmount
 		c.turnProfit = turnProfit
+
+func CanEndTurn() -> bool:
+	for unit: UnitData in GetUnitData().values():
+		if not unit.hasActed:
+			return false
+	return true

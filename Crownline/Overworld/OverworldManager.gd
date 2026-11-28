@@ -10,7 +10,6 @@ signal mapLoaded
 @export var unitScene: PackedScene
 @export var unitParent: Node3D
 @export var roadGenerator: RoadGenerator
-@export var empire: Empire
 @export var coreUIManager: CoreUIManager
 @export var playerController: PlayerController
 
@@ -67,6 +66,7 @@ func _LoadMap() -> void:
 				var hexCoords: Vector2 = HexMath.GridToWorld(unitData.coords)
 				unit.position = Vector3(hexCoords.x, 0.2, hexCoords.y)
 				unit.name = unitData.name
+				unit.unitData = unitData
 				unitParent.add_child(unit)
 				# Setup after adding to the tree so the animator's nodes are ready
 				unit.Setup(unitData.appearanceData)

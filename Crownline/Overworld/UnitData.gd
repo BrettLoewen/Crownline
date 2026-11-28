@@ -5,5 +5,6 @@ var name: String
 var empire: String
 var mapUnit: MapUnit
 var coords: Vector2i
+var hasActed: bool
 
 var appearanceData: Array[String]

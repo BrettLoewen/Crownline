@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cj0ib66wyj5jn"]
+
+[ext_resource type="Script" uid="uid://pfwo4d6vmyfc" path="res://Overworld/Empire.gd" id="1_u536j"]
+
+[node name="Empire" type="Node3D" unique_id=501461857]
+script = ExtResource("1_u536j")

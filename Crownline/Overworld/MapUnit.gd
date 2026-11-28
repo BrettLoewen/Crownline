@@ -1,6 +1,8 @@
 class_name MapUnit
 extends Node3D
 
+var unitData: UnitData
+
 @export var unitAnimator: UnitAnimator
 @export var moveSpeed: float = 2
 
@@ -23,6 +25,7 @@ func _process(delta: float) -> void:
 			progressPercent = 1.0
 			curve = null
 			unitAnimator.PlayAnimation("SwordsmanIdle", 1.0)
+			unitData.hasActed = true
 		else:
 			progressPercent = nextLength / curveLength
 

@@ -9,7 +9,6 @@
 [ext_resource type="Material" uid="uid://1bevfr0m1h5q" path="res://Overworld/Roads/RoadDotMaterial.tres" id="6_0u72k"]
 [ext_resource type="Material" uid="uid://dg7xbvn4fqkta" path="res://Overworld/Roads/IntersectionDotMaterial.tres" id="7_3rv81"]
 [ext_resource type="PackedScene" uid="uid://dp7et4lkt8pd2" path="res://Overworld/UI/CoreDisplay.tscn" id="8_w5i8j"]
-[ext_resource type="Script" uid="uid://pfwo4d6vmyfc" path="res://Overworld/Empire.gd" id="9_paq86"]
 [ext_resource type="PackedScene" uid="uid://de1enmt44t5sr" path="res://Overworld/MapUnit.tscn" id="16_23kps"]
 [ext_resource type="Script" uid="uid://drmnxjq2scnch" path="res://Overworld/PlayerController.gd" id="17_kgvnc"]
 [ext_resource type="Material" uid="uid://3iodmd15hxj" path="res://Overworld/Roads/WalkableRoadMaterial.tres" id="18_b1dxb"]
@@ -27,7 +26,7 @@ ambient_light_source = 3
 ambient_light_energy = 0.8
 tonemap_mode = 2
 
-[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent", "cityParent", "unitParent", "roadGenerator", "empire", "coreUIManager", "playerController")]
+[node name="Overworld" type="Node3D" unique_id=1564437424 node_paths=PackedStringArray("tileMapParent", "cityParent", "unitParent", "roadGenerator", "coreUIManager", "playerController")]
 script = ExtResource("1_m0wi0")
 mapTileScene = ExtResource("2_c5u67")
 tileMapParent = NodePath("TileMap")
@@ -36,7 +35,6 @@ cityParent = NodePath("Cities")
 unitScene = ExtResource("16_23kps")
 unitParent = NodePath("Units")
 roadGenerator = NodePath("Roads")
-empire = NodePath("Empire")
 coreUIManager = NodePath("CanvasLayer/CoreDisplay")
 playerController = NodePath("PlayerController")
 
@@ -49,6 +47,23 @@ directional_shadow_max_distance = 40.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=77277214]
 environment = SubResource("Environment_c5u67")
+
+[node name="PlayerController" type="Node3D" parent="." unique_id=1128486340 node_paths=PackedStringArray("overworldManager", "walkableRoadGenerator")]
+script = ExtResource("17_kgvnc")
+overworldManager = NodePath("..")
+walkableRoadGenerator = NodePath("WalkableRoads")
+
+[node name="WalkableRoads" type="Node3D" parent="PlayerController" unique_id=467700542]
+script = ExtResource("4_4rymo")
+roadY = 0.215
+roadDotY = 0.221
+intersectionDotY = 0.231
+walkablePathY = 0.216
+roadMaterial = ExtResource("18_b1dxb")
+roadDotMaterial = ExtResource("6_0u72k")
+intersectionDotWidth = 0.35
+intersectionDotMaterial = ExtResource("7_3rv81")
+walkablePathMaterial = ExtResource("19_7e0qx")
 
 [node name="CameraController" parent="." unique_id=825045141 instance=ExtResource("4_xj8sk")]
 
@@ -65,30 +80,8 @@ intersectionDotMaterial = ExtResource("7_3rv81")
 
 [node name="Units" type="Node3D" parent="." unique_id=1094873246]
 
-[node name="Empire" type="Node3D" parent="." unique_id=482878947 node_paths=PackedStringArray("coreUIManager")]
-script = ExtResource("9_paq86")
-coreUIManager = NodePath("../CanvasLayer/CoreDisplay")
-
-[node name="PlayerController" type="Node3D" parent="." unique_id=1128486340 node_paths=PackedStringArray("empire", "overworldManager", "walkableRoadGenerator")]
-script = ExtResource("17_kgvnc")
-empire = NodePath("../Empire")
-overworldManager = NodePath("..")
-walkableRoadGenerator = NodePath("WalkableRoads")
-
-[node name="WalkableRoads" type="Node3D" parent="PlayerController" unique_id=467700542]
-script = ExtResource("4_4rymo")
-roadY = 0.215
-roadDotY = 0.221
-intersectionDotY = 0.231
-walkablePathY = 0.216
-roadMaterial = ExtResource("18_b1dxb")
-roadDotMaterial = ExtResource("6_0u72k")
-intersectionDotWidth = 0.35
-intersectionDotMaterial = ExtResource("7_3rv81")
-walkablePathMaterial = ExtResource("19_7e0qx")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2087512092]
 
-[node name="CoreDisplay" parent="CanvasLayer" unique_id=1866020560 node_paths=PackedStringArray("empire", "overworldManager") instance=ExtResource("8_w5i8j")]
-empire = NodePath("../../Empire")
+[node name="CoreDisplay" parent="CanvasLayer" unique_id=1866020560 node_paths=PackedStringArray("playerController", "overworldManager") instance=ExtResource("8_w5i8j")]
+playerController = NodePath("../../PlayerController")
 overworldManager = NodePath("../..")

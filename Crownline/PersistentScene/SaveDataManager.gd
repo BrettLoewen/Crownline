@@ -144,36 +144,8 @@ func GenerateV1Data() -> void:
 	citySeven.coords = Vector2i(0, 0)
 	cities.set(citySeven.coords, citySeven)
 
-	var goldData: CommodityData = CommodityData.new()
-	goldData.commodity = ResourceManager.instance.GetCommodityResourceByName("Gold")
-	goldData.amount = 200
-	playerEmpire.commodityData.set(Commodity.CommodityType.GOLD, goldData)
-	aiEmpire.commodityData.set(Commodity.CommodityType.GOLD, goldData)
-	var foodData: CommodityData = CommodityData.new()
-	foodData.commodity = ResourceManager.instance.GetCommodityResourceByName("Food")
-	foodData.amount = 100
-	playerEmpire.commodityData.set(Commodity.CommodityType.FOOD, foodData)
-	aiEmpire.commodityData.set(Commodity.CommodityType.FOOD, foodData)
-	var woodData: CommodityData = CommodityData.new()
-	woodData.commodity = ResourceManager.instance.GetCommodityResourceByName("Wood")
-	woodData.amount = 50
-	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, woodData)
-	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, woodData)
-	var stoneData: CommodityData = CommodityData.new()
-	stoneData.commodity = ResourceManager.instance.GetCommodityResourceByName("Stone")
-	stoneData.amount = 50
-	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, stoneData)
-	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, stoneData)
-	var bronzeData: CommodityData = CommodityData.new()
-	bronzeData.commodity = ResourceManager.instance.GetCommodityResourceByName("Bronze")
-	bronzeData.amount = 0
-	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, bronzeData)
-	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, bronzeData)
-	var ironData: CommodityData = CommodityData.new()
-	ironData.commodity = ResourceManager.instance.GetCommodityResourceByName("Iron")
-	ironData.amount = 0
-	playerEmpire.commodityData.set(Commodity.CommodityType.IRON, ironData)
-	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, ironData)
+	_HardcodedCommodityData(playerEmpire)
+	_HardcodedCommodityData(aiEmpire)
 
 	var unitOne: UnitData = UnitData.new()
 	unitOne.name = "Dimitri"
@@ -211,6 +183,32 @@ func GenerateV1Data() -> void:
 	unitSix.coords = Vector2i(-6, 0)
 	unitSix.appearanceData = ["Chr_ArmLowerLeft_Male_08", "Chr_ArmLowerRight_Male_08", "Chr_ArmUpperLeft_Male_20", "Chr_ArmUpperRight_Male_20", "Chr_Hair_14", "Chr_HandLeft_Male_07", "Chr_HandRight_Male_07", "Chr_Head_Male_00", "Chr_Hips_Male_04", "Chr_LegLeft_Male_04", "Chr_LegRight_Male_04", "Chr_Torso_Male_03"]
 	units.set(unitSix.name, unitSix)
+
+func _HardcodedCommodityData(empire: EmpireData) -> void:
+	var goldData: CommodityData = CommodityData.new()
+	goldData.commodity = ResourceManager.instance.GetCommodityResourceByName("Gold")
+	goldData.amount = 200
+	empire.commodityData.set(Commodity.CommodityType.GOLD, goldData)
+	var foodData: CommodityData = CommodityData.new()
+	foodData.commodity = ResourceManager.instance.GetCommodityResourceByName("Food")
+	foodData.amount = 100
+	empire.commodityData.set(Commodity.CommodityType.FOOD, foodData)
+	var woodData: CommodityData = CommodityData.new()
+	woodData.commodity = ResourceManager.instance.GetCommodityResourceByName("Wood")
+	woodData.amount = 50
+	empire.commodityData.set(Commodity.CommodityType.WOOD, woodData)
+	var stoneData: CommodityData = CommodityData.new()
+	stoneData.commodity = ResourceManager.instance.GetCommodityResourceByName("Stone")
+	stoneData.amount = 50
+	empire.commodityData.set(Commodity.CommodityType.STONE, stoneData)
+	var bronzeData: CommodityData = CommodityData.new()
+	bronzeData.commodity = ResourceManager.instance.GetCommodityResourceByName("Bronze")
+	bronzeData.amount = 0
+	empire.commodityData.set(Commodity.CommodityType.BRONZE, bronzeData)
+	var ironData: CommodityData = CommodityData.new()
+	ironData.commodity = ResourceManager.instance.GetCommodityResourceByName("Iron")
+	ironData.amount = 0
+	empire.commodityData.set(Commodity.CommodityType.IRON, ironData)
 
 func _HardcodedMapData() -> MapData:
 	var tilemap: Dictionary[Vector2i, MapTileType] = {}

@@ -2,7 +2,14 @@
 
 [ext_resource type="Script" uid="uid://dxpxu77ouo1u0" path="res://GameScene/GameManager.gd" id="1_6iyer"]
 [ext_resource type="PackedScene" uid="uid://k3nrgvin38s7" path="res://Overworld/Overworld.tscn" id="2_282lv"]
+[ext_resource type="PackedScene" uid="uid://cj0ib66wyj5jn" path="res://GameScene/Empire.tscn" id="3_fpy1a"]
 
-[node name="Game" type="Node3D" unique_id=646699077]
+[node name="Game" type="Node3D" unique_id=646699077 node_paths=PackedStringArray("empireParent")]
 script = ExtResource("1_6iyer")
 overworldScene = ExtResource("2_282lv")
+empireScene = ExtResource("3_fpy1a")
+empireParent = NodePath("Empires")
+
+[node name="Empires" type="Node3D" parent="." unique_id=1504448746]
+
+[node name="Empire" parent="Empires" unique_id=501461857 instance=ExtResource("3_fpy1a")]

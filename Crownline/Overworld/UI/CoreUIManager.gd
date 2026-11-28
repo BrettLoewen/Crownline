@@ -12,13 +12,13 @@ signal loaded
 @export var unitDisplay: Control
 @export var unitDisplayLabel: RichTextLabel
 
-@export var empire: Empire
+@export var playerController: PlayerController
 @export var overworldManager: OverworldManager
 
 var isLoaded: bool = false
 var isPaused: bool = false
 
-func _ready() -> void:
+func Setup() -> void:
 	cityControlUI.visible = false
 	UnpauseGame()
 	turnDisplay.Setup()
@@ -33,7 +33,7 @@ func _ready() -> void:
 
 	# Every city on the map gets a bar, the quick access only shows the player's own
 	cityBars.Setup(SaveDataManager.instance.GetCities())
-	quickAccess.Setup(empire.GetCityData(), empire.GetUnitData())
+	quickAccess.Setup(SaveDataManager.instance.GetCitiesForEmpire(playerController.empire.empireId), SaveDataManager.instance.GetUnitsForEmpire(playerController.empire.empireId))
 	
 	isLoaded = true
 	loaded.emit()
@@ -56,7 +56,7 @@ func UnpauseGame() -> void:
 	pauseMenu.canAct = false
 
 func _on_turn_display_next_turn_signal() -> void:
-	empire.DoTurn()
+	GameManager.instance.EndTurn(playerController.empire.empireId)
 
 func _on_city_clicked(cityCoords: Vector2i) -> void:
 	cityControlUI.Setup(SaveDataManager.instance.GetCity(cityCoords))
@@ -67,7 +67,7 @@ func _on_city_control_ui_close_clicked() -> void:
 
 func _on_city_control_ui_city_updated() -> void:
 	cityControlUI.Refresh()
-	empire.UpdateCommodityTurnProfits()
+	playerController.empire.UpdateCommodityTurnProfits()
 
 func _on_pause_menu_resume_game() -> void:
 	UnpauseGame()
