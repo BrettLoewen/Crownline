@@ -176,10 +176,41 @@ func GenerateV1Data() -> void:
 	aiEmpire.commodityData.set(Commodity.CommodityType.IRON, ironData)
 
 	var unitOne: UnitData = UnitData.new()
-	unitOne.name = "John"
+	unitOne.name = "Dimitri"
 	unitOne.empire = playerEmpire.id
-	unitOne.coords = Vector2i(0, 0)
+	unitOne.coords = Vector2i(6, 0)
+	unitOne.appearanceData = ["Chr_ArmLowerLeft_Male_12", "Chr_ArmLowerRight_Male_12", "Chr_ArmUpperLeft_Male_12", "Chr_ArmUpperRight_Male_12", "Chr_BackAttachment_05", "Chr_Eyebrow_Male_07", "Chr_Hair_07", "Chr_HandLeft_Male_12", "Chr_HandRight_Male_12", "Chr_Head_Male_00", "Chr_Hips_Male_03", "Chr_LegLeft_Male_02", "Chr_LegRight_Male_02", "Chr_ShoulderAttachLeft_01", "Chr_ShoulderAttachRight_01", "Chr_Torso_Male_10"]
 	units.set(unitOne.name, unitOne)
+	var unitTwo: UnitData = UnitData.new()
+	unitTwo.name = "Ingrid"
+	unitTwo.empire = playerEmpire.id
+	unitTwo.coords = Vector2i(6, 0)
+	unitTwo.appearanceData = ["Chr_ArmLowerLeft_Female_13", "Chr_ArmLowerRight_Female_13", "Chr_ArmUpperLeft_Female_13", "Chr_ArmUpperRight_Female_13", "Chr_Eyebrow_Female_05", "Chr_Hair_25", "Chr_HandLeft_Female_13", "Chr_HandRight_Female_13", "Chr_Head_Female_00", "Chr_Hips_Female_05", "Chr_LegLeft_Female_04", "Chr_LegRight_Female_04", "Chr_Torso_Female_04"]
+	units.set(unitTwo.name, unitTwo)
+	var unitThree: UnitData = UnitData.new()
+	unitThree.name = "Annette"
+	unitThree.empire = playerEmpire.id
+	unitThree.coords = Vector2i(6, 0)
+	unitThree.appearanceData = ["Chr_ArmLowerLeft_Female_18", "Chr_ArmLowerRight_Female_18", "Chr_ArmUpperLeft_Female_20", "Chr_ArmUpperRight_Female_20", "Chr_Eyebrow_Female_06", "Chr_Hair_35", "Chr_HandLeft_Female_08", "Chr_HandRight_Female_08", "Chr_Head_Female_00", "Chr_Hips_Female_08", "Chr_LegLeft_Female_09", "Chr_LegRight_Female_09", "Chr_Torso_Female_09"]
+	units.set(unitThree.name, unitThree)
+	var unitFour: UnitData = UnitData.new()
+	unitFour.name = "Edelgard"
+	unitFour.empire = aiEmpire.id
+	unitFour.coords = Vector2i(-6, 0)
+	unitFour.appearanceData = ["Chr_ArmLowerLeft_Female_06", "Chr_ArmLowerRight_Female_06", "Chr_ArmUpperLeft_Female_06", "Chr_ArmUpperRight_Female_06", "Chr_BackAttachment_13", "Chr_Eyebrow_Female_07", "Chr_Hair_29", "Chr_HandLeft_Female_06", "Chr_HandRight_Female_06", "Chr_Head_Female_00", "Chr_Hips_Female_19", "Chr_LegLeft_Female_14", "Chr_LegRight_Female_14", "Chr_ShoulderAttachLeft_21", "Chr_ShoulderAttachRight_21", "Chr_Torso_Female_20"]
+	units.set(unitFour.name, unitFour)
+	var unitFive: UnitData = UnitData.new()
+	unitFive.name = "Ferdinand"
+	unitFive.empire = aiEmpire.id
+	unitFive.coords = Vector2i(-6, 0)
+	unitFive.appearanceData = ["Chr_ArmLowerLeft_Male_04", "Chr_ArmLowerRight_Male_04", "Chr_ArmUpperLeft_Male_07", "Chr_ArmUpperRight_Male_07", "Chr_Hair_05", "Chr_HandLeft_Male_05", "Chr_HandRight_Male_05", "Chr_Head_Male_00", "Chr_Hips_Male_02", "Chr_LegLeft_Male_02", "Chr_LegRight_Male_02", "Chr_ShoulderAttachLeft_05", "Chr_ShoulderAttachRight_05", "Chr_Torso_Male_19"]
+	units.set(unitFive.name, unitFive)
+	var unitSix: UnitData = UnitData.new()
+	unitSix.name = "Hubert"
+	unitSix.empire = aiEmpire.id
+	unitSix.coords = Vector2i(-6, 0)
+	unitSix.appearanceData = ["Chr_ArmLowerLeft_Male_08", "Chr_ArmLowerRight_Male_08", "Chr_ArmUpperLeft_Male_20", "Chr_ArmUpperRight_Male_20", "Chr_Hair_14", "Chr_HandLeft_Male_07", "Chr_HandRight_Male_07", "Chr_Head_Male_00", "Chr_Hips_Male_04", "Chr_LegLeft_Male_04", "Chr_LegRight_Male_04", "Chr_Torso_Male_03"]
+	units.set(unitSix.name, unitSix)
 
 func _HardcodedMapData() -> MapData:
 	var tilemap: Dictionary[Vector2i, MapTileType] = {}
